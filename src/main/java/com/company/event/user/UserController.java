@@ -15,7 +15,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/insert")
     public ResponseEntity<?> insertUser(@Valid @RequestBody UserRequest userRequest) {
         User user =  userService.insertUser(userRequest);
         if(user==null){
@@ -24,7 +24,7 @@ public class UserController {
         return new ResponseEntity<>("User Created", HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getById/{id}")
     public ResponseEntity<?> getUserById(@PathVariable String id){
         UserResponse userResponse = userService.getUserById(id);
         if(userResponse==null){
@@ -33,12 +33,12 @@ public class UserController {
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public ResponseEntity<?> getAllUsers(){
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteUserById(@PathVariable String id){
         boolean result = userService.deleteUserById(id);
         if(result){
@@ -47,7 +47,7 @@ public class UserController {
         return new ResponseEntity<>("User not found",HttpStatus.BAD_REQUEST);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<?> updateUser( @PathVariable String id,@Valid @RequestBody UserRequest userRequest){
         UserResponse userResponse = userService.updateUser(userRequest,id);
         if(userResponse==null){

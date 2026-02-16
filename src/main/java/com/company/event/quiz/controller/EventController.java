@@ -17,7 +17,7 @@ public class EventController {
     private final EventRepository eventRepository;
 
     // CREATE EVENT
-    @PostMapping
+    @PostMapping("/createEvent")
     public ResponseEntity<?> createEvent(@RequestBody Event event) {
 
         if (event.getStartTime() == null || event.getEndTime() == null) {
@@ -41,13 +41,13 @@ public class EventController {
     }
 
     // GET ALL EVENTS
-    @GetMapping
+    @GetMapping("/getAllEvent")
     public List<Event> getAllEvents() {
         return eventRepository.findAll();
     }
 
     // GET SINGLE EVENT
-    @GetMapping("/{id}")
+    @GetMapping("/getEventById/{id}")
     public ResponseEntity<?> getEvent(@PathVariable String id) {
         return eventRepository.findById(id)
                 .map(ResponseEntity::ok)

@@ -14,17 +14,17 @@ public class ContestController {
 
     private final ContestService contestService;
 
-    @PostMapping
+    @PostMapping("/insert")
     public ResponseEntity<ContestResponse> createContest(@RequestBody ContestRequest request) {
         return ResponseEntity.ok(contestService.createContest(request));
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public ResponseEntity<?> getAllContests() {
         return ResponseEntity.ok(contestService.getAllContests());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getById/{id}")
     public ResponseEntity<?> getContest(@PathVariable String id) {
 
         ContestResponse contest = contestService.getContestById(id);
@@ -37,13 +37,13 @@ public class ContestController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteContest(@PathVariable String id) {
         contestService.deleteContest(id);
         return ResponseEntity.ok("Contest deleted successfully.");
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<ContestResponse> updateContest(
             @PathVariable String id,
             @RequestBody ContestRequest request

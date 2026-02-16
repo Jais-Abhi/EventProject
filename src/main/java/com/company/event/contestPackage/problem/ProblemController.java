@@ -14,7 +14,7 @@ import java.util.List;
 public class ProblemController {
     private final ProblemService problemService;
 
-    @PostMapping
+    @PostMapping("/insert")
     public ResponseEntity<?> create(@RequestBody ProblemRequest problemRequest) {
         ProblemResponse problemResponse;
         try {
@@ -25,7 +25,7 @@ public class ProblemController {
         return new ResponseEntity<>(problemResponse,HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public ResponseEntity<?> getAll() {
         List<ProblemResponse> responseList = new ArrayList<>();
         try {
@@ -36,7 +36,7 @@ public class ProblemController {
         return new ResponseEntity<>(responseList,HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getById/{id}")
     public ResponseEntity<?> getAll(@PathVariable String id) {
         ProblemResponse problemResponse;
         try {
@@ -47,7 +47,7 @@ public class ProblemController {
         return new ResponseEntity<>(problemResponse,HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
         try {
             problemService.deleteProblemById(id);
@@ -57,7 +57,7 @@ public class ProblemController {
         return new ResponseEntity<>("Deleted",HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@RequestBody ProblemRequest problemRequest,@PathVariable String id) {
         ProblemResponse problemResponse;
         try {
