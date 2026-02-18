@@ -5,7 +5,7 @@ import { type Event } from '@/types';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Loader2, Calendar, Clock, AlertCircle } from 'lucide-react';
+import { Loader2, Calendar, Clock, AlertCircle, Users } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function EventDetailsPage() {
@@ -90,6 +90,38 @@ export default function EventDetailsPage() {
                             </div>
                         </div>
                     </div>
+
+                    {/* Coordinators */}
+                    {(event.facultyCoordinators?.length || event.studentCoordinators?.length) && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {event.facultyCoordinators?.length ? (
+                                <div className="flex items-start gap-3 text-gray-700">
+                                    <Users className="h-5 w-5 mr-1 text-gray-400 mt-0.5" />
+                                    <div>
+                                        <p className="text-sm font-medium">Faculty Coordinators</p>
+                                        <div className="flex flex-wrap gap-1 mt-1">
+                                            {event.facultyCoordinators.map(fc => (
+                                                <span key={fc} className="bg-blue-50 text-blue-700 text-xs font-semibold px-2 py-0.5 rounded-full border border-blue-100">{fc}</span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : null}
+                            {event.studentCoordinators?.length ? (
+                                <div className="flex items-start gap-3 text-gray-700">
+                                    <Users className="h-5 w-5 mr-1 text-gray-400 mt-0.5" />
+                                    <div>
+                                        <p className="text-sm font-medium">Student Coordinators</p>
+                                        <div className="flex flex-wrap gap-1 mt-1">
+                                            {event.studentCoordinators.map(sc => (
+                                                <span key={sc} className="bg-green-50 text-green-700 text-xs font-semibold px-2 py-0.5 rounded-full border border-green-100">{sc}</span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : null}
+                        </div>
+                    )}
 
                     <div className="p-4 bg-yellow-50 rounded-md border border-yellow-200">
                         <h4 className="flex items-center text-yellow-800 font-medium">

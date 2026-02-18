@@ -24,14 +24,12 @@ export default function TestInterface() {
                 const response = await api.post(`/api/mcq/start/${eventId}`);
                 if (Array.isArray(response.data)) {
                     setQuestions(response.data);
-                    setIsLoading(false);
-                } else {
-                    // Handle Resume or Completed? 
-                    // If completed, response might not be array?
-                    // Assuming simplified happy path for now
-                    setQuestions(response.data); // Assuming it returns Questions
-                    setIsLoading(false);
+                } else if (response.data && typeof response.data === 'object') {
+                    // In case it's a single object or wrapped
+                    const qs = response.data.questions || response.data;
+                    setQuestions(Array.isArray(qs) ? qs : []);
                 }
+                setIsLoading(false);
             } catch (error: any) {
                 toast.error('Failed to start test or test already completed.');
                 navigate(`/events/${eventId}`);
@@ -105,15 +103,17 @@ export default function TestInterface() {
         }));
 
         try {
+            console.log('Submitting answers for event:', eventId);
             const response = await api.post(`/api/mcq/submit/${eventId}`, {
                 answers: answerList
             });
-            // Response is McqResultDTO
             const result = response.data;
-            // Store result in local state/context or navigate with state
+            console.log('Test submitted successfully:', result);
             navigate(`/test/${eventId}/result`, { state: { result } });
-        } catch (error) {
-            toast.error('Submission failed. Please try again.');
+        } catch (error: any) {
+            console.error('Submission error:', error);
+            const msg = error.response?.data?.message || 'Submission failed. Please try again.';
+            toast.error(msg);
             setIsSubmitting(false);
         }
     }, [answers, eventId, navigate, isSubmitting]);
@@ -136,9 +136,15 @@ export default function TestInterface() {
             <header className="bg-white shadow-sm px-6 py-4 flex justify-between items-center sticky top-0 z-10">
                 <h2 className="text-xl font-bold text-gray-800">MCQ Test</h2>
                 {remainingTime !== null && (
-                    <div className={`flex items-center space-x-2 text-lg font-mono font-bold ${remainingTime < 300 ? 'text-red-600' : 'text-gray-700'}`}>
+                    <div className={`flex items-center space-x-2 px-4 py-2 rounded-2xl border font-mono font-bold transition-all ${remainingTime < 300
+                            ? 'bg-red-50 border-red-200 text-red-600 animate-pulse'
+                            : 'bg-gray-50 border-gray-100 text-gray-700'
+                        }`}>
                         <Timer className="h-5 w-5" />
-                        <span>{formatTime(remainingTime)}</span>
+                        <div className="flex flex-col items-start leading-none">
+                            <span className="text-[10px] uppercase tracking-wider text-gray-400 mb-0.5">Time Left</span>
+                            <span className="text-xl">{formatTime(remainingTime)}</span>
+                        </div>
                     </div>
                 )}
                 <Button variant="danger" onClick={() => handleSubmit(false)} isLoading={isSubmitting}>

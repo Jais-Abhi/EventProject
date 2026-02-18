@@ -8,7 +8,5 @@ import java.util.List;
 
 @Data
 public class SubmitMcqRequestDTO {
-
-    @NotEmpty
     private List<Answer> answers;
 }

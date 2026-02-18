@@ -4,7 +4,7 @@ import { api } from '@/lib/axios';
 import { type Event } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Loader2, Calendar, Clock, CheckCircle } from 'lucide-react';
+import { Loader2, Calendar, Clock, CheckCircle, Users } from 'lucide-react';
 
 
 export default function EventListPage() {
@@ -78,6 +78,35 @@ export default function EventListPage() {
                                     <CheckCircle className="h-4 w-4 mr-2" />
                                     {event.totalMarks} Marks
                                 </div>
+                                {/* Coordinators */}
+                                {(event.facultyCoordinators?.length || event.studentCoordinators?.length) && (
+                                    <div className="pt-1 space-y-1.5">
+                                        {event.facultyCoordinators?.length ? (
+                                            <div>
+                                                <p className="text-xs font-semibold text-gray-500 flex items-center gap-1 mb-1">
+                                                    <Users className="h-3 w-3" /> Faculty Coordinators
+                                                </p>
+                                                <div className="flex flex-wrap gap-1">
+                                                    {event.facultyCoordinators.map(fc => (
+                                                        <span key={fc} className="bg-blue-50 text-blue-700 text-[11px] font-semibold px-2 py-0.5 rounded-full border border-blue-100">{fc}</span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        ) : null}
+                                        {event.studentCoordinators?.length ? (
+                                            <div>
+                                                <p className="text-xs font-semibold text-gray-500 flex items-center gap-1 mb-1">
+                                                    <Users className="h-3 w-3" /> Student Coordinators
+                                                </p>
+                                                <div className="flex flex-wrap gap-1">
+                                                    {event.studentCoordinators.map(sc => (
+                                                        <span key={sc} className="bg-green-50 text-green-700 text-[11px] font-semibold px-2 py-0.5 rounded-full border border-green-100">{sc}</span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        ) : null}
+                                    </div>
+                                )}
                             </CardContent>
                             <CardFooter>
                                 <Link to={`/events/${event.id}`} className="w-full">

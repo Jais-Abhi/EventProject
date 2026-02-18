@@ -47,6 +47,7 @@ export default function LeaderboardPage() {
                                 <tr>
                                     <th className="px-6 py-3">Rank</th>
                                     <th className="px-6 py-3">User</th>
+                                    <th className="px-6 py-3">Roll Number</th>
                                     <th className="px-6 py-3">Problems Solved</th>
                                     <th className="px-6 py-3 text-right">Total Score</th>
                                 </tr>
@@ -56,6 +57,7 @@ export default function LeaderboardPage() {
                                     <tr key={entry.userId} className="border-b hover:bg-gray-50">
                                         <td className="px-6 py-4 font-medium">{idx + 1}</td>
                                         <td className="px-6 py-4">{entry.username || entry.userId}</td>
+                                        <td className="px-6 py-4 font-mono text-xs">{entry.rollNumber}</td>
                                         <td className="px-6 py-4">{entry.problemsSolved}</td>
                                         <td className="px-6 py-4 text-right font-bold text-indigo-600">{entry.totalScore}</td>
                                     </tr>

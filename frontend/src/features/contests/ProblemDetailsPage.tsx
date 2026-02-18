@@ -9,11 +9,14 @@ import { Loader2, Play } from 'lucide-react';
 import Editor from '@monaco-editor/react';
 
 import { toast } from 'sonner';
+import { CountdownTimer } from '@/components/CountdownTimer';
+import { type Contest } from '@/types';
 
 export default function ProblemDetailsPage() {
     const { contestId, problemId } = useParams();
     const { user } = useAuth();
     const [problem, setProblem] = useState<Problem | null>(null);
+    const [contest, setContest] = useState<Contest | null>(null);
     const [code, setCode] = useState('// Write your code here');
     const [language, setLanguage] = useState('cpp');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,8 +32,20 @@ export default function ProblemDetailsPage() {
                 toast.error('Failed to load problem');
             }
         };
+
+        const fetchContest = async () => {
+            try {
+                const response = await api.get(`/contest/getById/${contestId}`);
+                const contestData = response.data.contest || response.data;
+                setContest(contestData);
+            } catch (error) {
+                console.error("Failed to fetch contest details");
+            }
+        };
+
         if (problemId) fetchProblem();
-    }, [problemId]);
+        if (contestId) fetchContest();
+    }, [problemId, contestId]);
 
     // Check if user already has an accepted submission for this problem
     useEffect(() => {
@@ -102,12 +117,20 @@ export default function ProblemDetailsPage() {
                     <CardHeader>
                         <CardTitle className="flex justify-between items-center">
                             <span>{problem.title}</span>
-                            <span className={`text-sm px-2 py-1 rounded ${problem.difficulty === 'EASY' ? 'bg-green-100 text-green-800' :
-                                problem.difficulty === 'MEDIUM' ? 'bg-yellow-100 text-yellow-800' :
-                                    'bg-red-100 text-red-800'
-                                }`}>
-                                {problem.difficulty}
-                            </span>
+                            <div className="flex items-center gap-4">
+                                {contest && (
+                                    <CountdownTimer
+                                        targetDate={contest.endTime}
+                                        className="text-sm bg-gray-50 px-3 py-1 rounded-full border"
+                                    />
+                                )}
+                                <span className={`text-sm px-2 py-1 rounded ${problem.difficulty === 'EASY' ? 'bg-green-100 text-green-800' :
+                                    problem.difficulty === 'MEDIUM' ? 'bg-yellow-100 text-yellow-800' :
+                                        'bg-red-100 text-red-800'
+                                    }`}>
+                                    {problem.difficulty}
+                                </span>
+                            </div>
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="flex-1 overflow-y-auto prose max-w-none">

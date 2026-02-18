@@ -12,6 +12,7 @@ import com.company.event.quiz.repository.EventRegistrationRepository;
 import com.company.event.quiz.repository.EventRepository;
 import com.company.event.quiz.repository.McqQuestionRepository;
 import com.company.event.quiz.repository.McqSubmissionRepository;
+import com.company.event.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,9 +32,6 @@ public class McqService {
     private final EventRegistrationRepository registrationRepository;
     private final com.company.event.user.UserRepository userRepository;
 
-    // ==========================
-    // START OR RESUME TEST
-    // ==========================
     public List<QuestionResponseDTO> startTest(String studentId, String eventId) {
 
         Event event = eventRepository.findById(eventId)
@@ -57,7 +55,7 @@ public class McqService {
                         new IllegalStateException("You are not registered for this event"));
 
         Optional<McqSubmission> existingSubmission =
-                submissionRepository.findByStudentIdAndEventId(studentId, eventId);
+                submissionRepository.findTopByStudentIdAndEventIdOrderByStartTimeDesc(studentId, eventId);
 
         // Resume support
         if (existingSubmission.isPresent()) {
@@ -74,7 +72,8 @@ public class McqService {
                             q.getId(),
                             q.getQuestionText(),
                             q.getOptions(),
-                            q.getMarks()
+                            q.getMarks(),
+                            q.getNegativeMarks()
                     ))
                     .toList();
             System.out.println("Returning " + qs.size() + " questions (Resume)");
@@ -96,24 +95,23 @@ public class McqService {
                             q.getId(),
                             q.getQuestionText(),
                             q.getOptions(),
-                            q.getMarks()
+                            q.getMarks(),
+                            q.getNegativeMarks()
                     ))
                     .toList();
     }
 
-    // ==========================
-    // SUBMIT TEST
-    // ==========================
     public McqResultDTO submitTest(String studentId,
                                    String eventId,
                                    SubmitMcqRequestDTO request) {
 
         if (request == null || request.getAnswers() == null) {
-            throw new IllegalArgumentException("Answers cannot be null");
+            request = new SubmitMcqRequestDTO();
+            request.setAnswers(new ArrayList<>());
         }
 
         McqSubmission submission = submissionRepository
-                .findByStudentIdAndEventId(studentId, eventId)
+                .findTopByStudentIdAndEventIdOrderByStartTimeDesc(studentId, eventId)
                 .orElseThrow(() -> new TestNotStartedException("Test not started"));
 
         if ("COMPLETED".equals(submission.getStatus())) {
@@ -125,7 +123,7 @@ public class McqService {
                 .orElseThrow(() -> new EventNotFoundException("Event not found"));
 
         if (submission.getStartTime() == null) {
-            throw new IllegalStateException("Test start time missing");
+            submission.setStartTime(Instant.now());
         }
 
         Instant now = Instant.now();
@@ -234,7 +232,7 @@ public class McqService {
                         new IllegalStateException("You are not registered for this event"));
 
         McqSubmission submission = submissionRepository
-                .findByStudentIdAndEventId(studentId, eventId)
+                .findTopByStudentIdAndEventIdOrderByStartTimeDesc(studentId, eventId)
                 .orElseThrow(() ->
                         new TestNotStartedException("Test not started"));
 
@@ -254,11 +252,11 @@ public class McqService {
         Instant now = Instant.now();
 
         long elapsedSeconds = Duration.between(
-                submission.getStartTime(),
+                submission.getStartTime() != null ? submission.getStartTime() : Instant.now(),
                 now
         ).getSeconds();
 
-        long totalAllowedSeconds = event.getDurationInMinutes() * 60L;
+        long totalAllowedSeconds = (event.getDurationInMinutes() != null ? event.getDurationInMinutes() : 0) * 60L;
 
         long remainingSeconds = totalAllowedSeconds - elapsedSeconds;
 
@@ -349,14 +347,15 @@ public class McqService {
 
             if (s.getTotalScore() == null) continue;
 
-            String username = userRepository.findById(s.getStudentId())
-                    .map(u -> u.getUsername())
-                    .orElse("Unknown");
+            User user = userRepository.findById(s.getStudentId()).orElse(null);
+            String username = user != null ? user.getUsername() : "Unknown";
+            String rollNumber = user != null ? user.getRollNumber() : "N/A";
 
             topPerformers.add(
                     new TopPerformerDTO(
                             s.getStudentId(),
                             username,
+                            rollNumber,
                             s.getTotalScore(),
                             i + 1
                     )
@@ -377,5 +376,26 @@ public class McqService {
 
     public AdminEventAnalyticsDTO getEventAnalyticsForPdf(String eventId) {
         return getEventAnalytics(eventId);
+    }
+
+    public McqResultDTO getUserResult(String studentId, String eventId) {
+        McqSubmission submission = submissionRepository.findTopByStudentIdAndEventIdOrderByStartTimeDesc(studentId, eventId)
+                .orElseThrow(() -> new RuntimeException("Submission not found"));
+
+        List<McqSubmission> allSubs = submissionRepository.findByEventIdOrderByTotalScoreDescSubmittedAtAsc(eventId);
+        int rank = 0;
+        for (int i = 0; i < allSubs.size(); i++) {
+            if (allSubs.get(i).getStudentId().equals(studentId)) {
+                rank = i + 1;
+                break;
+            }
+        }
+
+        return new McqResultDTO(
+                submission.getTotalScore() != null ? submission.getTotalScore().intValue() : 0,
+                submission.getCorrectCount(),
+                submission.getWrongCount(),
+                rank
+        );
     }
 }

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class RemainingTimeResponseDTO {
 
-    private long remainingSeconds;
+    private long remainingTime;
     private String status;
     private Instant startedAt;
     private Instant eventEndTime;

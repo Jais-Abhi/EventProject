@@ -5,10 +5,46 @@ import { type Contest, type Problem } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Plus, Edit, Trash, Check, Users } from 'lucide-react';
+import { Plus, Edit, Trash, Check, Users, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Select } from '@/components/ui/select';
 import { CLUBS } from '@/lib/constants';
+
+/**
+ * A simple tag-input component for entering a list of names.
+ * Press Enter or comma to add a tag; click × to remove.
+ */
+function TagInput({ label, values, onChange }: { label: string; values: string[]; onChange: (v: string[]) => void }) {
+    const [draft, setDraft] = useState('');
+    const add = () => {
+        const trimmed = draft.trim();
+        if (trimmed && !values.includes(trimmed)) onChange([...values, trimmed]);
+        setDraft('');
+    };
+    return (
+        <div className="space-y-1">
+            <label className="text-sm font-medium text-gray-700">{label}</label>
+            <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-white min-h-[42px]">
+                {values.map(v => (
+                    <span key={v} className="flex items-center gap-1 bg-indigo-100 text-indigo-800 text-xs font-semibold px-2 py-1 rounded-full">
+                        {v}
+                        <button type="button" onClick={() => onChange(values.filter(x => x !== v))}>
+                            <X className="h-3 w-3" />
+                        </button>
+                    </span>
+                ))}
+                <input
+                    className="flex-1 min-w-[140px] text-sm outline-none"
+                    placeholder={`Type name and press Enter`}
+                    value={draft}
+                    onChange={e => setDraft(e.target.value)}
+                    onKeyDown={e => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); add(); } }}
+                    onBlur={add}
+                />
+            </div>
+        </div>
+    );
+}
 
 // IST timezone identifier
 const IST_TZ = 'Asia/Kolkata';
@@ -89,7 +125,9 @@ export default function AdminContestsPage() {
                 startTime: new Date(currentContest.startTime!).toISOString(),
                 endTime: new Date(currentContest.endTime!).toISOString(),
                 clubId: currentContest.clubId || '',
-                problemIds: currentContest.problemIds || []
+                problemIds: currentContest.problemIds || [],
+                facultyCoordinators: currentContest.facultyCoordinators || [],
+                studentCoordinators: currentContest.studentCoordinators || [],
             };
 
             if (currentContest.id) {
@@ -188,6 +226,19 @@ export default function AdminContestsPage() {
                             <p className="text-xs text-gray-500">Selected: {(currentContest.problemIds || []).length}</p>
                         </div>
 
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <TagInput
+                                label="Faculty Coordinators"
+                                values={currentContest.facultyCoordinators || []}
+                                onChange={v => setCurrentContest({ ...currentContest, facultyCoordinators: v })}
+                            />
+                            <TagInput
+                                label="Student Coordinators"
+                                values={currentContest.studentCoordinators || []}
+                                onChange={v => setCurrentContest({ ...currentContest, studentCoordinators: v })}
+                            />
+                        </div>
+
                         <div className="flex justify-end space-x-2">
                             <Button variant="outline" onClick={() => setIsEditing(false)}>Cancel</Button>
                             <Button onClick={handleSave}>Save</Button>
@@ -205,6 +256,13 @@ export default function AdminContestsPage() {
                                         {new Date(contest.startTime).toLocaleString('en-IN', { timeZone: IST_TZ })} — {new Date(contest.endTime).toLocaleString('en-IN', { timeZone: IST_TZ })}
                                     </p>
                                     <p className="text-xs text-gray-400">Problems: {contest.problemIds?.length || 0}</p>
+                                    {(contest.facultyCoordinators?.length || contest.studentCoordinators?.length) ? (
+                                        <p className="text-xs text-gray-400 mt-0.5">
+                                            {contest.facultyCoordinators?.length ? `Faculty: ${contest.facultyCoordinators.join(', ')}` : ''}
+                                            {contest.facultyCoordinators?.length && contest.studentCoordinators?.length ? ' | ' : ''}
+                                            {contest.studentCoordinators?.length ? `Students: ${contest.studentCoordinators.join(', ')}` : ''}
+                                        </p>
+                                    ) : null}
                                 </div>
                                 <div className="flex space-x-2">
                                     <Link to={`/admin/contests/${contest.id}/participants`}>

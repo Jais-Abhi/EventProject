@@ -19,6 +19,7 @@ const registerSchema = z.object({
     fatherName: z.string().min(1, 'Father name is required'),
     course: z.string().min(1, 'Course is required'),
     branch: z.string().min(1, 'Branch is required'),
+    rollNumber: z.string().min(1, 'Roll number is required'),
 });
 
 type RegisterForm = z.infer<typeof registerSchema>;
@@ -60,6 +61,8 @@ export default function RegisterPage() {
                             <Input label="Course" id="course" {...register('course')} error={errors.course?.message} />
                             <Input label="Branch" id="branch" {...register('branch')} error={errors.branch?.message} />
                         </div>
+
+                        <Input label="Roll Number" id="rollNumber" {...register('rollNumber')} error={errors.rollNumber?.message} />
 
                         <Input label="Email" type="email" id="email" {...register('email')} error={errors.email?.message} />
                         <Input label="Username" id="username" {...register('username')} error={errors.username?.message} />

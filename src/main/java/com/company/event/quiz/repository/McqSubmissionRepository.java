@@ -10,5 +10,9 @@ public interface McqSubmissionRepository extends MongoRepository<McqSubmission, 
 
     Optional<McqSubmission> findByStudentIdAndEventId(String studentId, String eventId);
 
+    Optional<McqSubmission> findTopByStudentIdAndEventIdOrderByStartTimeDesc(String studentId, String eventId);
+
+    List<McqSubmission> findByStudentId(String studentId);
+
     List<McqSubmission> findByEventIdOrderByTotalScoreDescSubmittedAtAsc(String eventId);
 }

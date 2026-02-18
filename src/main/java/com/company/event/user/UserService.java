@@ -13,6 +13,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final org.springframework.data.mongodb.core.MongoTemplate mongoTemplate;
 
     public User insertUser(UserRequest userRequest) {
         User user = new User();
@@ -26,6 +27,7 @@ public class UserService {
         user.setCourse(userRequest.getCourse());
         user.setFatherName(userRequest.getFatherName());
         user.setUsername(userRequest.getUsername());
+        user.setRollNumber(userRequest.getRollNumber());
 
         if (user.getRole() == null) {
             user.setRole(Roles.USER);
@@ -86,6 +88,7 @@ public class UserService {
         user.setCourse(userRequest.getCourse());
         user.setFatherName(userRequest.getFatherName());
         user.setUsername(userRequest.getUsername());
+        user.setRollNumber(userRequest.getRollNumber());
 
         userRepository.save(user);
 
@@ -102,12 +105,32 @@ public class UserService {
         userResponse.setCourse(user.getCourse());
         userResponse.setFatherName(user.getFatherName());
         userResponse.setUsername(user.getUsername());
+        userResponse.setRollNumber(user.getRollNumber());
         userResponse.setId(user.getId());
         userResponse.setRole(user.getRole());
 
-        userResponse.setPassword(null);
-
         return userResponse;
+    }
+
+    public List<UserResponse> searchUsers(String query) {
+        org.springframework.data.mongodb.core.query.Query mongoQuery = new org.springframework.data.mongodb.core.query.Query();
+        org.springframework.data.mongodb.core.query.Criteria criteria = new org.springframework.data.mongodb.core.query.Criteria().orOperator(
+                org.springframework.data.mongodb.core.query.Criteria.where("username").regex(query, "i"),
+                org.springframework.data.mongodb.core.query.Criteria.where("email").regex(query, "i"),
+                org.springframework.data.mongodb.core.query.Criteria.where("firstName").regex(query, "i"),
+                org.springframework.data.mongodb.core.query.Criteria.where("lastName").regex(query, "i"),
+                org.springframework.data.mongodb.core.query.Criteria.where("rollNumber").regex(query, "i"),
+                org.springframework.data.mongodb.core.query.Criteria.where("branch").regex(query, "i"),
+                org.springframework.data.mongodb.core.query.Criteria.where("course").regex(query, "i")
+        );
+        mongoQuery.addCriteria(criteria);
+
+        List<User> users = mongoTemplate.find(mongoQuery, User.class);
+        List<UserResponse> responseList = new ArrayList<>();
+        for (User user : users) {
+            responseList.add(mapToResponse(user));
+        }
+        return responseList;
     }
 
     public UserResponse getUserByUsername(String username) {

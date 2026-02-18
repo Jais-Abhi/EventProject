@@ -5,7 +5,8 @@ import { type Contest, type Problem } from '@/types';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Loader2, ArrowRight, CheckCircle2, Clock } from 'lucide-react';
+import { Loader2, ArrowRight, CheckCircle2, Clock, Users } from 'lucide-react';
+import { CountdownTimer } from '@/components/CountdownTimer';
 
 const IST_TZ = 'Asia/Kolkata';
 
@@ -77,17 +78,64 @@ export default function ContestDetailsPage() {
                         {new Date(contest.startTime).toLocaleString('en-IN', { timeZone: IST_TZ })} — {new Date(contest.endTime).toLocaleString('en-IN', { timeZone: IST_TZ })}
                     </p>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-6">
+                    {status === 'LIVE' && (
+                        <CountdownTimer
+                            targetDate={contest.endTime}
+                            label="Ends In"
+                            className="bg-white px-4 py-2 rounded-2xl shadow-sm border border-gray-100"
+                        />
+                    )}
+                    {status === 'UPCOMING' && (
+                        <CountdownTimer
+                            targetDate={contest.startTime}
+                            label="Starts In"
+                            className="bg-blue-100/50 px-4 py-2 rounded-2xl border border-blue-200"
+                            onEnd={() => window.location.reload()}
+                        />
+                    )}
                     {problems.length > 0 && (
-                        <span className="text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+                        <span className="text-sm font-bold text-gray-600 bg-white px-4 py-2 rounded-2xl shadow-sm border border-gray-100">
                             {solvedCount} / {problems.length} Solved
                         </span>
                     )}
                     <Link to={`/leaderboard/${contest.id}`}>
-                        <Button variant="outline">View Leaderboard</Button>
+                        <Button variant="outline" className="rounded-2xl font-bold shadow-sm">View Leaderboard</Button>
                     </Link>
                 </div>
             </div>
+
+            {/* Coordinators */}
+            {(contest.facultyCoordinators?.length || contest.studentCoordinators?.length) && (
+                <div className="flex flex-wrap gap-6 bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-4">
+                    {contest.facultyCoordinators?.length ? (
+                        <div className="flex items-start gap-3">
+                            <Users className="h-5 w-5 text-blue-500 mt-0.5" />
+                            <div>
+                                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Faculty Coordinators</p>
+                                <div className="flex flex-wrap gap-1">
+                                    {contest.facultyCoordinators.map(fc => (
+                                        <span key={fc} className="bg-blue-50 text-blue-700 text-xs font-semibold px-2 py-0.5 rounded-full border border-blue-100">{fc}</span>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    ) : null}
+                    {contest.studentCoordinators?.length ? (
+                        <div className="flex items-start gap-3">
+                            <Users className="h-5 w-5 text-green-500 mt-0.5" />
+                            <div>
+                                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Student Coordinators</p>
+                                <div className="flex flex-wrap gap-1">
+                                    {contest.studentCoordinators.map(sc => (
+                                        <span key={sc} className="bg-green-50 text-green-700 text-xs font-semibold px-2 py-0.5 rounded-full border border-green-100">{sc}</span>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    ) : null}
+                </div>
+            )}
 
             <div className="grid gap-4">
                 {status === 'UPCOMING' ? (

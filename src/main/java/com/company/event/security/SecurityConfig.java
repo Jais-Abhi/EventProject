@@ -33,7 +33,10 @@ public class SecurityConfig {
                         .requestMatchers("/user/login/**").permitAll() // Added generic login matcher if needed
                         .requestMatchers("/user/delete/**").permitAll()
                         .requestMatchers("/user/update/**").permitAll()
-                        .requestMatchers("/user/getAll/**").hasRole("ADMIN")
+                        .requestMatchers("/user/activity/**").authenticated()
+                        .requestMatchers("/user/activity/{userId}").hasRole("ADMIN")
+                        .requestMatchers("/user/getAll").hasRole("ADMIN")
+                        .requestMatchers("/user/search").hasRole("ADMIN")
                         .requestMatchers("/contest/getById/**").permitAll()
                         .requestMatchers("/contest/update/**").hasRole("ADMIN")
                         .requestMatchers("/contest/getAll/**").permitAll()

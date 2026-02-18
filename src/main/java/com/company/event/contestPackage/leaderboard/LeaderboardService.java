@@ -4,6 +4,7 @@ import com.company.event.contestPackage.contest.Contest;
 import com.company.event.contestPackage.contest.ContestRepository;
 import com.company.event.contestPackage.submission.Submission;
 import com.company.event.contestPackage.submission.SubmissionRepository;
+import com.company.event.user.User;
 import com.company.event.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -83,14 +84,15 @@ public class LeaderboardService {
                 }
             }
 
-            String username = userRepository.findById(userId)
-                    .map(u -> u.getUsername())
-                    .orElse("Unknown");
+            User user = userRepository.findById(userId).orElse(null);
+            String username = user != null ? user.getUsername() : "Unknown";
+            String rollNumber = user != null ? user.getRollNumber() : "N/A";
 
             leaderboard.add(
                     LeaderboardEntry.builder()
                             .userId(userId)
                             .username(username)
+                            .rollNumber(rollNumber)
                             .totalScore(totalScore)
                             .problemsSolved(solved)
                             .lastSubmissionTime(lastTime)

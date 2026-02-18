@@ -18,4 +18,6 @@ public class ContestResponse {
     private Instant endTime;
     private ClubsEnum clubId;
     private List<String> problemIds;
+    private List<String> facultyCoordinators;
+    private List<String> studentCoordinators;
 }

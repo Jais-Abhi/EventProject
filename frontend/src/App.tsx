@@ -31,6 +31,7 @@ import AdminAnalyticsPage from '@/features/admin/AdminAnalyticsPage';
 import AdminQuestionsPage from '@/features/admin/AdminQuestionsPage';
 import AdminSubmissionsPage from '@/features/admin/AdminSubmissionsPage';
 import AdminContestParticipantsPage from '@/features/admin/AdminContestParticipantsPage';
+import AdminEventAnalyticsPage from '@/features/admin/AdminEventAnalyticsPage';
 
 // Submissions
 import MySubmissionsPage from '@/features/submissions/MySubmissionsPage';
@@ -75,10 +76,12 @@ function App() {
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/admin/events" element={<AdminEventsPage />} />
               <Route path="/admin/events/:eventId/questions" element={<AdminQuestionsPage />} />
+              <Route path="/admin/events/:eventId/analytics" element={<AdminEventAnalyticsPage />} />
               <Route path="/admin/contests" element={<AdminContestsPage />} />
               <Route path="/admin/contests/:contestId/participants" element={<AdminContestParticipantsPage />} />
               <Route path="/admin/problems" element={<AdminProblemsPage />} />
               <Route path="/admin/users" element={<AdminUsersPage />} />
+              <Route path="/admin/users/:userId" element={<ProfilePage />} />
               <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />
               <Route path="/admin/submissions" element={<AdminSubmissionsPage />} />
             </Route>

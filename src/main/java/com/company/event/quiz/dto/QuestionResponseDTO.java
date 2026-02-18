@@ -13,4 +13,5 @@ public class QuestionResponseDTO {
     private String questionText;
     private List<String> options;
     private Double marks;
+    private Double negativeMarks;
 }

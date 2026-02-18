@@ -11,6 +11,7 @@ import java.time.Instant;
 public class LeaderboardEntry {
     private String userId;
     private String username;
+    private String rollNumber;
     private int totalScore;
     private int problemsSolved;
     private Instant lastSubmissionTime;

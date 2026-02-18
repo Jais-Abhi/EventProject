@@ -12,6 +12,7 @@ public interface EventRegistrationRepository
     Optional<EventRegistration> findByEventIdAndStudentId(String eventId, String studentId);
 
     List<EventRegistration> findByEventId(String eventId);
+    List<EventRegistration> findByStudentId(String studentId);
 
     long countByEventId(String eventId);
 }

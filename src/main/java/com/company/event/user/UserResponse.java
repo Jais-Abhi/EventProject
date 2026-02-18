@@ -13,7 +13,6 @@ import org.springframework.data.mongodb.core.index.Indexed;
 public class UserResponse {
     private String id;
     private String username;
-    private String password;
     private String email;
     private Roles role;
     private String firstName;
@@ -21,4 +20,5 @@ public class UserResponse {
     private String fatherName;
     private String course;
     private String branch;
+    private String rollNumber;
 }

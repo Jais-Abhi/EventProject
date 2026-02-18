@@ -7,12 +7,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class McqResultDTO {
 
-    private Integer totalScore;
-
-    private Integer correct;
-
-    private Integer wrong;
-
+    private Integer score;
+    private Integer correctAnswers;
+    private Integer wrongAnswers;
     private Integer rank;
 }
 

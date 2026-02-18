@@ -4,10 +4,46 @@ import { type Event } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Plus, Edit } from 'lucide-react';
+import { Plus, Edit, Trash, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Select } from '@/components/ui/select';
 import { CLUBS } from '@/lib/constants';
+
+/**
+ * A simple tag-input component for entering a list of names.
+ * Press Enter or comma to add a tag; click × to remove.
+ */
+function TagInput({ label, values, onChange }: { label: string; values: string[]; onChange: (v: string[]) => void }) {
+    const [draft, setDraft] = useState('');
+    const add = () => {
+        const trimmed = draft.trim();
+        if (trimmed && !values.includes(trimmed)) onChange([...values, trimmed]);
+        setDraft('');
+    };
+    return (
+        <div className="space-y-1">
+            <label className="text-sm font-medium text-gray-700">{label}</label>
+            <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-white min-h-[42px]">
+                {values.map(v => (
+                    <span key={v} className="flex items-center gap-1 bg-indigo-100 text-indigo-800 text-xs font-semibold px-2 py-1 rounded-full">
+                        {v}
+                        <button type="button" onClick={() => onChange(values.filter(x => x !== v))}>
+                            <X className="h-3 w-3" />
+                        </button>
+                    </span>
+                ))}
+                <input
+                    className="flex-1 min-w-[140px] text-sm outline-none"
+                    placeholder={`Type name and press Enter`}
+                    value={draft}
+                    onChange={e => setDraft(e.target.value)}
+                    onKeyDown={e => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); add(); } }}
+                    onBlur={add}
+                />
+            </div>
+        </div>
+    );
+}
 
 // IST timezone identifier
 const IST_TZ = 'Asia/Kolkata';
@@ -59,6 +95,17 @@ export default function AdminEventsPage() {
             toast.error('Failed to load events');
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const handleDelete = async (id: string) => {
+        if (!confirm('Are you sure you want to delete this event?')) return;
+        try {
+            await api.delete(`/api/events/deleteEvent/${id}`);
+            toast.success('Event deleted');
+            fetchEvents();
+        } catch (error) {
+            toast.error('Failed to delete event');
         }
     };
 
@@ -163,6 +210,18 @@ export default function AdminEventsPage() {
                             onChange={e => setCurrentEvent({ ...currentEvent, clubId: e.target.value })}
                             options={CLUBS.map(c => ({ value: c.id, label: c.name }))}
                         />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <TagInput
+                                label="Faculty Coordinators"
+                                values={currentEvent.facultyCoordinators || []}
+                                onChange={v => setCurrentEvent({ ...currentEvent, facultyCoordinators: v })}
+                            />
+                            <TagInput
+                                label="Student Coordinators"
+                                values={currentEvent.studentCoordinators || []}
+                                onChange={v => setCurrentEvent({ ...currentEvent, studentCoordinators: v })}
+                            />
+                        </div>
                         <div className="flex justify-end space-x-2">
                             <Button variant="outline" onClick={() => setIsEditing(false)}>Cancel</Button>
                             <Button onClick={handleSave}>Save</Button>
@@ -179,10 +238,19 @@ export default function AdminEventsPage() {
                                     <p className="text-sm text-gray-500">
                                         {new Date(event.startTime).toLocaleString('en-IN', { timeZone: IST_TZ })} — {event.status}
                                     </p>
+                                    {(event.facultyCoordinators?.length || event.studentCoordinators?.length) ? (
+                                        <p className="text-xs text-gray-400 mt-0.5">
+                                            {event.facultyCoordinators?.length ? `Faculty: ${event.facultyCoordinators.join(', ')}` : ''}
+                                            {event.facultyCoordinators?.length && event.studentCoordinators?.length ? ' | ' : ''}
+                                            {event.studentCoordinators?.length ? `Students: ${event.studentCoordinators.join(', ')}` : ''}
+                                        </p>
+                                    ) : null}
                                 </div>
                                 <div className="flex space-x-2">
                                     <Button size="sm" variant="secondary" onClick={() => openEdit(event)}><Edit className="h-4 w-4" /></Button>
                                     <Button size="sm" variant="outline" onClick={() => window.location.href = `/admin/events/${event.id}/questions`}>Questions</Button>
+                                    <Button size="sm" variant="outline" onClick={() => window.location.href = `/admin/events/${event.id}/analytics`}>Analytics</Button>
+                                    <Button size="sm" variant="danger" onClick={() => handleDelete(event.id!)}><Trash className="h-4 w-4" /></Button>
                                 </div>
                             </CardContent>
                         </Card>

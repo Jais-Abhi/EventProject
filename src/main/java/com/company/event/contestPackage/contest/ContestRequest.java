@@ -22,4 +22,6 @@ public class ContestRequest {
     private ClubsEnum clubId;
     @NotNull
     private List<String> problemIds;
+    private List<String> facultyCoordinators;
+    private List<String> studentCoordinators;
 }

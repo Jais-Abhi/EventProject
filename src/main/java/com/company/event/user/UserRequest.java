@@ -30,4 +30,6 @@ public class UserRequest {
     private String course;
     @NotBlank
     private String branch;
+    @NotBlank
+    private String rollNumber;
 }

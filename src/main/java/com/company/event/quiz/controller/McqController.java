@@ -78,7 +78,14 @@ public class McqController {
                 .body(pdfStream.readAllBytes());
     }
 
+    @GetMapping("/result/{eventId}")
+    public ResponseEntity<?> getResult(
+            @PathVariable String eventId,
+            @RequestHeader("studentId") String studentId) {
 
-
+        return ResponseEntity.ok(
+                mcqService.getUserResult(studentId, eventId)
+        );
+    }
 }
 

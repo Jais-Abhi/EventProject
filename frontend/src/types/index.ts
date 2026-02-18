@@ -8,7 +8,8 @@ export interface User {
     fatherName?: string;
     course: string;
     branch: string;
-    role: 'ADMIN' | 'STUDENT'; // Assuming role is returned or inferred
+    rollNumber: string;
+    role: 'ADMIN' | 'USER';
 }
 
 // Event (MCQ)
@@ -23,6 +24,8 @@ export interface Event {
     totalMarks: number;
     clubId: string;
     status: 'UPCOMING' | 'LIVE' | 'COMPLETED';
+    facultyCoordinators?: string[];
+    studentCoordinators?: string[];
 }
 
 // Contest
@@ -34,6 +37,8 @@ export interface Contest {
     clubId: string;
     problemIds: string[];
     status?: 'UPCOMING' | 'LIVE' | 'ENDED'; // Derived or from API
+    facultyCoordinators?: string[];
+    studentCoordinators?: string[];
 }
 
 // Problem
@@ -84,7 +89,34 @@ export interface McqResult {
 export interface LeaderboardEntry {
     userId: string;
     username: string;
+    rollNumber: string;
     totalScore: number;
     problemsSolved: number;
     lastSubmissionTime: string;
+}
+
+export interface UserActivity {
+    mcqActivities: McqActivity[];
+    contestActivities: ContestActivity[];
+}
+
+export interface McqActivity {
+    eventId: string;
+    title: string;
+    registeredAt: string;
+    submittedAt?: string;
+    status: string;
+    score?: number;
+    totalMarks: number;
+    rank?: number;
+}
+
+export interface ContestActivity {
+    contestId: string;
+    title: string;
+    problemsSolved: number;
+    totalProblems: number;
+    totalScore: number;
+    lastSubmissionTime?: string;
+    rank?: number;
 }

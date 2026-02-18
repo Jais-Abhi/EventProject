@@ -14,6 +14,7 @@ import org.springframework.web.service.annotation.DeleteExchange;
 public class UserController {
 
     private final UserService userService;
+    private final UserActivityService userActivityService;
 
     @PostMapping("/insert")
     public ResponseEntity<?> insertUser(@Valid @RequestBody UserRequest userRequest) {
@@ -36,6 +37,11 @@ public class UserController {
     @GetMapping("/getAll")
     public ResponseEntity<?> getAllUsers(){
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchUsers(@RequestParam String query) {
+        return ResponseEntity.ok(userService.searchUsers(query));
     }
 
     @DeleteMapping("/delete/{id}")
@@ -70,6 +76,33 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/activity")
+    public ResponseEntity<?> getUserActivity(java.security.Principal principal) {
+        try {
+            if (principal == null) {
+                return new ResponseEntity<>("Not authenticated", HttpStatus.UNAUTHORIZED);
+            }
+            UserResponse user = userService.getUserByUsername(principal.getName());
+            if (user == null) {
+                return new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
+            }
+            return ResponseEntity.ok(userActivityService.getUserActivity(user.getId()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error fetching activity: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/activity/{userId}")
+    public ResponseEntity<?> getUserActivityById(@PathVariable String userId) {
+        try {
+            return ResponseEntity.ok(userActivityService.getUserActivity(userId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error fetching activity: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

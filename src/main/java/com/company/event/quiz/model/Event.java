@@ -33,4 +33,7 @@ public class Event {
     private ClubsEnum clubId;
 
     private String status; // UPCOMING, LIVE, COMPLETED
+
+    private java.util.List<String> facultyCoordinators;
+    private java.util.List<String> studentCoordinators;
 }

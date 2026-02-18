@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class EventController {
         }
 
         event.setAttendanceProcessed(false);
+        event.setDurationInMinutes((int)Duration.between(event.getStartTime(),event.getEndTime()).toMinutes());
 
         return ResponseEntity.ok(eventRepository.save(event));
     }
@@ -51,12 +53,15 @@ public class EventController {
                     if (eventDetails.getDurationInMinutes() != null) event.setDurationInMinutes(eventDetails.getDurationInMinutes());
                     if (eventDetails.getTotalMarks() != null) event.setTotalMarks(eventDetails.getTotalMarks());
                     if (eventDetails.getClubId() != null) event.setClubId(eventDetails.getClubId());
+                    if (eventDetails.getFacultyCoordinators() != null) event.setFacultyCoordinators(eventDetails.getFacultyCoordinators());
+                    if (eventDetails.getStudentCoordinators() != null) event.setStudentCoordinators(eventDetails.getStudentCoordinators());
                     
                     // Validate dates if updated
                     if (event.getStartTime() != null && event.getEndTime() != null) {
                         if (!event.getStartTime().isBefore(event.getEndTime())) {
                             return ResponseEntity.badRequest().body("Start time must be before end time");
                         }
+                        event.setDurationInMinutes((int)Duration.between(event.getStartTime(),event.getEndTime()).toMinutes());
                     }
 
                     return ResponseEntity.ok(eventRepository.save(event));
@@ -96,5 +101,15 @@ public class EventController {
         } else {
             event.setStatus("LIVE");
         }
+    }
+
+    // DELETE EVENT
+    @DeleteMapping("/deleteEvent/{id}")
+    public ResponseEntity<?> deleteEvent(@PathVariable String id) {
+        if (!eventRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        eventRepository.deleteById(id);
+        return ResponseEntity.ok("Event deleted successfully");
     }
 }

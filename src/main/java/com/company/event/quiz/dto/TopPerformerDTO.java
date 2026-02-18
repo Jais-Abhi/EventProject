@@ -9,6 +9,7 @@ public class TopPerformerDTO {
 
     private String studentId;
     private String username;
+    private String rollNumber;
     private Double score;
     private int rank;
 }

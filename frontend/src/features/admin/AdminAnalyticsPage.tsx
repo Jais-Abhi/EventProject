@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { api } from '@/lib/axios';
 import { Card, CardContent } from '@/components/ui/card';
+import { BarChart3, FileDown } from 'lucide-react';
 
 export default function AdminAnalyticsPage() {
     const [events, setEvents] = useState<any[]>([]);
@@ -24,12 +26,20 @@ export default function AdminAnalyticsPage() {
                                 <h3 className="font-bold text-lg">{event.title}</h3>
                                 <p className="text-sm text-gray-500">{new Date(event.startTime).toLocaleDateString()}</p>
                             </div>
-                            <button
-                                onClick={() => downloadPdf(event.id)}
-                                className="text-indigo-600 hover:underline text-sm font-medium"
-                            >
-                                Download PDF Report
-                            </button>
+                            <div className="flex gap-4 items-center">
+                                <Link
+                                    to={`/admin/events/${event.id}/analytics`}
+                                    className="inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                                >
+                                    <BarChart3 className="mr-1 h-4 w-4" /> View Details
+                                </Link>
+                                <button
+                                    onClick={() => downloadPdf(event.id)}
+                                    className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-500"
+                                >
+                                    <FileDown className="mr-1 h-4 w-4" /> Download PDF
+                                </button>
+                            </div>
                         </CardContent>
                     </Card>
                 ))}

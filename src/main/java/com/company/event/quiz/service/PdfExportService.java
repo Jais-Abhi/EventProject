@@ -75,17 +75,19 @@ public class PdfExportService {
 
             document.add(new Paragraph(" "));
 
-            PdfPTable topTable = new PdfPTable(3);
+            PdfPTable topTable = new PdfPTable(4);
             topTable.setWidthPercentage(100);
 
             addHeaderCell(topTable, "Rank");
             addHeaderCell(topTable, "User");
+            addHeaderCell(topTable, "Roll Number");
             addHeaderCell(topTable, "Score");
 
             for (TopPerformerDTO performer : analytics.getTopPerformers()) {
 
                 addCell(topTable, String.valueOf(performer.getRank()));
                 addCell(topTable, performer.getUsername());
+                addCell(topTable, performer.getRollNumber());
                 addCell(topTable, String.valueOf(performer.getScore()));
             }
 

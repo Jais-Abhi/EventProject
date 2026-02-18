@@ -34,6 +34,7 @@ public class User implements UserDetails {
     private String fatherName;
     private String course;
     private String branch;
+    private String rollNumber;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

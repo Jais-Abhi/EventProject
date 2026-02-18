@@ -1,11 +1,39 @@
-import { useLocation, Link, Navigate } from 'react-router-dom';
+import { useLocation, Link, Navigate, useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, XCircle, Trophy } from 'lucide-react';
+import { CheckCircle, XCircle, Trophy, Loader2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { api } from '@/lib/axios';
+import { useAuth } from '@/context/AuthContext';
 
 export default function TestResultPage() {
+    const { eventId } = useParams();
+    const { user } = useAuth();
     const location = useLocation();
-    const result = location.state?.result;
+    const [result, setResult] = useState(location.state?.result);
+    const [isLoading, setIsLoading] = useState(!result);
+
+    useEffect(() => {
+        if (!result && eventId && user) {
+            const fetchResult = async () => {
+                try {
+                    const response = await api.get(`/api/mcq/result/${eventId}`, {
+                        headers: { studentId: user.id }
+                    });
+                    setResult(response.data);
+                } catch (error) {
+                    console.error("Failed to fetch result");
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+            fetchResult();
+        }
+    }, [eventId, user, result]);
+
+    if (isLoading) {
+        return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin text-blue-600" /></div>;
+    }
 
     if (!result) {
         return <Navigate to="/dashboard" />;
