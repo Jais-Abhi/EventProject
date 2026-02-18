@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { api } from '@/lib/axios';
-import { type Contest, type Problem } from '@/types'; // Added Problem type
+import { type Contest, type Problem } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Plus, Edit, Trash, Check } from 'lucide-react'; // Added Check
+import { Plus, Edit, Trash, Check, Users } from 'lucide-react';
 import { toast } from 'sonner';
 
 // IST timezone identifier
@@ -196,6 +197,12 @@ export default function AdminContestsPage() {
                                     <p className="text-xs text-gray-400">Problems: {contest.problemIds?.length || 0}</p>
                                 </div>
                                 <div className="flex space-x-2">
+                                    <Link to={`/admin/contests/${contest.id}/participants`}>
+                                        <Button size="sm" variant="outline" className="flex items-center gap-1">
+                                            <Users className="h-4 w-4" />
+                                            Participants
+                                        </Button>
+                                    </Link>
                                     <Button size="sm" variant="secondary" onClick={() => { setCurrentContest(contest); setIsEditing(true); }}><Edit className="h-4 w-4" /></Button>
                                     <Button size="sm" variant="danger" onClick={() => handleDelete(contest.id)}><Trash className="h-4 w-4" /></Button>
                                 </div>

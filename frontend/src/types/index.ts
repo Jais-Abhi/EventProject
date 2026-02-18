@@ -81,6 +81,7 @@ export interface McqResult {
 
 export interface LeaderboardEntry {
     userId: string;
+    username: string;
     totalScore: number;
     problemsSolved: number;
     lastSubmissionTime: string;

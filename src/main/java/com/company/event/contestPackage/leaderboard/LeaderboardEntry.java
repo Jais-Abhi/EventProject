@@ -10,6 +10,7 @@ import java.time.Instant;
 @Builder
 public class LeaderboardEntry {
     private String userId;
+    private String username;
     private int totalScore;
     private int problemsSolved;
     private Instant lastSubmissionTime;

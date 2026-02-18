@@ -29,6 +29,7 @@ public class McqService {
     private final McqQuestionRepository questionRepository;
     private final McqSubmissionRepository submissionRepository;
     private final EventRegistrationRepository registrationRepository;
+    private final com.company.event.user.UserRepository userRepository;
 
     // ==========================
     // START OR RESUME TEST
@@ -348,9 +349,14 @@ public class McqService {
 
             if (s.getTotalScore() == null) continue;
 
+            String username = userRepository.findById(s.getStudentId())
+                    .map(u -> u.getUsername())
+                    .orElse("Unknown");
+
             topPerformers.add(
                     new TopPerformerDTO(
                             s.getStudentId(),
+                            username,
                             s.getTotalScore(),
                             i + 1
                     )

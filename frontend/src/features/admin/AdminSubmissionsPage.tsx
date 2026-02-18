@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { api } from '@/lib/axios';
 import { Card, CardContent } from '@/components/ui/card';
 import { Loader2, CheckCircle2, XCircle, Clock, Search } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 const IST_TZ = 'Asia/Kolkata';
 
@@ -41,11 +41,17 @@ function VerdictBadge({ verdict }: { verdict: string }) {
 }
 
 export default function AdminSubmissionsPage() {
+    const [searchParams] = useSearchParams();
     const [submissions, setSubmissions] = useState<Submission[]>([]);
     const [filtered, setFiltered] = useState<Submission[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [expandedId, setExpandedId] = useState<string | null>(null);
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState(() => {
+        const u = searchParams.get('userId');
+        const c = searchParams.get('contestId');
+        if (u && c) return `${u} ${c}`;
+        return u || c || '';
+    });
     const [verdictFilter, setVerdictFilter] = useState('ALL');
 
     useEffect(() => {
@@ -73,13 +79,14 @@ export default function AdminSubmissionsPage() {
             result = result.filter(s => s.verdict === verdictFilter);
         }
         if (search.trim()) {
-            const q = search.trim().toLowerCase();
-            result = result.filter(
-                s =>
-                    s.userId.toLowerCase().includes(q) ||
-                    s.contestId.toLowerCase().includes(q) ||
-                    s.problemId.toLowerCase().includes(q) ||
-                    s.language.toLowerCase().includes(q)
+            const terms = search.trim().toLowerCase().split(/\s+/);
+            result = result.filter(s =>
+                terms.every(term =>
+                    s.userId.toLowerCase().includes(term) ||
+                    s.contestId.toLowerCase().includes(term) ||
+                    s.problemId.toLowerCase().includes(term) ||
+                    s.language.toLowerCase().includes(term)
+                )
             );
         }
         setFiltered(result);

@@ -30,9 +30,11 @@ import AdminUsersPage from '@/features/admin/AdminUsersPage';
 import AdminAnalyticsPage from '@/features/admin/AdminAnalyticsPage';
 import AdminQuestionsPage from '@/features/admin/AdminQuestionsPage';
 import AdminSubmissionsPage from '@/features/admin/AdminSubmissionsPage';
+import AdminContestParticipantsPage from '@/features/admin/AdminContestParticipantsPage';
 
 // Submissions
 import MySubmissionsPage from '@/features/submissions/MySubmissionsPage';
+import ProfilePage from '@/features/profile/ProfilePage';
 
 function App() {
   return (
@@ -63,7 +65,7 @@ function App() {
 
               {/* User Routes */}
               <Route path="/submissions" element={<MySubmissionsPage />} />
-              {/* <Route path="/profile" element={<ProfilePage />} /> */}
+              <Route path="/profile" element={<ProfilePage />} />
             </Route>
           </Route>
 
@@ -74,6 +76,7 @@ function App() {
               <Route path="/admin/events" element={<AdminEventsPage />} />
               <Route path="/admin/events/:eventId/questions" element={<AdminQuestionsPage />} />
               <Route path="/admin/contests" element={<AdminContestsPage />} />
+              <Route path="/admin/contests/:contestId/participants" element={<AdminContestParticipantsPage />} />
               <Route path="/admin/problems" element={<AdminProblemsPage />} />
               <Route path="/admin/users" element={<AdminUsersPage />} />
               <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />

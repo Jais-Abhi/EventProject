@@ -79,13 +79,13 @@ public class PdfExportService {
             topTable.setWidthPercentage(100);
 
             addHeaderCell(topTable, "Rank");
-            addHeaderCell(topTable, "Student ID");
+            addHeaderCell(topTable, "User");
             addHeaderCell(topTable, "Score");
 
             for (TopPerformerDTO performer : analytics.getTopPerformers()) {
 
                 addCell(topTable, String.valueOf(performer.getRank()));
-                addCell(topTable, performer.getStudentId());
+                addCell(topTable, performer.getUsername());
                 addCell(topTable, String.valueOf(performer.getScore()));
             }
 

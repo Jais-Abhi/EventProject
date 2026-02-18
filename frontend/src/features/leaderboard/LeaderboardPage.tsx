@@ -55,7 +55,7 @@ export default function LeaderboardPage() {
                                 {leaderboard.map((entry, idx) => (
                                     <tr key={entry.userId} className="border-b hover:bg-gray-50">
                                         <td className="px-6 py-4 font-medium">{idx + 1}</td>
-                                        <td className="px-6 py-4">{entry.userId}</td>
+                                        <td className="px-6 py-4">{entry.username || entry.userId}</td>
                                         <td className="px-6 py-4">{entry.problemsSolved}</td>
                                         <td className="px-6 py-4 text-right font-bold text-indigo-600">{entry.totalScore}</td>
                                     </tr>
