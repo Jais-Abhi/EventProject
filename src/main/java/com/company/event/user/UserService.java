@@ -33,12 +33,8 @@ public class UserService {
 
         try {
             return userRepository.save(user);
-
         } catch (Exception e) {
-                e.printStackTrace();   // 👈 ADD THIS
-
             throw new IllegalStateException("Could not save user", e);
-
         }
     }
 

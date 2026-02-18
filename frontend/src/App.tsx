@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import { AuthProvider } from '@/context/AuthContext';
-import { ThemeProvider } from '@/context/ThemeContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
 
 // Layouts & Pages
@@ -39,10 +38,9 @@ import ProfilePage from '@/features/profile/ProfilePage';
 
 function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <Router>
-          <Routes>
+    <AuthProvider>
+      <Router>
+        <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
@@ -91,8 +89,7 @@ function App() {
         </Routes>
         <Toaster position="top-right" richColors />
       </Router>
-      </AuthProvider>
-    </ThemeProvider>
+    </AuthProvider>
   );
 }
 

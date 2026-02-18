@@ -3,14 +3,6 @@ spring:
     name: event
   data:
     mongodb:
-      uri: mongodb+srv://abhi:abhi123@cluster0.jaoirfq.mongodb.net/eventdb?retryWrites=true&w=majority
-
+      uri: mongodb://admin:password@localhost:27017/mydb?authSource=admin
 server:
   port: 8080
-jdoodle:
-  client-id: 95a83eca9a97bc835bb3971ba3700f39
-  client-secret: 8da1771027e630fbd68b3dabf935c840dc1dbe216c96f4dd9111bd116123841c
-
-  api-url: https://api.jdoodle.com/v1/execute
-
- 
