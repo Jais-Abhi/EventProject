@@ -7,7 +7,7 @@ export const Card = ({ className, children, ...props }: HTMLMotionProps<"div">) 
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ y: -4, transition: { duration: 0.2 } }}
-        className={cn("rounded-xl border border-gray-200 bg-white/80 backdrop-blur-sm text-gray-950 shadow-sm transition-shadow hover:shadow-lg dark:border-gray-800 dark:bg-gray-950/80", className)}
+        className={cn("rounded-xl border border-gray-200 bg-white/80 backdrop-blur-sm text-gray-950 shadow-sm transition-shadow hover:shadow-lg dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-50", className)}
         {...props}
     >
         {children}
@@ -19,7 +19,7 @@ export const CardHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDiv
 );
 
 export const CardTitle = ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h3 className={cn("text-2xl font-semibold leading-none tracking-tight", className)} {...props} />
+    <h3 className={cn("text-2xl font-semibold leading-none tracking-tight dark:text-slate-50", className)} {...props} />
 );
 
 export const CardContent = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
