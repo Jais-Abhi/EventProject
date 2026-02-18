@@ -5,7 +5,7 @@ import { type Contest, type Problem } from '@/types';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Loader2, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Loader2, ArrowRight, CheckCircle2, Clock } from 'lucide-react';
 
 const IST_TZ = 'Asia/Kolkata';
 
@@ -15,6 +15,7 @@ export default function ContestDetailsPage() {
     const [contest, setContest] = useState<Contest | null>(null);
     const [problems, setProblems] = useState<Problem[]>([]);
     const [solvedProblemIds, setSolvedProblemIds] = useState<Set<string>>(new Set());
+    const [status, setStatus] = useState<string>('');
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -22,9 +23,11 @@ export default function ContestDetailsPage() {
             try {
                 const response = await api.get(`/contest/getById/${contestId}`);
                 const contestData = response.data.contest || response.data;
+                const contestStatus = response.data.status || '';
                 setContest(contestData);
+                setStatus(contestStatus);
 
-                if (contestData.problemIds && contestData.problemIds.length > 0) {
+                if (contestStatus !== 'UPCOMING' && contestData.problemIds && contestData.problemIds.length > 0) {
                     const problemPromises = contestData.problemIds.map((id: string) =>
                         api.get(`/problem/getById/${id}`).then(res => res.data).catch(() => null)
                     );
@@ -87,52 +90,76 @@ export default function ContestDetailsPage() {
             </div>
 
             <div className="grid gap-4">
-                {problems.map((problem, idx) => {
-                    const isSolved = solvedProblemIds.has(problem.id);
-                    return (
-                        <Card
-                            key={problem.id}
-                            className={`hover:shadow-md transition-shadow ${isSolved ? 'border-green-300 bg-green-50' : ''}`}
-                        >
-                            <CardContent className="flex items-center justify-between p-6">
-                                <div className="flex items-center gap-4">
-                                    {/* Problem index badge */}
-                                    <span className={`h-9 w-9 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 ${isSolved
-                                            ? 'bg-green-500 text-white'
-                                            : 'bg-gray-100 text-gray-600'
-                                        }`}>
-                                        {isSolved
-                                            ? <CheckCircle2 className="h-5 w-5" />
-                                            : String.fromCharCode(65 + idx)
-                                        }
-                                    </span>
-                                    <div>
-                                        <h3 className="text-lg font-semibold flex items-center gap-2">
-                                            {problem.title}
-                                            {isSolved && (
-                                                <span className="text-xs font-medium text-green-700 bg-green-100 px-2 py-0.5 rounded-full">
-                                                    ✓ Solved
-                                                </span>
-                                            )}
-                                        </h3>
-                                        <span className={`inline-block mt-1 px-2 py-0.5 rounded text-xs font-medium ${problem.difficulty === 'EASY' ? 'bg-green-100 text-green-800' :
-                                                problem.difficulty === 'MEDIUM' ? 'bg-yellow-100 text-yellow-800' :
-                                                    'bg-red-100 text-red-800'
-                                            }`}>
-                                            {problem.difficulty}
-                                        </span>
-                                    </div>
+                {status === 'UPCOMING' ? (
+                    <div className="bg-blue-50 border border-blue-100 rounded-[2rem] p-12 text-center">
+                        <div className="max-w-md mx-auto space-y-4">
+                            <div className="bg-white h-16 w-16 rounded-2xl shadow-sm flex items-center justify-center mx-auto text-blue-600 mb-6">
+                                <Clock className="h-8 w-8" />
+                            </div>
+                            <h2 className="text-2xl font-bold text-blue-900">Wait for the battle to begin!</h2>
+                            <p className="text-blue-700/80 font-medium leading-relaxed">
+                                This contest is currently <span className="font-bold underline">Upcoming</span>. Problems will be revealed automatically when the clock strikes start time.
+                            </p>
+                            <div className="pt-4">
+                                <div className="text-sm text-blue-600/60 font-bold uppercase tracking-widest mb-2">Starts at</div>
+                                <div className="text-xl font-black text-blue-900 bg-white inline-block px-6 py-3 rounded-2xl shadow-sm">
+                                    {new Date(contest.startTime).toLocaleString('en-IN', { timeZone: IST_TZ, hour: '2-digit', minute: '2-digit', hour12: true, day: '2-digit', month: 'short' })}
                                 </div>
-                                <Link to={`/contests/${contest.id}/problem/${problem.id}`}>
-                                    <Button variant={isSolved ? 'outline' : 'secondary'} size="sm">
-                                        {isSolved ? 'View' : 'Solve'} <ArrowRight className="ml-2 h-4 w-4" />
-                                    </Button>
-                                </Link>
-                            </CardContent>
-                        </Card>
-                    );
-                })}
-                {problems.length === 0 && <p>No problems added yet.</p>}
+                            </div>
+                        </div>
+                    </div>
+                ) : problems.length > 0 ? (
+                    problems.map((problem, idx) => {
+                        const isSolved = solvedProblemIds.has(problem.id);
+                        return (
+                            <Card
+                                key={problem.id}
+                                className={`hover:shadow-md transition-shadow rounded-[1.5rem] overflow-hidden ${isSolved ? 'border-green-300 bg-green-50' : 'border-gray-100'}`}
+                            >
+                                <CardContent className="flex items-center justify-between p-6">
+                                    <div className="flex items-center gap-4">
+                                        <span className={`h-10 w-10 rounded-xl flex items-center justify-center text-sm font-black flex-shrink-0 shadow-sm ${isSolved
+                                            ? 'bg-green-500 text-white'
+                                            : 'bg-white text-gray-400 border border-gray-100'
+                                            }`}>
+                                            {isSolved
+                                                ? <CheckCircle2 className="h-5 w-5" />
+                                                : String.fromCharCode(65 + idx)
+                                            }
+                                        </span>
+                                        <div>
+                                            <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                                                {problem.title}
+                                                {isSolved && (
+                                                    <span className="text-[10px] font-black tracking-widest text-green-700 bg-green-100 px-2 py-0.5 rounded uppercase">
+                                                        Solved
+                                                    </span>
+                                                )}
+                                            </h3>
+                                            <div className="flex items-center gap-3 mt-1">
+                                                <span className={`px-2 py-0.5 rounded text-[10px] font-black tracking-widest uppercase ${problem.difficulty === 'EASY' ? 'bg-green-100 text-green-700' :
+                                                    problem.difficulty === 'MEDIUM' ? 'bg-yellow-100 text-yellow-700' :
+                                                        'bg-red-100 text-red-700'
+                                                    }`}>
+                                                    {problem.difficulty}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <Link to={`/contests/${contest.id}/problem/${problem.id}`}>
+                                        <Button variant={isSolved ? 'outline' : 'primary'} size="sm" className="rounded-xl font-bold px-6">
+                                            {isSolved ? 'View' : 'Solve'} <ArrowRight className="ml-2 h-4 w-4" />
+                                        </Button>
+                                    </Link>
+                                </CardContent>
+                            </Card>
+                        );
+                    })
+                ) : (
+                    <div className="bg-gray-50 border border-dashed border-gray-200 rounded-[2rem] p-12 text-center">
+                        <p className="text-gray-400 font-bold italic">The problems are being prepared. Stay tuned!</p>
+                    </div>
+                )}
             </div>
         </div>
     );

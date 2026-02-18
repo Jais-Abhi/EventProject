@@ -28,6 +28,7 @@ public class ContestService {
                 .title(request.getTitle())
                 .startTime(request.getStartTime())
                 .endTime(request.getEndTime())
+                .clubId(request.getClubId())
                 .problemIds(request.getProblemIds())
                 .build();
 
@@ -92,6 +93,7 @@ public class ContestService {
         contest.setTitle(request.getTitle());
         contest.setStartTime(request.getStartTime());
         contest.setEndTime(request.getEndTime());
+        contest.setClubId(request.getClubId());
         contest.setProblemIds(request.getProblemIds());
 
         return mapToResponse(contestRepository.save(contest));
@@ -103,6 +105,7 @@ public class ContestService {
                 .title(contest.getTitle())
                 .startTime(contest.getStartTime())
                 .endTime(contest.getEndTime())
+                .clubId(contest.getClubId())
                 .problemIds(contest.getProblemIds())
                 .build();
     }

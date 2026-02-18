@@ -4,7 +4,7 @@ import { type Problem } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Plus, Edit, Trash } from 'lucide-react';
+import { Plus, Edit, Trash, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function AdminProblemsPage() {
@@ -62,6 +62,27 @@ export default function AdminProblemsPage() {
         }
     };
 
+    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const json = JSON.parse(event.target?.result as string);
+                if (Array.isArray(json)) {
+                    setCurrentProblem({ ...currentProblem, testCases: json });
+                    toast.success(`Imported ${json.length} test cases`);
+                } else {
+                    toast.error('JSON must be an array of test cases');
+                }
+            } catch (err) {
+                toast.error('Invalid JSON file');
+            }
+        };
+        reader.readAsText(file);
+    };
+
     if (isLoading && !isEditing) return <div>Loading...</div>;
 
     return (
@@ -100,8 +121,21 @@ export default function AdminProblemsPage() {
                             </select>
                         </div>
                         {/* Test Cases Simplified Input */}
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium">Test Cases (JSON Array of {`{input, expectedOutput, hidden}`})</label>
+                        <div className="space-y-3">
+                            <div className="flex items-center justify-between">
+                                <label className="text-sm font-medium">Test Cases (JSON Array)</label>
+                                <div className="relative">
+                                    <input
+                                        type="file"
+                                        accept=".json"
+                                        onChange={handleFileUpload}
+                                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                    />
+                                    <Button variant="outline" size="sm" type="button">
+                                        <Upload className="h-4 w-4 mr-2" /> Import JSON
+                                    </Button>
+                                </div>
+                            </div>
                             <textarea
                                 className="w-full border rounded-md p-2 font-mono text-xs"
                                 rows={5}

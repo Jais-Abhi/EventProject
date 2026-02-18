@@ -1,5 +1,6 @@
 package com.company.event.quiz.model;
 
+import com.company.event.ClubsEnum;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -28,6 +29,8 @@ public class Event {
 
 
     private Integer totalMarks;
+
+    private ClubsEnum clubId;
 
     private String status; // UPCOMING, LIVE, COMPLETED
 }

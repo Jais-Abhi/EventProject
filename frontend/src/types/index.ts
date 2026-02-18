@@ -21,6 +21,7 @@ export interface Event {
     durationInMinutes: number;
     attendanceProcessed: boolean;
     totalMarks: number;
+    clubId: string;
     status: 'UPCOMING' | 'LIVE' | 'COMPLETED';
 }
 
@@ -30,6 +31,7 @@ export interface Contest {
     title: string;
     startTime: string;
     endTime: string;
+    clubId: string;
     problemIds: string[];
     status?: 'UPCOMING' | 'LIVE' | 'ENDED'; // Derived or from API
 }

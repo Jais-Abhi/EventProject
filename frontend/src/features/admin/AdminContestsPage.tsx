@@ -7,6 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Plus, Edit, Trash, Check, Users } from 'lucide-react';
 import { toast } from 'sonner';
+import { Select } from '@/components/ui/select';
+import { CLUBS } from '@/lib/constants';
 
 // IST timezone identifier
 const IST_TZ = 'Asia/Kolkata';
@@ -86,6 +88,7 @@ export default function AdminContestsPage() {
                 title: currentContest.title,
                 startTime: new Date(currentContest.startTime!).toISOString(),
                 endTime: new Date(currentContest.endTime!).toISOString(),
+                clubId: currentContest.clubId || '',
                 problemIds: currentContest.problemIds || []
             };
 
@@ -129,7 +132,7 @@ export default function AdminContestsPage() {
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold tracking-tight">Manage Contests</h1>
+                <h1 className="text-3xl font-bold tracking-tight">Contest Studio</h1>
                 <Button onClick={openCreate}><Plus className="mr-2 h-4 w-4" /> Create Contest</Button>
             </div>
 
@@ -156,6 +159,13 @@ export default function AdminContestsPage() {
                                 onChange={e => setCurrentContest({ ...currentContest, endTime: fromISTInput(e.target.value) })}
                             />
                         </div>
+
+                        <Select
+                            label="Club"
+                            value={currentContest.clubId || ''}
+                            onChange={e => setCurrentContest({ ...currentContest, clubId: e.target.value })}
+                            options={CLUBS.map(c => ({ value: c.id, label: c.name }))}
+                        />
 
                         <div className="space-y-2">
                             <label className="text-sm font-medium">Select Problems</label>

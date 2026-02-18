@@ -1,6 +1,6 @@
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import { Sun, LogOut, LayoutDashboard, PlusCircle, Code2, User } from 'lucide-react';
+import { Sun, LogOut, LayoutDashboard, PlusCircle, Code2, User, ClipboardList } from 'lucide-react';
 
 export default function DashboardLayout() {
     const { logout, isAdmin } = useAuth();
@@ -15,7 +15,8 @@ export default function DashboardLayout() {
     const navLinks = [
         { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
         ...(isAdmin ? [{ name: 'Create', href: '/admin', icon: PlusCircle }] : []),
-        { name: 'Problem Studio', href: '/contests', icon: Code2 },
+        { name: 'Quiz Studio', href: '/events', icon: ClipboardList },
+        { name: 'Contest Studio', href: '/contests', icon: Code2 },
         { name: 'Profile', href: '/profile', icon: User },
     ];
 

@@ -1,4 +1,6 @@
 package com.company.event.contestPackage.contest;
+ 
+import com.company.event.ClubsEnum;
 
 import lombok.*;
 
@@ -14,5 +16,6 @@ public class ContestResponse {
     private String title;
     private Instant startTime;
     private Instant endTime;
+    private ClubsEnum clubId;
     private List<String> problemIds;
 }

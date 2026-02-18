@@ -50,6 +50,7 @@ public class EventController {
                     if (eventDetails.getEndTime() != null) event.setEndTime(eventDetails.getEndTime());
                     if (eventDetails.getDurationInMinutes() != null) event.setDurationInMinutes(eventDetails.getDurationInMinutes());
                     if (eventDetails.getTotalMarks() != null) event.setTotalMarks(eventDetails.getTotalMarks());
+                    if (eventDetails.getClubId() != null) event.setClubId(eventDetails.getClubId());
                     
                     // Validate dates if updated
                     if (event.getStartTime() != null && event.getEndTime() != null) {

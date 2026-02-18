@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Plus, Edit } from 'lucide-react';
 import { toast } from 'sonner';
+import { Select } from '@/components/ui/select';
+import { CLUBS } from '@/lib/constants';
 
 // IST timezone identifier
 const IST_TZ = 'Asia/Kolkata';
@@ -63,8 +65,8 @@ export default function AdminEventsPage() {
     const handleSave = async () => {
         try {
             // Validate
-            if (!currentEvent.title || !currentEvent.startTime || !currentEvent.endTime) {
-                toast.error('Please fill required fields');
+            if (!currentEvent.title || !currentEvent.startTime || !currentEvent.endTime || !currentEvent.clubId) {
+                toast.error('Please fill required fields (including club)');
                 return;
             }
 
@@ -114,7 +116,7 @@ export default function AdminEventsPage() {
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold tracking-tight">Manage Events</h1>
+                <h1 className="text-3xl font-bold tracking-tight">Quiz Studio</h1>
                 <Button onClick={openCreate}><Plus className="mr-2 h-4 w-4" /> Create Event</Button>
             </div>
 
@@ -155,6 +157,12 @@ export default function AdminEventsPage() {
                                 onChange={e => setCurrentEvent({ ...currentEvent, totalMarks: parseInt(e.target.value) })}
                             />
                         </div>
+                        <Select
+                            label="Club"
+                            value={currentEvent.clubId || ''}
+                            onChange={e => setCurrentEvent({ ...currentEvent, clubId: e.target.value })}
+                            options={CLUBS.map(c => ({ value: c.id, label: c.name }))}
+                        />
                         <div className="flex justify-end space-x-2">
                             <Button variant="outline" onClick={() => setIsEditing(false)}>Cancel</Button>
                             <Button onClick={handleSave}>Save</Button>

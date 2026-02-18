@@ -4,8 +4,8 @@ import { Trophy, Code2, Users, FileText, BarChart3, ClipboardList } from 'lucide
 
 export default function AdminDashboard() {
     const links = [
-        { name: 'Manage Events', href: '/admin/events', icon: Trophy, color: 'text-blue-600 bg-blue-100' },
-        { name: 'Manage Contests', href: '/admin/contests', icon: Code2, color: 'text-indigo-600 bg-indigo-100' },
+        { name: 'Quiz Studio', href: '/admin/events', icon: Trophy, color: 'text-blue-600 bg-blue-100' },
+        { name: 'Contest Studio', href: '/admin/contests', icon: Code2, color: 'text-indigo-600 bg-indigo-100' },
         { name: 'Manage Problems', href: '/admin/problems', icon: FileText, color: 'text-yellow-600 bg-yellow-100' },
         { name: 'Manage Users', href: '/admin/users', icon: Users, color: 'text-green-600 bg-green-100' },
         { name: 'Event Analytics', href: '/admin/analytics', icon: BarChart3, color: 'text-purple-600 bg-purple-100' },
