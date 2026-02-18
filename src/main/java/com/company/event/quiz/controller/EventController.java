@@ -40,17 +40,60 @@ public class EventController {
         return ResponseEntity.ok(eventRepository.save(event));
     }
 
+    // UPDATE EVENT
+    @PutMapping("/updateEvent/{id}")
+    public ResponseEntity<?> updateEvent(@PathVariable String id, @RequestBody Event eventDetails) {
+        return eventRepository.findById(id)
+                .map(event -> {
+                    if (eventDetails.getTitle() != null) event.setTitle(eventDetails.getTitle());
+                    if (eventDetails.getStartTime() != null) event.setStartTime(eventDetails.getStartTime());
+                    if (eventDetails.getEndTime() != null) event.setEndTime(eventDetails.getEndTime());
+                    if (eventDetails.getDurationInMinutes() != null) event.setDurationInMinutes(eventDetails.getDurationInMinutes());
+                    if (eventDetails.getTotalMarks() != null) event.setTotalMarks(eventDetails.getTotalMarks());
+                    
+                    // Validate dates if updated
+                    if (event.getStartTime() != null && event.getEndTime() != null) {
+                        if (!event.getStartTime().isBefore(event.getEndTime())) {
+                            return ResponseEntity.badRequest().body("Start time must be before end time");
+                        }
+                    }
+
+                    return ResponseEntity.ok(eventRepository.save(event));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     // GET ALL EVENTS
     @GetMapping("/getAllEvent")
     public List<Event> getAllEvents() {
-        return eventRepository.findAll();
+        List<Event> events = eventRepository.findAll();
+        events.forEach(this::updateStatus);
+        return events;
     }
 
     // GET SINGLE EVENT
     @GetMapping("/getEventById/{id}")
     public ResponseEntity<?> getEvent(@PathVariable String id) {
         return eventRepository.findById(id)
-                .map(ResponseEntity::ok)
+                .map(event -> {
+                    updateStatus(event);
+                    return ResponseEntity.ok(event);
+                })
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    private void updateStatus(Event event) {
+        Instant now = Instant.now();
+        if (event.getStartTime() == null || event.getEndTime() == null) {
+            event.setStatus("UPCOMING");
+            return;
+        }
+        if (now.isBefore(event.getStartTime())) {
+            event.setStatus("UPCOMING");
+        } else if (now.isAfter(event.getEndTime())) {
+            event.setStatus("COMPLETED");
+        } else {
+            event.setStatus("LIVE");
+        }
     }
 }

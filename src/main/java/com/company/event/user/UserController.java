@@ -55,4 +55,21 @@ public class UserController {
         }
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getMe(java.security.Principal principal) {
+        try {
+            if (principal == null) {
+                return new ResponseEntity<>("Not authenticated", HttpStatus.UNAUTHORIZED);
+            }
+            UserResponse userResponse = userService.getUserByUsername(principal.getName());
+            if (userResponse == null) {
+                return new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

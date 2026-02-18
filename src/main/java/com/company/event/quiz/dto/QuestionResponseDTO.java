@@ -9,11 +9,8 @@ import java.util.List;
 @AllArgsConstructor
 public class QuestionResponseDTO {
 
-    private String id;
-
+    private String questionId;
     private String questionText;
-
     private List<String> options;
-
     private Double marks;
 }

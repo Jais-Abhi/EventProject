@@ -57,6 +57,15 @@ public class SubmissionService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "User not found"));
 
+        // Block re-submission if user already has an ACCEPTED verdict for this problem in this contest
+        boolean alreadyAccepted = submissionRepository.existsByUserIdAndProblemIdAndContestIdAndVerdict(
+                request.getUserId(), request.getProblemId(), request.getContestId(), "ACCEPTED");
+        if (alreadyAccepted) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "You have already solved this problem. Re-submission is not allowed.");
+        }
+
         Submission submission = Submission.builder()
                 .userId(request.getUserId())
                 .contestId(request.getContestId())

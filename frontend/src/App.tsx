@@ -1,0 +1,93 @@
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'sonner';
+import { AuthProvider } from '@/context/AuthContext';
+import ProtectedRoute from '@/components/ProtectedRoute';
+
+// Layouts & Pages
+import DashboardLayout from '@/layouts/DashboardLayout';
+import LoginPage from '@/features/auth/LoginPage';
+import RegisterPage from '@/features/auth/RegisterPage';
+import DashboardPage from '@/features/dashboard/DashboardPage';
+
+// Events
+import EventListPage from '@/features/events/EventListPage';
+import EventDetailsPage from '@/features/events/EventDetailsPage';
+import TestInterface from '@/features/events/TestInterface';
+import TestResultPage from '@/features/events/TestResultPage';
+
+// Contests
+import ContestListPage from '@/features/contests/ContestListPage';
+import ContestDetailsPage from '@/features/contests/ContestDetailsPage';
+import ProblemDetailsPage from '@/features/contests/ProblemDetailsPage';
+import LeaderboardPage from '@/features/leaderboard/LeaderboardPage';
+
+// Admin
+import AdminDashboard from '@/features/admin/AdminDashboard';
+import AdminEventsPage from '@/features/admin/AdminEventsPage';
+import AdminContestsPage from '@/features/admin/AdminContestsPage';
+import AdminProblemsPage from '@/features/admin/AdminProblemsPage';
+import AdminUsersPage from '@/features/admin/AdminUsersPage';
+import AdminAnalyticsPage from '@/features/admin/AdminAnalyticsPage';
+import AdminQuestionsPage from '@/features/admin/AdminQuestionsPage';
+import AdminSubmissionsPage from '@/features/admin/AdminSubmissionsPage';
+
+// Submissions
+import MySubmissionsPage from '@/features/submissions/MySubmissionsPage';
+
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+
+          {/* Protected Routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route element={<DashboardLayout />}>
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+
+              {/* Event Routes */}
+              <Route path="/events" element={<EventListPage />} />
+              <Route path="/events/:eventId" element={<EventDetailsPage />} />
+              <Route path="/test/:eventId" element={<TestInterface />} />
+              <Route path="/test/:eventId/result" element={<TestResultPage />} />
+
+              {/* Contest Routes */}
+              <Route path="/contests" element={<ContestListPage />} />
+              <Route path="/contests/:contestId" element={<ContestDetailsPage />} />
+              <Route path="/contests/:contestId/problem/:problemId" element={<ProblemDetailsPage />} />
+              <Route path="/leaderboard/:contestId" element={<LeaderboardPage />} />
+
+              {/* User Routes */}
+              <Route path="/submissions" element={<MySubmissionsPage />} />
+              {/* <Route path="/profile" element={<ProfilePage />} /> */}
+            </Route>
+          </Route>
+
+          {/* Admin Routes */}
+          <Route element={<ProtectedRoute requireAdmin />}>
+            <Route element={<DashboardLayout />}>
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/events" element={<AdminEventsPage />} />
+              <Route path="/admin/events/:eventId/questions" element={<AdminQuestionsPage />} />
+              <Route path="/admin/contests" element={<AdminContestsPage />} />
+              <Route path="/admin/problems" element={<AdminProblemsPage />} />
+              <Route path="/admin/users" element={<AdminUsersPage />} />
+              <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />
+              <Route path="/admin/submissions" element={<AdminSubmissionsPage />} />
+            </Route>
+          </Route>
+
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+        <Toaster position="top-right" richColors />
+      </Router>
+    </AuthProvider>
+  );
+}
+
+export default App;

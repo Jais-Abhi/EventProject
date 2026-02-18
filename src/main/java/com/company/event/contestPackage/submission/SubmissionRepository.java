@@ -13,4 +13,10 @@ public interface SubmissionRepository extends MongoRepository<Submission,String>
     List<Submission> findAllByContestId(String contestId);
 
     List<Submission> findAllByProblemId(String problemId);
+
+    boolean existsByUserIdAndProblemIdAndContestIdAndVerdict(
+            String userId, String problemId, String contestId, String verdict);
+
+    List<Submission> findAllByUserIdAndContestIdAndProblemId(
+            String userId, String contestId, String problemId);
 }

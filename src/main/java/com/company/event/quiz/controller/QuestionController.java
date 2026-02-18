@@ -28,10 +28,11 @@ public class QuestionController {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
 
-        if (!Instant.now().isBefore(event.getStartTime())) {
-            return ResponseEntity.badRequest()
-                    .body("Cannot add questions after event has started");
-        }
+//        Event event = eventRepository.findById(eventId)
+//                .orElseThrow(() -> new RuntimeException("Event not found"));
+
+        // Removed restriction: Allow adding questions even if event has started
+
 
         // Validation
         if (request.getQuestionText() == null ||
@@ -68,10 +69,11 @@ public class QuestionController {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
 
-        if (!Instant.now().isBefore(event.getStartTime())) {
-            return ResponseEntity.badRequest()
-                    .body("Cannot add questions after event has started");
-        }
+//        Event event = eventRepository.findById(eventId)
+//                .orElseThrow(() -> new RuntimeException("Event not found"));
+
+        // Removed restriction
+
 
         List<McqQuestion> questionList = new ArrayList<>();
 
@@ -108,4 +110,17 @@ public class QuestionController {
         return ResponseEntity.ok(questionRepository.saveAll(questionList));
     }
 
+    @GetMapping("/getQues/{eventId}")
+    public ResponseEntity<?> getQuestionsByEventId(@PathVariable String eventId) {
+        return ResponseEntity.ok(questionRepository.findByEventId(eventId));
+    }
+
+    @DeleteMapping("/{questionId}")
+    public ResponseEntity<?> deleteQuestion(@PathVariable String questionId) {
+        if (!questionRepository.existsById(questionId)) {
+            return ResponseEntity.notFound().build();
+        }
+        questionRepository.deleteById(questionId);
+        return ResponseEntity.ok("Deleted");
+    }
 }

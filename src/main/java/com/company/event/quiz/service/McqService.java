@@ -60,15 +60,14 @@ public class McqService {
 
         // Resume support
         if (existingSubmission.isPresent()) {
-
+            System.out.println("Resuming test for student: " + studentId);
             McqSubmission submission = existingSubmission.get();
 
             if ("COMPLETED".equals(submission.getStatus())) {
                 throw new TestAlreadySubmittedException("Test already submitted");
-
             }
-
-            return questionRepository.findByEventId(eventId)
+            
+            List<QuestionResponseDTO> qs = questionRepository.findByEventId(eventId)
                     .stream()
                     .map(q -> new QuestionResponseDTO(
                             q.getId(),
@@ -77,6 +76,8 @@ public class McqService {
                             q.getMarks()
                     ))
                     .toList();
+            System.out.println("Returning " + qs.size() + " questions (Resume)");
+            return qs;
         }
 
         // Fresh start
@@ -90,13 +91,13 @@ public class McqService {
 
         return questionRepository.findByEventId(eventId)
                 .stream()
-                .map(q -> new QuestionResponseDTO(
-                        q.getId(),
-                        q.getQuestionText(),
-                        q.getOptions(),
-                        q.getMarks()
-                ))
-                .toList();
+                    .map(q -> new QuestionResponseDTO(
+                            q.getId(),
+                            q.getQuestionText(),
+                            q.getOptions(),
+                            q.getMarks()
+                    ))
+                    .toList();
     }
 
     // ==========================

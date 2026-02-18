@@ -109,4 +109,10 @@ public class UserService {
 
         return userResponse;
     }
+
+    public UserResponse getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .map(this::mapToResponse)
+                .orElse(null);
+    }
 }
