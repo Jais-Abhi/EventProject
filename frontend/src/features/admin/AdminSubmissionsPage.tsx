@@ -108,26 +108,26 @@ export default function AdminSubmissionsPage() {
 
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-bold tracking-tight">All Submissions</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">All Submissions</h1>
 
             {/* Stats row */}
             <div className="grid grid-cols-3 gap-4">
-                <Card>
+                <Card className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
                     <CardContent className="p-4 text-center">
-                        <div className="text-2xl font-bold">{stats.total}</div>
-                        <div className="text-xs text-gray-500 mt-1">Total</div>
+                        <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{stats.total}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Total</div>
                     </CardContent>
                 </Card>
-                <Card className="border-green-200">
+                <Card className="border-green-200 dark:border-green-700 bg-white dark:bg-gray-900">
                     <CardContent className="p-4 text-center">
-                        <div className="text-2xl font-bold text-green-700">{stats.accepted}</div>
-                        <div className="text-xs text-gray-500 mt-1">Accepted</div>
+                        <div className="text-2xl font-bold text-green-700 dark:text-green-400">{stats.accepted}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Accepted</div>
                     </CardContent>
                 </Card>
-                <Card className="border-red-200">
+                <Card className="border-red-200 dark:border-red-700 bg-white dark:bg-gray-900">
                     <CardContent className="p-4 text-center">
-                        <div className="text-2xl font-bold text-red-700">{stats.wrong}</div>
-                        <div className="text-xs text-gray-500 mt-1">Wrong Answer</div>
+                        <div className="text-2xl font-bold text-red-700 dark:text-red-400">{stats.wrong}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Wrong Answer</div>
                     </CardContent>
                 </Card>
             </div>
@@ -139,13 +139,13 @@ export default function AdminSubmissionsPage() {
                     <input
                         type="text"
                         placeholder="Search by user ID, contest ID, problem ID, language…"
-                        className="w-full border rounded-md pl-9 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        className="w-full border rounded-md pl-9 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-gray-200 dark:border-gray-700"
                         value={search}
                         onChange={e => setSearch(e.target.value)}
                     />
                 </div>
                 <select
-                    className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                    className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-gray-200 dark:border-gray-700"
                     value={verdictFilter}
                     onChange={e => setVerdictFilter(e.target.value)}
                 >
@@ -156,26 +156,26 @@ export default function AdminSubmissionsPage() {
                 </select>
             </div>
 
-            <div className="text-sm text-gray-500">{filtered.length} submission{filtered.length !== 1 ? 's' : ''} found</div>
+            <div className="text-sm text-gray-500 dark:text-gray-400">{filtered.length} submission{filtered.length !== 1 ? 's' : ''} found</div>
 
             {/* Submissions list */}
             {filtered.length === 0 ? (
-                <Card>
-                    <CardContent className="p-8 text-center text-gray-500">No submissions match your filters.</CardContent>
+                <Card className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+                    <CardContent className="p-8 text-center text-gray-500 dark:text-gray-400">No submissions match your filters.</CardContent>
                 </Card>
             ) : (
                 <div className="space-y-3">
                     {filtered.map(sub => (
                         <Card
                             key={sub.id}
-                            className={`transition-shadow hover:shadow-md ${sub.verdict === 'ACCEPTED' ? 'border-green-200' : ''}`}
+                            className={`transition-shadow hover:shadow-md ${sub.verdict === 'ACCEPTED' ? 'border-green-200 dark:border-green-700' : 'border-gray-200 dark:border-gray-700'} bg-white dark:bg-gray-900`}
                         >
                             <CardContent className="p-4">
                                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                                     <div className="space-y-1">
                                         <div className="flex items-center gap-2 flex-wrap">
                                             <VerdictBadge verdict={sub.verdict} />
-                                            <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded font-mono uppercase">
+                                            <span className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded font-mono uppercase">
                                                 {sub.language}
                                             </span>
                                             {sub.verdict === 'ACCEPTED' && (

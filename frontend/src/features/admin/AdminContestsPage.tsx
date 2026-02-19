@@ -23,10 +23,10 @@ function TagInput({ label, values, onChange }: { label: string; values: string[]
     };
     return (
         <div className="space-y-1">
-            <label className="text-sm font-medium text-gray-700">{label}</label>
-            <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-white min-h-[42px]">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>
+            <div className="flex flex-wrap gap-2 p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 min-h-[42px]">
                 {values.map(v => (
-                    <span key={v} className="flex items-center gap-1 bg-indigo-100 text-indigo-800 text-xs font-semibold px-2 py-1 rounded-full">
+                    <span key={v} className="flex items-center gap-1 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 text-xs font-semibold px-2 py-1 rounded-full border border-indigo-200 dark:border-indigo-700">
                         {v}
                         <button type="button" onClick={() => onChange(values.filter(x => x !== v))}>
                             <X className="h-3 w-3" />
@@ -34,7 +34,7 @@ function TagInput({ label, values, onChange }: { label: string; values: string[]
                     </span>
                 ))}
                 <input
-                    className="flex-1 min-w-[140px] text-sm outline-none"
+                    className="flex-1 min-w-[140px] text-sm outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                     placeholder={`Type name and press Enter`}
                     value={draft}
                     onChange={e => setDraft(e.target.value)}
@@ -165,19 +165,21 @@ export default function AdminContestsPage() {
         setIsEditing(true);
     };
 
-    if (isLoading && !isEditing) return <div>Loading...</div>;
+    if (isLoading && !isEditing) return <div className="text-gray-900 dark:text-gray-100">Loading...</div>;
 
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold tracking-tight">Contest Studio</h1>
-                <Button onClick={openCreate}><Plus className="mr-2 h-4 w-4" /> Create Contest</Button>
+                <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Contest Studio</h1>
+                <Button onClick={openCreate} className="bg-indigo-600 dark:bg-indigo-500 text-white hover:bg-indigo-700 dark:hover:bg-indigo-600"><Plus className="mr-2 h-4 w-4" /> Create Contest</Button>
             </div>
 
             {isEditing ? (
-                <Card>
-                    <CardHeader><CardTitle>{currentContest.id ? 'Edit Contest' : 'New Contest'}</CardTitle></CardHeader>
-                    <CardContent className="space-y-4">
+                <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg">
+                    <CardHeader className="border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-gray-700 dark:to-gray-700 py-6">
+                        <CardTitle className="text-2xl text-gray-900 dark:text-gray-100">{currentContest.id ? 'Edit Contest' : 'New Contest'}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-5 bg-white dark:bg-gray-800 p-6">
                         <Input
                             label="Title"
                             value={currentContest.title || ''}
@@ -206,24 +208,24 @@ export default function AdminContestsPage() {
                         />
 
                         <div className="space-y-2">
-                            <label className="text-sm font-medium">Select Problems</label>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-60 overflow-y-auto border p-2 rounded">
+                            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Select Problems</label>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-60 overflow-y-auto border border-gray-300 dark:border-gray-600 p-3 rounded-md bg-white dark:bg-gray-700">
                                 {allProblems.map(problem => {
                                     const isSelected = (currentContest.problemIds || []).includes(problem.id);
                                     return (
                                         <div
                                             key={problem.id}
                                             onClick={() => toggleProblem(problem.id)}
-                                            className={`p-2 border rounded cursor-pointer flex justify-between items-center ${isSelected ? 'bg-indigo-50 border-indigo-200' : 'hover:bg-gray-50'}`}
+                                            className={`p-2 border rounded cursor-pointer flex justify-between items-center transition-colors ${isSelected ? 'bg-indigo-50 dark:bg-indigo-900 border-indigo-300 dark:border-indigo-600 text-indigo-900 dark:text-indigo-100' : 'bg-white dark:bg-gray-600 hover:bg-gray-50 dark:hover:bg-gray-500 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100'}`}
                                         >
                                             <span className="text-sm truncate">{problem.title}</span>
-                                            {isSelected && <Check className="h-4 w-4 text-indigo-600" />}
+                                            {isSelected && <Check className="h-4 w-4 text-indigo-600 dark:text-indigo-300" />}
                                         </div>
                                     );
                                 })}
-                                {allProblems.length === 0 && <p className="text-sm text-gray-500 p-2">No problems found. Create problems first.</p>}
+                                {allProblems.length === 0 && <p className="text-sm text-gray-500 dark:text-gray-300 p-2">No problems found. Create problems first.</p>}
                             </div>
-                            <p className="text-xs text-gray-500">Selected: {(currentContest.problemIds || []).length}</p>
+                            <p className="text-xs text-gray-600 dark:text-gray-400">Selected: {(currentContest.problemIds || []).length}</p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -239,25 +241,25 @@ export default function AdminContestsPage() {
                             />
                         </div>
 
-                        <div className="flex justify-end space-x-2">
-                            <Button variant="outline" onClick={() => setIsEditing(false)}>Cancel</Button>
-                            <Button onClick={handleSave}>Save</Button>
+                        <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <Button variant="outline" onClick={() => setIsEditing(false)} className="text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">Cancel</Button>
+                            <Button onClick={handleSave} className="bg-indigo-600 dark:bg-indigo-500 text-white hover:bg-indigo-700 dark:hover:bg-indigo-600 font-semibold">Save</Button>
                         </div>
                     </CardContent>
                 </Card>
             ) : (
                 <div className="grid gap-4">
                     {contests.map(contest => (
-                        <Card key={contest.id}>
+                        <Card key={contest.id} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md dark:hover:shadow-gray-900 transition-shadow">
                             <CardContent className="flex items-center justify-between p-4">
                                 <div>
-                                    <h3 className="font-bold">{contest.title}</h3>
-                                    <p className="text-sm text-gray-500">
+                                    <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100 mb-1">{contest.title}</h3>
+                                    <p className="text-sm text-gray-600 dark:text-gray-300">
                                         {new Date(contest.startTime).toLocaleString('en-IN', { timeZone: IST_TZ })} — {new Date(contest.endTime).toLocaleString('en-IN', { timeZone: IST_TZ })}
                                     </p>
-                                    <p className="text-xs text-gray-400">Problems: {contest.problemIds?.length || 0}</p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Problems: {contest.problemIds?.length || 0}</p>
                                     {(contest.facultyCoordinators?.length || contest.studentCoordinators?.length) ? (
-                                        <p className="text-xs text-gray-400 mt-0.5">
+                                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                                             {contest.facultyCoordinators?.length ? `Faculty: ${contest.facultyCoordinators.join(', ')}` : ''}
                                             {contest.facultyCoordinators?.length && contest.studentCoordinators?.length ? ' | ' : ''}
                                             {contest.studentCoordinators?.length ? `Students: ${contest.studentCoordinators.join(', ')}` : ''}
@@ -266,13 +268,13 @@ export default function AdminContestsPage() {
                                 </div>
                                 <div className="flex space-x-2">
                                     <Link to={`/admin/contests/${contest.id}/participants`}>
-                                        <Button size="sm" variant="outline" className="flex items-center gap-1">
+                                        <Button size="sm" variant="outline" className="flex items-center gap-1 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
                                             <Users className="h-4 w-4" />
                                             Participants
                                         </Button>
                                     </Link>
-                                    <Button size="sm" variant="secondary" onClick={() => { setCurrentContest(contest); setIsEditing(true); }}><Edit className="h-4 w-4" /></Button>
-                                    <Button size="sm" variant="danger" onClick={() => handleDelete(contest.id)}><Trash className="h-4 w-4" /></Button>
+                                    <Button size="sm" variant="secondary" className="text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600" onClick={() => { setCurrentContest(contest); setIsEditing(true); }}><Edit className="h-4 w-4" /></Button>
+                                    <Button size="sm" variant="danger" className="bg-red-600 dark:bg-red-700 text-white hover:bg-red-700 dark:hover:bg-red-800" onClick={() => handleDelete(contest.id)}><Trash className="h-4 w-4" /></Button>
                                 </div>
                             </CardContent>
                         </Card>

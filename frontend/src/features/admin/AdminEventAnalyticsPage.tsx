@@ -79,16 +79,16 @@ export default function AdminEventAnalyticsPage() {
 
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center p-12">
-                <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
+            <div className="flex items-center justify-center p-12 dark:bg-gray-900">
+                <Loader2 className="h-8 w-8 animate-spin text-indigo-600 dark:text-indigo-400" />
             </div>
         );
     }
 
     if (!analytics) {
         return (
-            <div className="text-center p-12">
-                <p className="text-gray-500">No analytics data available.</p>
+            <div className="text-center p-12 dark:bg-gray-900">
+                <p className="text-gray-500 dark:text-gray-400">No analytics data available.</p>
                 <Button variant="outline" className="mt-4" onClick={() => navigate('/admin/events')}>
                     Back to Events
                 </Button>
@@ -97,15 +97,15 @@ export default function AdminEventAnalyticsPage() {
     }
 
     return (
-        <div className="space-y-8 pb-12">
+        <div className="space-y-8 pb-12 dark:bg-gray-900 min-h-screen">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex items-center space-x-4">
                     <Button variant="outline" size="sm" onClick={() => navigate('/admin/events')}>
                         <ArrowLeft className="h-4 w-4" />
                     </Button>
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Quiz Analytics</h1>
-                        <p className="text-gray-500">Detailed performance report for the event</p>
+                        <h1 className="text-3xl font-bold tracking-tight dark:text-white">Quiz Analytics</h1>
+                        <p className="text-gray-500 dark:text-gray-400">Detailed performance report for the event</p>
                     </div>
                 </div>
                 <Button onClick={downloadPdf} isLoading={isDownloading} variant="outline" className="w-full md:w-auto">
@@ -115,54 +115,54 @@ export default function AdminEventAnalyticsPage() {
 
             {/* Summary Grid */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                <Card className="bg-white hover:shadow-md transition-shadow">
+                <Card className="bg-white dark:bg-gray-800 hover:shadow-md transition-shadow border dark:border-gray-700">
                     <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                        <CardTitle className="text-sm font-medium text-gray-500">Total Registered</CardTitle>
-                        <Users className="h-4 w-4 text-indigo-600" />
+                        <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-300">Total Registered</CardTitle>
+                        <Users className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{analytics.totalRegistrations}</div>
-                        <p className="text-xs text-gray-400 mt-1">Students registered</p>
+                        <div className="text-2xl font-bold dark:text-white">{analytics.totalRegistrations}</div>
+                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Students registered</p>
                     </CardContent>
                 </Card>
 
-                <Card className="bg-white hover:shadow-md transition-shadow">
+                <Card className="bg-white dark:bg-gray-800 hover:shadow-md transition-shadow border dark:border-gray-700">
                     <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                        <CardTitle className="text-sm font-medium text-gray-500">Attempted</CardTitle>
-                        <CheckCircle className="h-4 w-4 text-green-600" />
+                        <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-300">Attempted</CardTitle>
+                        <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-green-600">{analytics.totalAttempts}</div>
-                        <p className="text-xs text-gray-400 mt-1">{((analytics.totalAttempts / analytics.totalRegistrations) * 100).toFixed(1)}% participation</p>
+                        <div className="text-2xl font-bold text-green-600 dark:text-green-400">{analytics.totalAttempts}</div>
+                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{((analytics.totalAttempts / analytics.totalRegistrations) * 100).toFixed(1)}% participation</p>
                     </CardContent>
                 </Card>
 
-                <Card className="bg-white hover:shadow-md transition-shadow">
+                <Card className="bg-white dark:bg-gray-800 hover:shadow-md transition-shadow border dark:border-gray-700">
                     <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                        <CardTitle className="text-sm font-medium text-gray-500">Absent</CardTitle>
-                        <XCircle className="h-4 w-4 text-red-600" />
+                        <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-300">Absent</CardTitle>
+                        <XCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-red-600">{analytics.totalAbsent}</div>
-                        <p className="text-xs text-gray-400 mt-1">Missed the event</p>
+                        <div className="text-2xl font-bold text-red-600 dark:text-red-400">{analytics.totalAbsent}</div>
+                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Missed the event</p>
                     </CardContent>
                 </Card>
 
-                <Card className="bg-white hover:shadow-md transition-shadow">
+                <Card className="bg-white dark:bg-gray-800 hover:shadow-md transition-shadow border dark:border-gray-700">
                     <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                        <CardTitle className="text-sm font-medium text-gray-500">Pass Percentage</CardTitle>
-                        <Target className="h-4 w-4 text-orange-600" />
+                        <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-300">Pass Percentage</CardTitle>
+                        <Target className="h-4 w-4 text-orange-600 dark:text-orange-400" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-orange-600">{analytics.passPercentage.toFixed(1)}%</div>
-                        <p className="text-xs text-gray-400 mt-1">Success rate</p>
+                        <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{analytics.passPercentage.toFixed(1)}%</div>
+                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Success rate</p>
                     </CardContent>
                 </Card>
             </div>
 
             {/* Score Breakdown */}
             <div className="grid gap-6 md:grid-cols-3">
-                <Card className="md:col-span-1 border-l-4 border-l-yellow-500">
+                <Card className="md:col-span-1 border-l-4 border-l-yellow-500 dark:border-l-yellow-400 bg-white dark:bg-gray-800 border dark:border-gray-700">
                     <CardHeader>
                         <CardTitle className="text-sm font-medium flex items-center">
                             <Trophy className="h-4 w-4 mr-2 text-yellow-500" />
@@ -174,7 +174,7 @@ export default function AdminEventAnalyticsPage() {
                     </CardContent>
                 </Card>
 
-                <Card className="md:col-span-1 border-l-4 border-l-blue-500">
+                <Card className="md:col-span-1 border-l-4 border-l-blue-500 dark:border-l-blue-400 bg-white dark:bg-gray-800 border dark:border-gray-700">
                     <CardHeader>
                         <CardTitle className="text-sm font-medium flex items-center">
                             <TrendingUp className="h-4 w-4 mr-2 text-blue-500" />
@@ -186,7 +186,7 @@ export default function AdminEventAnalyticsPage() {
                     </CardContent>
                 </Card>
 
-                <Card className="md:col-span-1 border-l-4 border-l-gray-400">
+                <Card className="md:col-span-1 border-l-4 border-l-gray-400 dark:border-l-gray-500 bg-white dark:bg-gray-800 border dark:border-gray-700">
                     <CardHeader>
                         <CardTitle className="text-sm font-medium flex items-center">
                             <Target className="h-4 w-4 mr-2 text-gray-500" />
@@ -200,7 +200,7 @@ export default function AdminEventAnalyticsPage() {
             </div>
 
             {/* Top Performers Table */}
-            <Card className="bg-white">
+            <Card className="bg-white dark:bg-gray-800 border dark:border-gray-700">
                 <CardHeader>
                     <CardTitle className="flex items-center">
                         <Trophy className="mr-2 h-5 w-5 text-yellow-500" />
@@ -211,7 +211,7 @@ export default function AdminEventAnalyticsPage() {
                     <div className="overflow-x-auto">
                         <table className="w-full text-left">
                             <thead>
-                                <tr className="border-b text-gray-500 text-sm uppercase">
+                                <tr className="border-b text-gray-500 dark:text-gray-400 text-sm uppercase dark:border-gray-700">
                                     <th className="px-6 py-4 font-semibold">Rank</th>
                                     <th className="px-6 py-4 font-semibold">Username</th>
                                     <th className="px-6 py-4 font-semibold">Roll Number</th>
@@ -219,30 +219,30 @@ export default function AdminEventAnalyticsPage() {
                                     <th className="px-6 py-4 font-semibold text-right">Score</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y">
+                            <tbody className="divide-y dark:divide-gray-700">
                                 {analytics.topPerformers.map((performer) => (
-                                    <tr key={performer.studentId} className="hover:bg-gray-50 transition-colors">
+                                    <tr key={performer.studentId} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                                         <td className="px-6 py-4">
                                             <div className="flex items-center">
                                                 {performer.rank <= 3 ? (
-                                                    <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-white ${performer.rank === 1 ? 'bg-yellow-400 shadow-sm shadow-yellow-200' :
-                                                        performer.rank === 2 ? 'bg-gray-300 shadow-sm shadow-gray-200' :
-                                                            'bg-orange-400 shadow-sm shadow-orange-200'
+                                                    <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-white ${performer.rank === 1 ? 'bg-yellow-400 shadow-sm shadow-yellow-200 dark:bg-yellow-500 dark:shadow-yellow-700' :
+                                                        performer.rank === 2 ? 'bg-gray-300 shadow-sm shadow-gray-200 dark:bg-gray-500 dark:shadow-gray-700' :
+                                                            'bg-orange-400 shadow-sm shadow-orange-200 dark:bg-orange-500 dark:shadow-orange-700'
                                                         }`}>
                                                         {performer.rank}
                                                     </span>
                                                 ) : (
-                                                    <span className="w-8 h-8 flex items-center justify-center text-gray-500 font-medium">
+                                                    <span className="w-8 h-8 flex items-center justify-center text-gray-500 dark:text-gray-300 font-medium">
                                                         #{performer.rank}
                                                     </span>
                                                 )}
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900">{performer.username}</td>
-                                        <td className="px-6 py-4 font-mono text-sm text-gray-600">{performer.rollNumber}</td>
-                                        <td className="px-6 py-4 text-gray-500 font-mono text-sm">{performer.studentId}</td>
+                                        <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">{performer.username}</td>
+                                        <td className="px-6 py-4 font-mono text-sm text-gray-600 dark:text-gray-300">{performer.rollNumber}</td>
+                                        <td className="px-6 py-4 text-gray-500 dark:text-gray-400 font-mono text-sm">{performer.studentId}</td>
                                         <td className="px-6 py-4 text-right">
-                                            <span className="inline-flex items-center rounded-full bg-indigo-100 px-3 py-0.5 text-sm font-bold text-indigo-700">
+                                            <span className="inline-flex items-center rounded-full bg-indigo-100 dark:bg-indigo-900 px-3 py-0.5 text-sm font-bold text-indigo-700 dark:text-indigo-300">
                                                 {performer.score}
                                             </span>
                                         </td>
@@ -250,7 +250,7 @@ export default function AdminEventAnalyticsPage() {
                                 ))}
                                 {analytics.topPerformers.length === 0 && (
                                     <tr>
-                                        <td colSpan={4} className="px-6 py-12 text-center text-gray-500">
+                                        <td colSpan={4} className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
                                             No submissions yet to show top performers.
                                         </td>
                                     </tr>

@@ -22,10 +22,10 @@ function TagInput({ label, values, onChange }: { label: string; values: string[]
     };
     return (
         <div className="space-y-1">
-            <label className="text-sm font-medium text-gray-700">{label}</label>
-            <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-white min-h-[42px]">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>
+            <div className="flex flex-wrap gap-2 p-2 border rounded-md bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 min-h-[42px]">
                 {values.map(v => (
-                    <span key={v} className="flex items-center gap-1 bg-indigo-100 text-indigo-800 text-xs font-semibold px-2 py-1 rounded-full">
+                    <span key={v} className="flex items-center gap-1 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 text-xs font-semibold px-2 py-1 rounded-full border border-indigo-200 dark:border-indigo-700">
                         {v}
                         <button type="button" onClick={() => onChange(values.filter(x => x !== v))}>
                             <X className="h-3 w-3" />
@@ -33,7 +33,7 @@ function TagInput({ label, values, onChange }: { label: string; values: string[]
                     </span>
                 ))}
                 <input
-                    className="flex-1 min-w-[140px] text-sm outline-none"
+                    className="flex-1 min-w-[140px] text-sm outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                     placeholder={`Type name and press Enter`}
                     value={draft}
                     onChange={e => setDraft(e.target.value)}
@@ -158,19 +158,21 @@ export default function AdminEventsPage() {
         setIsEditing(true);
     };
 
-    if (isLoading && !isEditing) return <div>Loading...</div>;
+    if (isLoading && !isEditing) return <div className="text-gray-900 dark:text-gray-100">Loading...</div>;
 
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold tracking-tight">Quiz Studio</h1>
-                <Button onClick={openCreate}><Plus className="mr-2 h-4 w-4" /> Create Event</Button>
+                <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Quiz Studio</h1>
+                <Button onClick={openCreate} className="bg-indigo-600 dark:bg-indigo-500 text-white hover:bg-indigo-700 dark:hover:bg-indigo-600"><Plus className="mr-2 h-4 w-4" /> Create Event</Button>
             </div>
 
             {isEditing ? (
-                <Card>
-                    <CardHeader><CardTitle>{currentEvent.id ? 'Edit Event' : 'New Event'}</CardTitle></CardHeader>
-                    <CardContent className="space-y-4">
+                <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg">
+                    <CardHeader className="border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-gray-700 dark:to-gray-700 py-6">
+                        <CardTitle className="text-2xl text-gray-900 dark:text-gray-100">{currentEvent.id ? 'Edit Event' : 'New Event'}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-5 bg-white dark:bg-gray-800 p-6">
                         <Input
                             label="Title"
                             value={currentEvent.title || ''}
@@ -222,24 +224,35 @@ export default function AdminEventsPage() {
                                 onChange={v => setCurrentEvent({ ...currentEvent, studentCoordinators: v })}
                             />
                         </div>
-                        <div className="flex justify-end space-x-2">
-                            <Button variant="outline" onClick={() => setIsEditing(false)}>Cancel</Button>
-                            <Button onClick={handleSave}>Save</Button>
+                        <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <Button variant="outline" onClick={() => setIsEditing(false)} className="text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">Cancel</Button>
+                            <Button onClick={handleSave} className="bg-indigo-600 dark:bg-indigo-500 text-white hover:bg-indigo-700 dark:hover:bg-indigo-600 font-semibold">Save</Button>
                         </div>
                     </CardContent>
                 </Card>
             ) : (
                 <div className="grid gap-4">
                     {events.map(event => (
-                        <Card key={event.id}>
+                        <Card key={event.id} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm">
                             <CardContent className="flex items-center justify-between p-4">
                                 <div>
-                                    <h3 className="font-bold">{event.title}</h3>
-                                    <p className="text-sm text-gray-500">
-                                        {new Date(event.startTime).toLocaleString('en-IN', { timeZone: IST_TZ })} — {event.status}
-                                    </p>
+                                    <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-1">{event.title}</h3>
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <span className="text-sm text-gray-500 dark:text-gray-300">
+                                            {new Date(event.startTime).toLocaleString('en-IN', { timeZone: IST_TZ })}
+                                        </span>
+                                        {event.status === 'LIVE' && (
+                                            <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 border border-green-200 dark:border-green-700">LIVE</span>
+                                        )}
+                                        {event.status === 'UPCOMING' && (
+                                            <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-700">UPCOMING</span>
+                                        )}
+                                        {event.status === 'COMPLETED' && (
+                                            <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600">COMPLETED</span>
+                                        )}
+                                    </div>
                                     {(event.facultyCoordinators?.length || event.studentCoordinators?.length) ? (
-                                        <p className="text-xs text-gray-400 mt-0.5">
+                                        <p className="text-xs text-gray-400 dark:text-gray-400 mt-0.5">
                                             {event.facultyCoordinators?.length ? `Faculty: ${event.facultyCoordinators.join(', ')}` : ''}
                                             {event.facultyCoordinators?.length && event.studentCoordinators?.length ? ' | ' : ''}
                                             {event.studentCoordinators?.length ? `Students: ${event.studentCoordinators.join(', ')}` : ''}
@@ -247,9 +260,9 @@ export default function AdminEventsPage() {
                                     ) : null}
                                 </div>
                                 <div className="flex space-x-2">
-                                    <Button size="sm" variant="secondary" onClick={() => openEdit(event)}><Edit className="h-4 w-4" /></Button>
-                                    <Button size="sm" variant="outline" onClick={() => window.location.href = `/admin/events/${event.id}/questions`}>Questions</Button>
-                                    <Button size="sm" variant="outline" onClick={() => window.location.href = `/admin/events/${event.id}/analytics`}>Analytics</Button>
+                                    <Button size="sm" variant="secondary" className="text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700" onClick={() => openEdit(event)}><Edit className="h-4 w-4" /></Button>
+                                    <Button size="sm" variant="outline" className="dark:border-gray-700 dark:text-gray-200" onClick={() => window.location.href = `/admin/events/${event.id}/questions`}>Questions</Button>
+                                    <Button size="sm" variant="outline" className="dark:border-gray-700 dark:text-gray-200" onClick={() => window.location.href = `/admin/events/${event.id}/analytics`}>Analytics</Button>
                                     <Button size="sm" variant="danger" onClick={() => handleDelete(event.id!)}><Trash className="h-4 w-4" /></Button>
                                 </div>
                             </CardContent>

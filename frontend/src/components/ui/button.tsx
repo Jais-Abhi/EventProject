@@ -17,11 +17,11 @@ interface ButtonProps extends HTMLMotionProps<"button"> {
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ({ className, variant = 'primary', size = 'md', isLoading, children, disabled, ...props }, ref) => {
         const variants = {
-            primary: 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-600/20 border-transparent',
-            secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200 border-transparent dark:bg-gray-800 dark:text-gray-100',
-            outline: 'border border-gray-300 bg-transparent hover:bg-gray-50 text-gray-700 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800',
+            primary: 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-600/20 border-transparent dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:shadow-indigo-900/40',
+            secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200 border-transparent dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600',
+            outline: 'border border-gray-300 bg-transparent hover:bg-gray-50 text-gray-700 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800',
             ghost: 'bg-transparent hover:bg-gray-100 text-gray-700 dark:hover:bg-gray-800 dark:text-gray-300',
-            danger: 'bg-red-600 text-white hover:bg-red-700 shadow-lg shadow-red-600/20 border-transparent',
+            danger: 'bg-red-600 text-white hover:bg-red-700 shadow-lg shadow-red-600/20 border-transparent dark:bg-red-600 dark:hover:bg-red-700 dark:shadow-red-900/40',
         };
 
         const sizes = {

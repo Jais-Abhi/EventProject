@@ -64,8 +64,8 @@ export default function ContestDetailsPage() {
         fetchSolvedProblems();
     }, [user, contestId]);
 
-    if (isLoading) return <div className="flex justify-center p-12"><Loader2 className="animate-spin" /></div>;
-    if (!contest) return <div>Contest not found</div>;
+    if (isLoading) return <div className="flex justify-center p-12"><Loader2 className="animate-spin text-indigo-600 dark:text-indigo-400" /></div>;
+    if (!contest) return <div className="text-gray-900 dark:text-gray-100">Contest not found</div>;
 
     const solvedCount = problems.filter(p => solvedProblemIds.has(p.id)).length;
 
@@ -73,8 +73,8 @@ export default function ContestDetailsPage() {
         <div className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold">{contest.title}</h1>
-                    <p className="text-gray-500 mt-1">
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Contest - {contest.title}</h1>
+                    <p className="text-gray-500 dark:text-gray-400 mt-1">
                         {new Date(contest.startTime).toLocaleString('en-IN', { timeZone: IST_TZ })} — {new Date(contest.endTime).toLocaleString('en-IN', { timeZone: IST_TZ })}
                     </p>
                 </div>
@@ -83,39 +83,39 @@ export default function ContestDetailsPage() {
                         <CountdownTimer
                             targetDate={contest.endTime}
                             label="Ends In"
-                            className="bg-white px-4 py-2 rounded-2xl shadow-sm border border-gray-100"
+                            className="bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-4 py-2 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-600"
                         />
                     )}
                     {status === 'UPCOMING' && (
                         <CountdownTimer
                             targetDate={contest.startTime}
                             label="Starts In"
-                            className="bg-blue-100/50 px-4 py-2 rounded-2xl border border-blue-200"
+                            className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-2xl border border-blue-200 dark:border-blue-700"
                             onEnd={() => window.location.reload()}
                         />
                     )}
                     {problems.length > 0 && (
-                        <span className="text-sm font-bold text-gray-600 bg-white px-4 py-2 rounded-2xl shadow-sm border border-gray-100">
+                        <span className="text-sm font-bold text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 px-4 py-2 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                             {solvedCount} / {problems.length} Solved
                         </span>
                     )}
                     <Link to={`/leaderboard/${contest.id}`}>
-                        <Button variant="outline" className="rounded-2xl font-bold shadow-sm">View Leaderboard</Button>
+                        <Button variant="outline" className="rounded-2xl font-bold shadow-sm text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">View Leaderboard</Button>
                     </Link>
                 </div>
             </div>
 
             {/* Coordinators */}
             {(contest.facultyCoordinators?.length || contest.studentCoordinators?.length) && (
-                <div className="flex flex-wrap gap-6 bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-4">
+                <div className="flex flex-wrap gap-6 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm px-6 py-4">
                     {contest.facultyCoordinators?.length ? (
                         <div className="flex items-start gap-3">
-                            <Users className="h-5 w-5 text-blue-500 mt-0.5" />
+                            <Users className="h-5 w-5 text-blue-500 dark:text-blue-400 mt-0.5" />
                             <div>
-                                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Faculty Coordinators</p>
+                                <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Faculty Coordinators</p>
                                 <div className="flex flex-wrap gap-1">
                                     {contest.facultyCoordinators.map(fc => (
-                                        <span key={fc} className="bg-blue-50 text-blue-700 text-xs font-semibold px-2 py-0.5 rounded-full border border-blue-100">{fc}</span>
+                                        <span key={fc} className="bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-semibold px-2 py-0.5 rounded-full border border-blue-100 dark:border-blue-700">{fc}</span>
                                     ))}
                                 </div>
                             </div>
@@ -123,12 +123,12 @@ export default function ContestDetailsPage() {
                     ) : null}
                     {contest.studentCoordinators?.length ? (
                         <div className="flex items-start gap-3">
-                            <Users className="h-5 w-5 text-green-500 mt-0.5" />
+                            <Users className="h-5 w-5 text-green-500 dark:text-green-400 mt-0.5" />
                             <div>
-                                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Student Coordinators</p>
+                                <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Student Coordinators</p>
                                 <div className="flex flex-wrap gap-1">
                                     {contest.studentCoordinators.map(sc => (
-                                        <span key={sc} className="bg-green-50 text-green-700 text-xs font-semibold px-2 py-0.5 rounded-full border border-green-100">{sc}</span>
+                                        <span key={sc} className="bg-green-50 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-semibold px-2 py-0.5 rounded-full border border-green-100 dark:border-green-700">{sc}</span>
                                     ))}
                                 </div>
                             </div>
@@ -139,18 +139,18 @@ export default function ContestDetailsPage() {
 
             <div className="grid gap-4">
                 {status === 'UPCOMING' ? (
-                    <div className="bg-blue-50 border border-blue-100 rounded-[2rem] p-12 text-center">
+                    <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-[2rem] p-12 text-center">
                         <div className="max-w-md mx-auto space-y-4">
-                            <div className="bg-white h-16 w-16 rounded-2xl shadow-sm flex items-center justify-center mx-auto text-blue-600 mb-6">
+                            <div className="bg-white dark:bg-gray-800 h-16 w-16 rounded-2xl shadow-sm flex items-center justify-center mx-auto text-blue-600 dark:text-blue-400 mb-6">
                                 <Clock className="h-8 w-8" />
                             </div>
-                            <h2 className="text-2xl font-bold text-blue-900">Wait for the battle to begin!</h2>
-                            <p className="text-blue-700/80 font-medium leading-relaxed">
+                            <h2 className="text-2xl font-bold text-blue-900 dark:text-blue-300">Wait for the battle to begin!</h2>
+                            <p className="text-blue-700 dark:text-blue-300/80 font-medium leading-relaxed">
                                 This contest is currently <span className="font-bold underline">Upcoming</span>. Problems will be revealed automatically when the clock strikes start time.
                             </p>
                             <div className="pt-4">
-                                <div className="text-sm text-blue-600/60 font-bold uppercase tracking-widest mb-2">Starts at</div>
-                                <div className="text-xl font-black text-blue-900 bg-white inline-block px-6 py-3 rounded-2xl shadow-sm">
+                                <div className="text-sm text-blue-600 dark:text-blue-400/60 font-bold uppercase tracking-widest mb-2">Starts at</div>
+                                <div className="text-xl font-black text-blue-900 dark:text-blue-300 bg-white dark:bg-gray-800 inline-block px-6 py-3 rounded-2xl shadow-sm">
                                     {new Date(contest.startTime).toLocaleString('en-IN', { timeZone: IST_TZ, hour: '2-digit', minute: '2-digit', hour12: true, day: '2-digit', month: 'short' })}
                                 </div>
                             </div>
@@ -162,13 +162,13 @@ export default function ContestDetailsPage() {
                         return (
                             <Card
                                 key={problem.id}
-                                className={`hover:shadow-md transition-shadow rounded-[1.5rem] overflow-hidden ${isSolved ? 'border-green-300 bg-green-50' : 'border-gray-100'}`}
+                                className={`hover:shadow-md transition-shadow rounded-[1.5rem] overflow-hidden ${isSolved ? 'border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20' : 'border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800'}`}
                             >
                                 <CardContent className="flex items-center justify-between p-6">
                                     <div className="flex items-center gap-4">
                                         <span className={`h-10 w-10 rounded-xl flex items-center justify-center text-sm font-black flex-shrink-0 shadow-sm ${isSolved
-                                            ? 'bg-green-500 text-white'
-                                            : 'bg-white text-gray-400 border border-gray-100'
+                                            ? 'bg-green-500 text-white dark:bg-green-600'
+                                            : 'bg-white dark:bg-gray-700 text-gray-400 dark:text-gray-500 border border-gray-100 dark:border-gray-600'
                                             }`}>
                                             {isSolved
                                                 ? <CheckCircle2 className="h-5 w-5" />
@@ -176,18 +176,18 @@ export default function ContestDetailsPage() {
                                             }
                                         </span>
                                         <div>
-                                            <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                                            <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
                                                 {problem.title}
                                                 {isSolved && (
-                                                    <span className="text-[10px] font-black tracking-widest text-green-700 bg-green-100 px-2 py-0.5 rounded uppercase">
+                                                    <span className="text-[10px] font-black tracking-widest text-green-700 dark:text-green-300 bg-green-100 dark:bg-green-900 px-2 py-0.5 rounded uppercase">
                                                         Solved
                                                     </span>
                                                 )}
                                             </h3>
                                             <div className="flex items-center gap-3 mt-1">
-                                                <span className={`px-2 py-0.5 rounded text-[10px] font-black tracking-widest uppercase ${problem.difficulty === 'EASY' ? 'bg-green-100 text-green-700' :
-                                                    problem.difficulty === 'MEDIUM' ? 'bg-yellow-100 text-yellow-700' :
-                                                        'bg-red-100 text-red-700'
+                                                <span className={`px-2 py-0.5 rounded text-[10px] font-black tracking-widest uppercase ${problem.difficulty === 'EASY' ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300' :
+                                                    problem.difficulty === 'MEDIUM' ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300' :
+                                                        'bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300'
                                                     }`}>
                                                     {problem.difficulty}
                                                 </span>
@@ -204,8 +204,8 @@ export default function ContestDetailsPage() {
                         );
                     })
                 ) : (
-                    <div className="bg-gray-50 border border-dashed border-gray-200 rounded-[2rem] p-12 text-center">
-                        <p className="text-gray-400 font-bold italic">The problems are being prepared. Stay tuned!</p>
+                    <div className="bg-gray-50 dark:bg-gray-800 border border-dashed border-gray-200 dark:border-gray-700 rounded-[2rem] p-12 text-center">
+                        <p className="text-gray-400 dark:text-gray-500 font-bold italic">The problems are being prepared. Stay tuned!</p>
                     </div>
                 )}
             </div>
