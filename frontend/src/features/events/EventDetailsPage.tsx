@@ -68,22 +68,22 @@ export default function EventDetailsPage() {
                 <CardHeader>
                     <div className="flex justify-between items-center">
                         <CardTitle>{event.title}</CardTitle>
-                        <span className="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-sm font-medium">
+                        <span className="px-3 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full text-sm font-medium">
                             {event.type}
                         </span>
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="flex items-center text-gray-700">
-                            <Calendar className="h-5 w-5 mr-3 text-gray-400" />
+                        <div className="flex items-center text-gray-700 dark:text-gray-300">
+                            <Calendar className="h-5 w-5 mr-3 text-gray-400 dark:text-gray-500" />
                             <div>
                                 <p className="text-sm font-medium">Start Time</p>
                                 <p>{new Date(event.startTime).toLocaleString()}</p>
                             </div>
                         </div>
-                        <div className="flex items-center text-gray-700">
-                            <Clock className="h-5 w-5 mr-3 text-gray-400" />
+                        <div className="flex items-center text-gray-700 dark:text-gray-300">
+                            <Clock className="h-5 w-5 mr-3 text-gray-400 dark:text-gray-500" />
                             <div>
                                 <p className="text-sm font-medium">Duration</p>
                                 <p>{event.durationInMinutes} minutes</p>
@@ -95,26 +95,26 @@ export default function EventDetailsPage() {
                     {(event.facultyCoordinators?.length || event.studentCoordinators?.length) && (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {event.facultyCoordinators?.length ? (
-                                <div className="flex items-start gap-3 text-gray-700">
-                                    <Users className="h-5 w-5 mr-1 text-gray-400 mt-0.5" />
+                                <div className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
+                                    <Users className="h-5 w-5 mr-1 text-gray-400 dark:text-gray-500 mt-0.5" />
                                     <div>
                                         <p className="text-sm font-medium">Faculty Coordinators</p>
                                         <div className="flex flex-wrap gap-1 mt-1">
                                             {event.facultyCoordinators.map(fc => (
-                                                <span key={fc} className="bg-blue-50 text-blue-700 text-xs font-semibold px-2 py-0.5 rounded-full border border-blue-100">{fc}</span>
+                                                <span key={fc} className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold px-2 py-0.5 rounded-full border border-blue-100 dark:border-blue-800">{fc}</span>
                                             ))}
                                         </div>
                                     </div>
                                 </div>
                             ) : null}
                             {event.studentCoordinators?.length ? (
-                                <div className="flex items-start gap-3 text-gray-700">
-                                    <Users className="h-5 w-5 mr-1 text-gray-400 mt-0.5" />
+                                <div className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
+                                    <Users className="h-5 w-5 mr-1 text-gray-400 dark:text-gray-500 mt-0.5" />
                                     <div>
                                         <p className="text-sm font-medium">Student Coordinators</p>
                                         <div className="flex flex-wrap gap-1 mt-1">
                                             {event.studentCoordinators.map(sc => (
-                                                <span key={sc} className="bg-green-50 text-green-700 text-xs font-semibold px-2 py-0.5 rounded-full border border-green-100">{sc}</span>
+                                                <span key={sc} className="bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold px-2 py-0.5 rounded-full border border-green-100 dark:border-green-800">{sc}</span>
                                             ))}
                                         </div>
                                     </div>
@@ -123,12 +123,12 @@ export default function EventDetailsPage() {
                         </div>
                     )}
 
-                    <div className="p-4 bg-yellow-50 rounded-md border border-yellow-200">
-                        <h4 className="flex items-center text-yellow-800 font-medium">
+                    <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-md border border-yellow-200 dark:border-yellow-800">
+                        <h4 className="flex items-center text-yellow-800 dark:text-yellow-300 font-medium">
                             <AlertCircle className="h-4 w-4 mr-2" />
                             Instructions
                         </h4>
-                        <ul className="mt-2 list-disc list-inside text-sm text-yellow-700 space-y-1">
+                        <ul className="mt-2 list-disc list-inside text-sm text-yellow-700 dark:text-yellow-400 space-y-1">
                             <li>Total Marks: {event.totalMarks}</li>
                             <li>Ensure you have a stable internet connection.</li>
                             <li>Do not refresh the page during the test.</li>

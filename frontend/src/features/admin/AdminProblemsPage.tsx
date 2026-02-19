@@ -88,30 +88,30 @@ export default function AdminProblemsPage() {
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold tracking-tight">Manage Problems</h1>
+                <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Manage Problems</h1>
                 <Button onClick={() => { setCurrentProblem({ testCases: [] }); setIsEditing(true); }}>
                     <Plus className="mr-2 h-4 w-4" /> Add Problem
                 </Button>
             </div>
 
             {isEditing ? (
-                <Card>
-                    <CardHeader><CardTitle>Problem Editor</CardTitle></CardHeader>
+                <Card className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+                    <CardHeader><CardTitle className="text-gray-900 dark:text-gray-100">Problem Editor</CardTitle></CardHeader>
                     <CardContent className="space-y-4">
-                        <Input label="Title" value={currentProblem.title || ''} onChange={e => setCurrentProblem({ ...currentProblem, title: e.target.value })} />
+                        <Input label="Title" value={currentProblem.title || ''} onChange={e => setCurrentProblem({ ...currentProblem, title: e.target.value })} className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-gray-200 dark:border-gray-700" />
                         <div className="space-y-1">
-                            <label className="text-sm font-medium">Description (HTML supported)</label>
+                            <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Description (HTML supported)</label>
                             <textarea
-                                className="w-full border rounded-md p-2 text-sm"
+                                className="w-full border rounded-md p-2 text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-gray-200 dark:border-gray-700"
                                 rows={5}
                                 value={currentProblem.description || ''}
                                 onChange={e => setCurrentProblem({ ...currentProblem, description: e.target.value })}
                             />
                         </div>
                         <div className="space-y-1">
-                            <label className="text-sm font-medium">Difficulty</label>
+                            <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Difficulty</label>
                             <select
-                                className="w-full border rounded-md p-2 text-sm"
+                                className="w-full border rounded-md p-2 text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-gray-200 dark:border-gray-700"
                                 value={currentProblem.difficulty || 'EASY'}
                                 onChange={e => setCurrentProblem({ ...currentProblem, difficulty: e.target.value as any })}
                             >
@@ -123,7 +123,7 @@ export default function AdminProblemsPage() {
                         {/* Test Cases Simplified Input */}
                         <div className="space-y-3">
                             <div className="flex items-center justify-between">
-                                <label className="text-sm font-medium">Test Cases (JSON Array)</label>
+                                <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Test Cases (JSON Array)</label>
                                 <div className="relative">
                                     <input
                                         type="file"
@@ -137,7 +137,7 @@ export default function AdminProblemsPage() {
                                 </div>
                             </div>
                             <textarea
-                                className="w-full border rounded-md p-2 font-mono text-xs"
+                                className="w-full border rounded-md p-2 font-mono text-xs bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-gray-200 dark:border-gray-700"
                                 rows={5}
                                 value={JSON.stringify(currentProblem.testCases || [], null, 2)}
                                 onChange={e => {
@@ -157,14 +157,14 @@ export default function AdminProblemsPage() {
             ) : (
                 <div className="grid gap-4">
                     {problems.map(problem => (
-                        <Card key={problem.id}>
+                        <Card key={problem.id} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
                             <CardContent className="flex items-center justify-between p-4">
                                 <div>
-                                    <h3 className="font-bold">{problem.title}</h3>
-                                    <span className="text-xs bg-gray-100 px-2 py-1 rounded">{problem.difficulty}</span>
+                                    <h3 className="font-bold text-gray-900 dark:text-gray-100">{problem.title}</h3>
+                                    <span className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-2 py-1 rounded">{problem.difficulty}</span>
                                 </div>
                                 <div className="flex space-x-2">
-                                    <Button size="sm" variant="secondary" onClick={() => { setCurrentProblem(problem); setIsEditing(true); }}><Edit className="h-4 w-4" /></Button>
+                                    <Button size="sm" variant="secondary" className="text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700" onClick={() => { setCurrentProblem(problem); setIsEditing(true); }}><Edit className="h-4 w-4" /></Button>
                                     <Button size="sm" variant="danger" onClick={() => handleDelete(problem.id)}><Trash className="h-4 w-4" /></Button>
                                 </div>
                             </CardContent>

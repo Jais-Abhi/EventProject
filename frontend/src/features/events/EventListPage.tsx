@@ -36,10 +36,10 @@ export default function EventListPage() {
 
     const getStatusColor = (status: string) => {
         switch (status) {
-            case 'LIVE': return 'text-green-600 bg-green-50 px-2 py-1 rounded text-xs font-bold';
-            case 'UPCOMING': return 'text-blue-600 bg-blue-50 px-2 py-1 rounded text-xs font-bold';
-            case 'COMPLETED': return 'text-gray-600 bg-gray-50 px-2 py-1 rounded text-xs font-bold';
-            default: return 'text-gray-500';
+            case 'LIVE': return 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30 px-2 py-1 rounded text-xs font-bold';
+            case 'UPCOMING': return 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded text-xs font-bold';
+            case 'COMPLETED': return 'text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 px-2 py-1 rounded text-xs font-bold';
+            default: return 'text-gray-500 dark:text-gray-400';
         }
     };
 
@@ -51,9 +51,9 @@ export default function EventListPage() {
             </div>
 
             {events.length === 0 ? (
-                <div className="text-center py-12 bg-white rounded-lg shadow-sm border">
-                    <h3 className="mt-2 text-sm font-semibold text-gray-900">No events found</h3>
-                    <p className="mt-1 text-sm text-gray-500">Check back later for upcoming quizzes.</p>
+                <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg shadow-sm border dark:border-gray-700">
+                    <h3 className="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">No events found</h3>
+                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Check back later for upcoming quizzes.</p>
                 </div>
             ) : (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -65,7 +65,7 @@ export default function EventListPage() {
                                     <span className={getStatusColor(event.status)}>{event.status}</span>
                                 </div>
                             </CardHeader>
-                            <CardContent className="flex-1 space-y-3 text-sm text-gray-600">
+                            <CardContent className="flex-1 space-y-3 text-sm text-gray-600 dark:text-gray-400">
                                 <div className="flex items-center">
                                     <Calendar className="h-4 w-4 mr-2" />
                                     {new Date(event.startTime).toLocaleString()}

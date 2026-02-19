@@ -106,7 +106,7 @@ export default function AdminQuestionsPage() {
                     <Button variant="outline" size="sm" onClick={() => navigate('/admin/events')}>
                         <ArrowLeft className="h-4 w-4" />
                     </Button>
-                    <h1 className="text-3xl font-bold tracking-tight">Manage Questions</h1>
+                    <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Manage Questions</h1>
                 </div>
                 {!isEditing && (
                     <Button onClick={() => setIsEditing(true)}>
@@ -116,13 +116,13 @@ export default function AdminQuestionsPage() {
             </div>
 
             {isEditing ? (
-                <Card>
-                    <CardHeader><CardTitle>Add New Question</CardTitle></CardHeader>
+                <Card className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+                    <CardHeader><CardTitle className="text-gray-900 dark:text-gray-100">Add New Question</CardTitle></CardHeader>
                     <CardContent className="space-y-4">
                         <div className="space-y-2">
-                            <label className="text-sm font-medium">Question Text</label>
+                            <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Question Text</label>
                             <textarea
-                                className="w-full border rounded-md p-2 min-h-[100px]"
+                                className="w-full border rounded-md p-2 min-h-[100px] bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-gray-200 dark:border-gray-700"
                                 value={currentQuestion.questionText || ''}
                                 onChange={e => setCurrentQuestion({ ...currentQuestion, questionText: e.target.value })}
                             />
@@ -131,7 +131,7 @@ export default function AdminQuestionsPage() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {currentQuestion.options?.map((opt, idx) => (
                                 <div key={idx} className="space-y-1">
-                                    <label className="text-sm font-medium flex items-center justify-between">
+                                    <label className="text-sm font-medium flex items-center justify-between text-gray-700 dark:text-gray-200">
                                         Option {idx + 1}
                                         <input
                                             type="radio"
@@ -145,6 +145,7 @@ export default function AdminQuestionsPage() {
                                         value={opt}
                                         onChange={e => handleOptionChange(idx, e.target.value)}
                                         placeholder={`Option ${idx + 1}`}
+                                        className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-gray-200 dark:border-gray-700"
                                     />
                                 </div>
                             ))}
@@ -156,6 +157,7 @@ export default function AdminQuestionsPage() {
                                 label="Marks"
                                 value={currentQuestion.marks}
                                 onChange={e => setCurrentQuestion({ ...currentQuestion, marks: Number(e.target.value) })}
+                                className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-gray-200 dark:border-gray-700"
                             />
                             <Input
                                 type="number"
@@ -163,6 +165,7 @@ export default function AdminQuestionsPage() {
                                 step="0.5"
                                 value={currentQuestion.negativeMarks}
                                 onChange={e => setCurrentQuestion({ ...currentQuestion, negativeMarks: Number(e.target.value) })}
+                                className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-gray-200 dark:border-gray-700"
                             />
                         </div>
 
@@ -175,7 +178,7 @@ export default function AdminQuestionsPage() {
             ) : (
                 <div className="grid gap-4">
                     {isLoading ? <div>Loading...</div> : questions.length === 0 ? (
-                        <p className="text-gray-500">No questions added yet.</p>
+                        <p className="text-gray-500 dark:text-gray-400">No questions added yet.</p>
                     ) : (
                         questions.map((q, idx) => (
                             <Card key={q.id || q.questionId || idx}>

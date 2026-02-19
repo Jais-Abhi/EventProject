@@ -131,18 +131,18 @@ export default function TestInterface() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
             {/* Header */}
-            <header className="bg-white shadow-sm px-6 py-4 flex justify-between items-center sticky top-0 z-10">
-                <h2 className="text-xl font-bold text-gray-800">MCQ Test</h2>
+            <header className="bg-white dark:bg-gray-800 shadow-sm px-6 py-4 flex justify-between items-center sticky top-0 z-10 border-b dark:border-gray-700">
+                <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">MCQ Test</h2>
                 {remainingTime !== null && (
                     <div className={`flex items-center space-x-2 px-4 py-2 rounded-2xl border font-mono font-bold transition-all ${remainingTime < 300
-                            ? 'bg-red-50 border-red-200 text-red-600 animate-pulse'
-                            : 'bg-gray-50 border-gray-100 text-gray-700'
+                            ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 animate-pulse'
+                            : 'bg-gray-50 dark:bg-gray-700 border-gray-100 dark:border-gray-600 text-gray-700 dark:text-gray-300'
                         }`}>
                         <Timer className="h-5 w-5" />
                         <div className="flex flex-col items-start leading-none">
-                            <span className="text-[10px] uppercase tracking-wider text-gray-400 mb-0.5">Time Left</span>
+                            <span className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-0.5">Time Left</span>
                             <span className="text-xl">{formatTime(remainingTime)}</span>
                         </div>
                     </div>
@@ -160,31 +160,31 @@ export default function TestInterface() {
                         <CardHeader>
                             <CardTitle className="flex justify-between">
                                 <span>Question {currentQuestionIndex + 1}</span>
-                                <span className="text-sm font-normal text-gray-500">Marks: {currentQuestion.marks}</span>
+                                <span className="text-sm font-normal text-gray-500 dark:text-gray-400">Marks: {currentQuestion.marks}</span>
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="flex-1">
-                            <p className="text-lg text-gray-800 mb-6">{currentQuestion.questionText}</p>
+                            <p className="text-lg text-gray-800 dark:text-gray-100 mb-6">{currentQuestion.questionText}</p>
                             <div className="space-y-3">
                                 {currentQuestion.options.map((option, idx) => (
                                     <div
                                         key={idx}
                                         className={`p-4 border rounded-lg cursor-pointer transition-colors flex items-center ${answers[currentQuestion.questionId!] === idx
-                                            ? 'bg-indigo-50 border-indigo-500 ring-1 ring-indigo-500'
-                                            : 'hover:bg-gray-50 border-gray-200'
+                                            ? 'bg-indigo-50 dark:bg-indigo-900/30 border-indigo-500 dark:border-indigo-600 ring-1 ring-indigo-500 dark:ring-indigo-600'
+                                            : 'hover:bg-gray-50 dark:hover:bg-gray-700 border-gray-200 dark:border-gray-700'
                                             }`}
                                         onClick={() => handleOptionSelect(currentQuestion.questionId, idx)}
                                     >
-                                        <div className={`h-5 w-5 rounded-full border flex items-center justify-center mr-3 ${answers[currentQuestion.questionId!] === idx ? 'border-indigo-600 bg-indigo-600' : 'border-gray-400'
+                                        <div className={`h-5 w-5 rounded-full border flex items-center justify-center mr-3 ${answers[currentQuestion.questionId!] === idx ? 'border-indigo-600 dark:border-indigo-400 bg-indigo-600 dark:bg-indigo-600' : 'border-gray-400 dark:border-gray-500'
                                             }`}>
                                             {answers[currentQuestion.questionId!] === idx && <div className="h-2 w-2 rounded-full bg-white" />}
                                         </div>
-                                        <span className="text-gray-700">{option}</span>
+                                        <span className="text-gray-700 dark:text-gray-300">{option}</span>
                                     </div>
                                 ))}
                             </div>
                         </CardContent>
-                        <CardFooter className="flex justify-between border-t p-4 bg-gray-50 rounded-b-lg">
+                        <CardFooter className="flex justify-between border-t dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800 rounded-b-lg">
                             <Button
                                 variant="secondary"
                                 disabled={currentQuestionIndex === 0}
@@ -215,27 +215,27 @@ export default function TestInterface() {
                                         key={idx}
                                         onClick={() => setCurrentQuestionIndex(idx)}
                                         className={`h-10 w-10 flex items-center justify-center rounded-md text-sm font-medium transition-colors ${currentQuestionIndex === idx
-                                            ? 'bg-indigo-600 text-white'
+                                            ? 'bg-indigo-600 dark:bg-indigo-600 text-white'
                                             : answers[q.questionId!] !== undefined
-                                                ? 'bg-green-100 text-green-700 border border-green-200'
-                                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                                ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800'
+                                                : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
                                             }`}
                                     >
                                         {idx + 1}
                                     </button>
                                 ))}
                             </div>
-                            <div className="mt-6 space-y-2 text-sm text-gray-500">
+                            <div className="mt-6 space-y-2 text-sm text-gray-500 dark:text-gray-400">
                                 <div className="flex items-center">
-                                    <div className="h-3 w-3 bg-green-100 border border-green-200 rounded mr-2" />
+                                    <div className="h-3 w-3 bg-green-100 dark:bg-green-900/40 border border-green-200 dark:border-green-800 rounded mr-2" />
                                     <span>Answered</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="h-3 w-3 bg-indigo-600 rounded mr-2" />
+                                    <div className="h-3 w-3 bg-indigo-600 dark:bg-indigo-600 rounded mr-2" />
                                     <span>Current</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <div className="h-3 w-3 bg-gray-100 rounded mr-2" />
+                                    <div className="h-3 w-3 bg-gray-100 dark:bg-gray-700 rounded mr-2" />
                                     <span>Not Answered</span>
                                 </div>
                             </div>

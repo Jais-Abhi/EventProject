@@ -35,7 +35,7 @@ interface EventCardProps {
 function EventCard({ title, type, startTime, endTime, href }: EventCardProps) {
     return (
         <Link to={href} className="group block">
-            <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300 h-full border border-gray-100">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300 h-full border border-gray-100 dark:border-gray-800">
                 {/* Card Top — gradient */}
                 <div className={`${type === 'MCQ' ? 'from-blue-600 to-indigo-600' : 'from-purple-600 to-pink-600'
                     } bg-gradient-to-r p-6 relative min-h-[120px] flex flex-col justify-between`}>
@@ -52,18 +52,18 @@ function EventCard({ title, type, startTime, endTime, href }: EventCardProps) {
                 </div>
 
                 {/* Card Bottom — white */}
-                <div className="bg-white p-5 space-y-4">
-                    <div className="flex items-center gap-3 text-sm text-gray-600">
+                <div className="bg-white dark:bg-gray-900 p-5 space-y-4">
+                    <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
                         <Calendar className="h-4 w-4 text-blue-600 flex-shrink-0" />
                         <div className="flex flex-col">
-                            <span className="text-gray-400 text-[10px] font-semibold uppercase tracking-tight leading-none">Starts</span>
+                            <span className="text-gray-400 dark:text-gray-500 text-[10px] font-semibold uppercase tracking-tight leading-none">Starts</span>
                             <span className="font-medium mt-1">{formatDate(startTime)}</span>
                         </div>
                     </div>
-                    <div className="flex items-center gap-3 text-sm text-gray-600">
+                    <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
                         <Clock className="h-4 w-4 text-blue-600 flex-shrink-0" />
                         <div className="flex flex-col">
-                            <span className="text-gray-400 text-[10px] font-semibold uppercase tracking-tight leading-none">Ends</span>
+                            <span className="text-gray-400 dark:text-gray-500 text-[10px] font-semibold uppercase tracking-tight leading-none">Ends</span>
                             <span className="font-medium mt-1">{formatDate(endTime)}</span>
                         </div>
                     </div>
@@ -142,7 +142,7 @@ export default function DashboardPage() {
         return (
             <div className="flex flex-col items-center justify-center py-20 animate-pulse">
                 <Loader2 className="h-12 w-12 animate-spin text-blue-600 mb-4" />
-                <p className="text-gray-500 font-medium tracking-wide">Gathering activities...</p>
+                <p className="text-gray-500 dark:text-gray-400 font-medium tracking-wide">Gathering activities...</p>
             </div>
         );
     }
@@ -175,7 +175,7 @@ export default function DashboardPage() {
                 <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"></div>
             </div>
 
-            <div className="sticky top-[4.5rem] z-40 bg-gray-100/80 backdrop-blur-md py-4 -mx-6 px-6 rounded-b-3xl">
+            <div className="sticky top-[4.5rem] z-40 bg-gray-100/80 dark:bg-gray-900/80 backdrop-blur-md py-4 -mx-6 px-6 rounded-b-3xl">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 items-center">
                     {/* ── Search Bar ──────────────────────────────────────── */}
                     <div className="relative flex-1 group w-full">
@@ -185,19 +185,19 @@ export default function DashboardPage() {
                             placeholder="Find a contest or quiz..."
                             value={search}
                             onChange={e => setSearch(e.target.value)}
-                            className="w-full border-2 border-transparent rounded-2xl pl-12 pr-4 py-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 bg-white transition-all shadow-md group-hover:shadow-lg"
+                            className="w-full border-2 border-transparent rounded-2xl pl-12 pr-4 py-4 text-gray-700 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 bg-white dark:bg-gray-800 transition-all shadow-md group-hover:shadow-lg"
                         />
                     </div>
 
                     {/* ── Filter Buttons ───────────────────────────────────── */}
-                    <div className="flex bg-white p-1.5 rounded-2xl shadow-md space-x-1">
+                    <div className="flex bg-white dark:bg-gray-800 p-1.5 rounded-2xl shadow-md space-x-1">
                         {(['All', 'MCQ', 'Coding'] as FilterType[]).map(f => (
                             <button
                                 key={f}
                                 onClick={() => setFilter(f)}
                                 className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${filter === f
                                     ? 'bg-blue-600 text-white shadow-lg scale-105'
-                                    : 'text-gray-500 hover:bg-gray-100 hover:text-gray-700'
+                                    : 'text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-100'
                                     }`}
                             >
                                 {f}
@@ -212,12 +212,12 @@ export default function DashboardPage() {
                 {clubsWithContent.map(club => (
                     <section key={club.id} className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                         <div className="flex items-center gap-3 mb-8">
-                            <div className="h-12 w-12 bg-white rounded-2xl shadow-md flex items-center justify-center text-blue-600 border border-blue-50">
+                            <div className="h-12 w-12 bg-white dark:bg-gray-800 rounded-2xl shadow-md flex items-center justify-center text-blue-600 border border-blue-50 dark:border-blue-900">
                                 <Layers className="h-6 w-6" />
                             </div>
                             <div>
-                                <h2 className="text-2xl font-black text-gray-800 tracking-tight">{club.name}</h2>
-                                <p className="text-gray-500 text-sm font-medium">Recent and upcoming activities</p>
+                                <h2 className="text-2xl font-black text-gray-800 dark:text-gray-100 tracking-tight">{club.name}</h2>
+                                <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">Recent and upcoming activities</p>
                             </div>
                             <div className="flex-1 h-px bg-gradient-to-r from-gray-200 to-transparent ml-4"></div>
                         </div>
@@ -229,10 +229,10 @@ export default function DashboardPage() {
                                 ))}
                             </div>
                         ) : (
-                            <div className="bg-white/50 border-2 border-dashed border-gray-200 rounded-[2rem] p-12 text-center">
+                            <div className="bg-white/50 dark:bg-gray-900/50 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-[2rem] p-12 text-center">
                                 <div className="max-w-sm mx-auto">
-                                    <p className="text-gray-400 font-bold text-lg italic">The stage is set... just waiting for actors.</p>
-                                    <p className="text-gray-400 text-sm mt-1">Check back later for contests from this club!</p>
+                                    <p className="text-gray-400 dark:text-gray-400 font-bold text-lg italic">The stage is set... just waiting for actors.</p>
+                                    <p className="text-gray-400 dark:text-gray-400 text-sm mt-1">Check back later for contests from this club!</p>
                                 </div>
                             </div>
                         )}
@@ -241,13 +241,13 @@ export default function DashboardPage() {
 
 
                 {filtered.length === 0 && (
-                    <div className="text-center py-32 bg-white rounded-[3rem] shadow-sm border border-gray-100">
+                    <div className="text-center py-32 bg-white dark:bg-gray-900 rounded-[3rem] shadow-sm border border-gray-100 dark:border-gray-800">
                         <div className="flex flex-col items-center max-w-md mx-auto">
-                            <div className="bg-blue-50 p-6 rounded-full mb-6">
+                            <div className="bg-blue-50 dark:bg-blue-900/30 p-6 rounded-full mb-6">
                                 <Search className="h-10 w-10 text-blue-600" />
                             </div>
-                            <h3 className="text-2xl font-bold text-gray-800">No matches found</h3>
-                            <p className="text-gray-500 mt-2 text-center h-12">
+                            <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100">No matches found</h3>
+                            <p className="text-gray-500 dark:text-gray-400 mt-2 text-center h-12">
                                 We couldn't find any {filter === 'All' ? 'activities' : filter} matching "<strong>{search}</strong>".
                             </p>
                             <button

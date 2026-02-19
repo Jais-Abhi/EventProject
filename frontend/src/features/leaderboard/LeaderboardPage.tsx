@@ -43,7 +43,7 @@ export default function LeaderboardPage() {
                 <CardContent>
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm text-left">
-                            <thead className="bg-gray-50 text-gray-700 uppercase font-medium">
+                            <thead className="bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 uppercase font-medium">
                                 <tr>
                                     <th className="px-6 py-3">Rank</th>
                                     <th className="px-6 py-3">User</th>
@@ -54,16 +54,16 @@ export default function LeaderboardPage() {
                             </thead>
                             <tbody>
                                 {leaderboard.map((entry, idx) => (
-                                    <tr key={entry.userId} className="border-b hover:bg-gray-50">
+                                    <tr key={entry.userId} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-900 dark:text-gray-200">
                                         <td className="px-6 py-4 font-medium">{idx + 1}</td>
                                         <td className="px-6 py-4">{entry.username || entry.userId}</td>
                                         <td className="px-6 py-4 font-mono text-xs">{entry.rollNumber}</td>
                                         <td className="px-6 py-4">{entry.problemsSolved}</td>
-                                        <td className="px-6 py-4 text-right font-bold text-indigo-600">{entry.totalScore}</td>
+                                        <td className="px-6 py-4 text-right font-bold text-indigo-600 dark:text-indigo-400">{entry.totalScore}</td>
                                     </tr>
                                 ))}
                                 {leaderboard.length === 0 && (
-                                    <tr><td colSpan={4} className="text-center py-6 text-gray-500">No entries yet.</td></tr>
+                                    <tr><td colSpan={4} className="text-center py-6 text-gray-500 dark:text-gray-400">No entries yet.</td></tr>
                                 )}
                             </tbody>
                         </table>

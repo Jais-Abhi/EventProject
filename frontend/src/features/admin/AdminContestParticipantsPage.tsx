@@ -130,7 +130,7 @@ export default function AdminContestParticipantsPage() {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
                 <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
-                <p className="text-gray-500 font-medium">Analyzing participant data...</p>
+                <p className="text-gray-500 dark:text-gray-300 font-medium">Analyzing participant data...</p>
             </div>
         );
     }
@@ -140,14 +140,14 @@ export default function AdminContestParticipantsPage() {
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="space-y-2">
-                    <Link to="/admin/contests" className="flex items-center text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors group">
+                    <Link to="/admin/contests" className="flex items-center text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors group">
                         <ChevronLeft className="h-4 w-4 mr-1 group-hover:-translate-x-1 transition-transform" />
                         Back to Contests
                     </Link>
-                    <h1 className="text-3xl font-black text-gray-900 tracking-tight">
+                    <h1 className="text-3xl font-black text-gray-900 dark:text-gray-100 tracking-tight">
                         Contest Participants
                     </h1>
-                    <p className="text-gray-500 font-medium flex items-center gap-2">
+                    <p className="text-gray-500 dark:text-gray-300 font-medium flex items-center gap-2">
                         <CheckCircle2 className="h-4 w-4 text-green-500" />
                         {contest?.title} • {participants.length} Active Participants
                     </p>
@@ -156,7 +156,7 @@ export default function AdminContestParticipantsPage() {
                     <Button
                         variant="outline"
                         onClick={exportToCSV}
-                        className="rounded-xl border-gray-200 hover:bg-gray-50 font-bold"
+                        className="rounded-xl border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 font-bold"
                     >
                         <Download className="h-4 w-4 mr-2" />
                         Export CSV
@@ -166,33 +166,33 @@ export default function AdminContestParticipantsPage() {
 
             {/* Quick Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center gap-4">
+                <div className="bg-white dark:bg-gray-900 p-6 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm flex items-center gap-4">
                     <div className="h-14 w-14 bg-blue-50 rounded-2xl flex items-center justify-center">
                         <Users className="h-7 w-7 text-blue-600" />
                     </div>
                     <div>
-                        <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">Total Participants</p>
-                        <p className="text-2xl font-black text-gray-900">{participants.length}</p>
+                        <p className="text-sm font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Total Participants</p>
+                        <p className="text-2xl font-black text-gray-900 dark:text-gray-100">{participants.length}</p>
                     </div>
                 </div>
-                <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center gap-4">
+                <div className="bg-white dark:bg-gray-900 p-6 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm flex items-center gap-4">
                     <div className="h-14 w-14 bg-purple-50 rounded-2xl flex items-center justify-center">
                         <FileCode className="h-7 w-7 text-purple-600" />
                     </div>
                     <div>
-                        <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">Total Submissions</p>
-                        <p className="text-2xl font-black text-gray-900">
+                        <p className="text-sm font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Total Submissions</p>
+                        <p className="text-2xl font-black text-gray-900 dark:text-gray-100">
                             {participants.reduce((acc, p) => acc + p.submissionCount, 0)}
                         </p>
                     </div>
                 </div>
-                <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center gap-4">
+                <div className="bg-white dark:bg-gray-900 p-6 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm flex items-center gap-4">
                     <div className="h-14 w-14 bg-yellow-50 rounded-2xl flex items-center justify-center">
                         <Trophy className="h-7 w-7 text-yellow-600" />
                     </div>
                     <div>
-                        <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">Avg. Score</p>
-                        <p className="text-2xl font-black text-gray-900">
+                        <p className="text-sm font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Avg. Score</p>
+                        <p className="text-2xl font-black text-gray-900 dark:text-gray-100">
                             {participants.length > 0
                                 ? (participants.reduce((acc, p) => acc + p.bestScore, 0) / participants.length).toFixed(1)
                                 : 0}
@@ -202,8 +202,8 @@ export default function AdminContestParticipantsPage() {
             </div>
 
             {/* Filters & Table */}
-            <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                <div className="p-6 border-b border-gray-50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden">
+                <div className="p-6 border-b border-gray-50 dark:border-gray-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="relative flex-1 max-w-md group">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
                         <input
@@ -211,7 +211,7 @@ export default function AdminContestParticipantsPage() {
                             placeholder="Search by name, email, or username..."
                             value={searchTerm}
                             onChange={e => setSearchTerm(e.target.value)}
-                            className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-transparent rounded-2xl text-sm focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none"
+                            className="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-gray-800 border border-transparent rounded-2xl text-sm focus:bg-white dark:focus:bg-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none text-gray-900 dark:text-gray-100"
                         />
                     </div>
                 </div>
@@ -219,25 +219,25 @@ export default function AdminContestParticipantsPage() {
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
                         <thead>
-                            <tr className="bg-gray-50/50">
-                                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Participant</th>
-                                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">ACADEMIC INFO</th>
-                                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">Submissions</th>
-                                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">Best Score</th>
-                                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">LAST SUBMISSION</th>
-                                <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-right">Actions</th>
+                            <tr className="bg-gray-50/50 dark:bg-gray-800/50">
+                                <th className="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Participant</th>
+                                <th className="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">ACADEMIC INFO</th>
+                                <th className="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-center">Submissions</th>
+                                <th className="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-center">Best Score</th>
+                                <th className="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">LAST SUBMISSION</th>
+                                <th className="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-50">
+                        <tbody className="divide-y divide-gray-50 dark:divide-gray-800">
                             {filteredParticipants.map((p) => (
-                                <tr key={p.user.id} className="hover:bg-gray-50/30 transition-colors">
+                                <tr key={p.user.id} className="hover:bg-gray-50/30 dark:hover:bg-gray-800/30 transition-colors">
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-3">
                                             <div className="h-10 w-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center text-white font-bold shadow-sm">
                                                 {p.user.firstName[0]}{p.user.lastName[0]}
                                             </div>
                                             <div>
-                                                <p className="font-bold text-gray-900">{p.user.firstName} {p.user.lastName}</p>
+                                                <p className="font-bold text-gray-900 dark:text-gray-100">{p.user.firstName} {p.user.lastName}</p>
                                                 <p className="text-xs text-gray-500">{p.user.email}</p>
                                             </div>
                                         </div>
