@@ -158,7 +158,7 @@ export default function ProfilePage() {
             )}
 
             {/* Header section */}
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden">
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-700 dark:to-purple-700 rounded-3xl p-8 text-white shadow-xl dark:shadow-2xl dark:shadow-blue-900/20 relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-8 opacity-10">
                     <UserCircle className="h-40 w-40" />
                 </div>
@@ -199,22 +199,22 @@ export default function ProfilePage() {
             {activeTab === 'profile' ? (
                 <div className="space-y-6">
                     {/* Personal Details */}
-                    <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 space-y-6">
-                        <div className="flex items-center gap-3 border-b border-gray-50 pb-4">
-                            <UserCircle className="h-5 w-5 text-blue-600" />
-                            <h2 className="text-xl font-bold text-gray-800">Personal Information</h2>
+                    <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm dark:shadow-lg border border-gray-100 dark:border-gray-700 p-8 space-y-6">
+                        <div className="flex items-center gap-3 border-b border-gray-50 dark:border-gray-700 pb-4">
+                            <UserCircle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">Personal Information</h2>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <label className="text-sm font-semibold text-gray-600 ml-1">First Name</label>
+                                <label className="text-sm font-semibold text-gray-600 dark:text-gray-300 ml-1">First Name</label>
                                 <Input
                                     type="text"
                                     name="firstName"
                                     value={formData.firstName}
                                     onChange={handleChange}
                                     disabled={isViewOnly}
-                                    className="w-full bg-gray-50 disabled:bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                                    className="w-full bg-gray-50 dark:bg-gray-700 disabled:bg-gray-50 dark:disabled:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-600/40 focus:border-blue-500 dark:focus:border-blue-600 transition-all"
                                 />
                             </div>
                             <div className="space-y-2">
@@ -256,10 +256,10 @@ export default function ProfilePage() {
                     </div>
 
                     {/* Academic Details */}
-                    <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 space-y-6">
-                        <div className="flex items-center gap-3 border-b border-gray-50 pb-4">
-                            <GraduationCap className="h-5 w-5 text-purple-600" />
-                            <h2 className="text-xl font-bold text-gray-800">Academic Details</h2>
+                    <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm dark:shadow-lg border border-gray-100 dark:border-gray-700 p-8 space-y-6">
+                        <div className="flex items-center gap-3 border-b border-gray-50 dark:border-gray-700 pb-4">
+                            <GraduationCap className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">Academic Details</h2>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -302,10 +302,10 @@ export default function ProfilePage() {
                     </div>
 
                     {/* Account & Security */}
-                    <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 space-y-6">
-                        <div className="flex items-center gap-3 border-b border-gray-50 pb-4">
-                            <Key className="h-5 w-5 text-red-600" />
-                            <h2 className="text-xl font-bold text-gray-800">Account & Security</h2>
+                    <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm dark:shadow-lg border border-gray-100 dark:border-gray-700 p-8 space-y-6">
+                        <div className="flex items-center gap-3 border-b border-gray-50 dark:border-gray-700 pb-4">
+                            <Key className="h-5 w-5 text-red-600 dark:text-red-400" />
+                            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">Account & Security</h2>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -366,44 +366,44 @@ export default function ProfilePage() {
             ) : (
                 <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
                     {/* Quizzes Section */}
-                    <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 space-y-6">
-                        <div className="flex items-center justify-between border-b border-gray-50 pb-4">
+                    <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm dark:shadow-lg border border-gray-100 dark:border-gray-700 p-8 space-y-6">
+                        <div className="flex items-center justify-between border-b border-gray-50 dark:border-gray-700 pb-4">
                             <div className="flex items-center gap-3">
-                                <Trophy className="h-6 w-6 text-yellow-500" />
-                                <h2 className="text-xl font-bold text-gray-800">My Quizzes</h2>
+                                <Trophy className="h-6 w-6 text-yellow-500 dark:text-yellow-400" />
+                                <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">My Quizzes</h2>
                             </div>
-                            <span className="text-sm font-medium text-gray-500">{activity?.mcqActivities.length || 0} Events</span>
+                            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{activity?.mcqActivities.length || 0} Events</span>
                         </div>
 
                         {isActivityLoading ? (
-                            <div className="flex justify-center p-8"><Loader2 className="animate-spin text-blue-600" /></div>
+                            <div className="flex justify-center p-8"><Loader2 className="animate-spin text-blue-600 dark:text-blue-400" /></div>
                         ) : activity?.mcqActivities.length === 0 ? (
-                            <div className="text-center p-12 bg-gray-50 rounded-2xl">
-                                <Calendar className="h-12 w-12 text-gray-300 mx-auto mb-3" />
-                                <p className="text-gray-500">No quiz participation yet.</p>
+                            <div className="text-center p-12 bg-gray-50 dark:bg-gray-700 rounded-2xl">
+                                <Calendar className="h-12 w-12 text-gray-300 dark:text-gray-500 mx-auto mb-3" />
+                                <p className="text-gray-500 dark:text-gray-400">No quiz participation yet.</p>
                                 <Link to="/events" className="text-blue-600 font-bold mt-2 inline-block">Explore Events</Link>
                             </div>
                         ) : (
                             <div className="grid gap-4">
                                 {activity?.mcqActivities.map(act => (
-                                    <div key={act.eventId} className="group p-4 rounded-2xl border border-gray-100 hover:border-blue-200 hover:bg-blue-50/30 transition-all flex items-center justify-between">
+                                    <div key={act.eventId} className="group p-4 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-blue-200 dark:hover:border-blue-700 hover:bg-blue-50/30 dark:hover:bg-blue-900/20 transition-all flex items-center justify-between">
                                         <div className="flex items-center gap-4">
-                                            <div className={`h-12 w-12 rounded-xl flex items-center justify-center ${act.status === 'COMPLETED' ? 'bg-green-100 text-green-600' : 'bg-blue-100 text-blue-600'}`}>
+                                            <div className={`h-12 w-12 rounded-xl flex items-center justify-center ${act.status === 'COMPLETED' ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' : 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'}`}>
                                                 {act.status === 'COMPLETED' ? <CheckCircle2 className="h-6 w-6" /> : <Calendar className="h-6 w-6" />}
                                             </div>
                                             <div>
-                                                <h3 className="font-bold text-gray-900">{act.title}</h3>
-                                                <p className="text-xs text-gray-500 mt-0.5 flex items-center gap-2">
+                                                <h3 className="font-bold text-gray-900 dark:text-gray-100">{act.title}</h3>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 flex items-center gap-2">
                                                     Registered: {new Date(act.registeredAt).toLocaleDateString()}
-                                                    {act.rank && <span className="bg-yellow-100 text-yellow-700 px-1.5 py-0.5 rounded font-bold uppercase tracking-tighter text-[10px]">Rank #{act.rank}</span>}
+                                                    {act.rank && <span className="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 px-1.5 py-0.5 rounded font-bold uppercase tracking-tighter text-[10px]">Rank #{act.rank}</span>}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="text-right flex items-center gap-6">
                                             {act.score !== undefined && (
                                                 <div>
-                                                    <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Score</p>
-                                                    <p className="text-lg font-black text-blue-600">{act.score}<span className="text-xs text-gray-400 font-normal"> / {act.totalMarks}</span></p>
+                                                    <p className="text-xs text-gray-400 dark:text-gray-500 font-bold uppercase tracking-wider">Score</p>
+                                                    <p className="text-lg font-black text-blue-600 dark:text-blue-400">{act.score}<span className="text-xs text-gray-400 dark:text-gray-500 font-normal"> / {act.totalMarks}</span></p>
                                                 </div>
                                             )}
                                             <Link to={`/test/${act.eventId}/result`} className="h-10 w-10 rounded-full hover:bg-white flex items-center justify-center transition-all group-hover:shadow-sm">
@@ -417,42 +417,42 @@ export default function ProfilePage() {
                     </div>
 
                     {/* Contests Section */}
-                    <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 space-y-6">
-                        <div className="flex items-center justify-between border-b border-gray-50 pb-4">
+                    <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm dark:shadow-lg border border-gray-100 dark:border-gray-700 p-8 space-y-6">
+                        <div className="flex items-center justify-between border-b border-gray-50 dark:border-gray-700 pb-4">
                             <div className="flex items-center gap-3">
-                                <BarChart3 className="h-6 w-6 text-indigo-500" />
-                                <h2 className="text-xl font-bold text-gray-800">My Contests</h2>
+                                <BarChart3 className="h-6 w-6 text-indigo-500 dark:text-indigo-400" />
+                                <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">My Contests</h2>
                             </div>
-                            <span className="text-sm font-medium text-gray-500">{activity?.contestActivities.length || 0} Participated</span>
+                            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{activity?.contestActivities.length || 0} Participated</span>
                         </div>
 
                         {isActivityLoading ? (
-                            <div className="flex justify-center p-8"><Loader2 className="animate-spin text-blue-600" /></div>
+                            <div className="flex justify-center p-8"><Loader2 className="animate-spin text-blue-600 dark:text-blue-400" /></div>
                         ) : activity?.contestActivities.length === 0 ? (
-                            <div className="text-center p-12 bg-gray-50 rounded-2xl">
-                                <BarChart3 className="h-12 w-12 text-gray-300 mx-auto mb-3" />
-                                <p className="text-gray-500">No contest participation yet.</p>
+                            <div className="text-center p-12 bg-gray-50 dark:bg-gray-700 rounded-2xl">
+                                <BarChart3 className="h-12 w-12 text-gray-300 dark:text-gray-500 mx-auto mb-3" />
+                                <p className="text-gray-500 dark:text-gray-400">No contest participation yet.</p>
                                 <Link to="/contests" className="text-indigo-600 font-bold mt-2 inline-block">Join Contests</Link>
                             </div>
                         ) : (
                             <div className="grid gap-4">
                                 {activity?.contestActivities.map(act => (
-                                    <div key={act.contestId} className="group p-4 rounded-2xl border border-gray-100 hover:border-indigo-200 hover:bg-indigo-50/30 transition-all flex items-center justify-between">
+                                    <div key={act.contestId} className="group p-4 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-indigo-200 dark:hover:border-indigo-700 hover:bg-indigo-50/30 dark:hover:bg-indigo-900/20 transition-all flex items-center justify-between">
                                         <div className="flex items-center gap-4">
-                                            <div className="h-12 w-12 rounded-xl bg-indigo-100 flex items-center justify-center text-indigo-600">
+                                            <div className="h-12 w-12 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
                                                 <Trophy className="h-6 w-6" />
                                             </div>
                                             <div>
-                                                <h3 className="font-bold text-gray-900">{act.title}</h3>
-                                                <p className="text-xs text-gray-500 mt-0.5">
+                                                <h3 className="font-bold text-gray-900 dark:text-gray-100">{act.title}</h3>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                                                     Solved {act.problemsSolved} / {act.totalProblems} Problems
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="text-right flex items-center gap-6">
                                             <div>
-                                                <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Score</p>
-                                                <p className="text-lg font-black text-indigo-600">{act.totalScore}</p>
+                                                <p className="text-xs text-gray-400 dark:text-gray-500 font-bold uppercase tracking-wider">Score</p>
+                                                <p className="text-lg font-black text-indigo-600 dark:text-indigo-400">{act.totalScore}</p>
                                             </div>
                                             <Link to={`/contests/${act.contestId}`} className="h-10 w-10 rounded-full hover:bg-white flex items-center justify-center transition-all group-hover:shadow-sm">
                                                 <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-indigo-600" />

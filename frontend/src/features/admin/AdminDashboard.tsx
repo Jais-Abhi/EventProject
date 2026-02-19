@@ -14,21 +14,21 @@ export default function AdminDashboard() {
 
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Admin Dashboard</h1>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {links.map((link) => (
                     <Link key={link.name} to={link.href}>
-                        <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
+                        <Card className="hover:shadow-md transition-shadow cursor-pointer h-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">
+                                <CardTitle className="text-sm font-medium text-gray-900 dark:text-gray-100">
                                     {link.name}
                                 </CardTitle>
-                                <div className={`p-2 rounded-full ${link.color}`}>
+                                <div className={`p-2 rounded-full ${link.color} dark:bg-opacity-20`}>
                                     <link.icon className="h-4 w-4" />
                                 </div>
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold">Access Panel</div>
+                                <div className="text-2xl font-bold text-gray-800 dark:text-gray-200">Access Panel</div>
                             </CardContent>
                         </Card>
                     </Link>
