@@ -129,6 +129,7 @@ export default function AdminEventsPage() {
                 await api.put(`/api/events/updateEvent/${currentEvent.id}`, payload);
                 toast.success('Event updated');
             } else {
+                console.log(payload)
                 await api.post('/api/events/createEvent', payload);
                 toast.success('Event created');
             }
@@ -136,6 +137,7 @@ export default function AdminEventsPage() {
             setCurrentEvent({});
             fetchEvents();
         } catch (error) {
+            console.log(error)
             toast.error('Failed to save event');
         }
     };

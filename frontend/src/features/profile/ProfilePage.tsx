@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { api } from '@/lib/axios';
 import { type User } from '@/types';
-import { UserCircle, Mail, BookOpen, GraduationCap, Save, Loader2, Key, Trophy, Calendar, CheckCircle2, ChevronRight, BarChart3, ArrowLeft } from 'lucide-react';
+import { UserCircle, Mail, BookOpen, GraduationCap, Save, Loader2, Key, Trophy, Calendar, CheckCircle2, ChevronRight, BarChart3, ArrowLeft, LogOut, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { type UserActivity } from '@/types';
 import { Link, useParams, useNavigate } from 'react-router-dom';
@@ -10,13 +10,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 export default function ProfilePage() {
-    const { user: currentUser } = useAuth();
+    const { user: currentUser, logout } = useAuth();
     const { userId } = useParams();
     const navigate = useNavigate();
 
     const [targetUser, setTargetUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isUserDataLoading, setIsUserDataLoading] = useState(!!userId);
+    const [showLogoutDialog, setShowLogoutDialog] = useState(false);
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -33,6 +34,20 @@ export default function ProfilePage() {
     const [activeTab, setActiveTab] = useState<'profile' | 'activity'>('profile');
 
     const isViewOnly = !!userId && userId !== currentUser?.id;
+
+    const handleLogoutClick = () => {
+        setShowLogoutDialog(true);
+    };
+
+    const handleConfirmLogout = () => {
+        setShowLogoutDialog(false);
+        logout();
+        navigate('/login');
+    };
+
+    const handleCancelLogout = () => {
+        setShowLogoutDialog(false);
+    };
 
     // Fetch user data if viewing another user
     useEffect(() => {
@@ -180,19 +195,30 @@ export default function ProfilePage() {
                 </div>
 
                 {/* Tabs */}
-                <div className="flex gap-4 mt-8">
-                    <button
-                        onClick={() => setActiveTab('profile')}
-                        className={`px-6 py-2 rounded-xl font-bold transition-all ${activeTab === 'profile' ? 'bg-white text-blue-600 shadow-sm' : 'text-white/70 hover:text-white'}`}
-                    >
-                        {isViewOnly ? 'View Profile' : 'Edit Profile'}
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('activity')}
-                        className={`px-6 py-2 rounded-xl font-bold transition-all ${activeTab === 'activity' ? 'bg-white text-blue-600 shadow-sm' : 'text-white/70 hover:text-white'}`}
-                    >
-                        {isViewOnly ? "User Activity" : "Success & History"}
-                    </button>
+                <div className="flex gap-4 mt-8 justify-between items-center">
+                    <div className="flex gap-4">
+                        <button
+                            onClick={() => setActiveTab('profile')}
+                            className={`px-6 py-2 rounded-xl font-bold transition-all ${activeTab === 'profile' ? 'bg-white text-blue-600 shadow-sm' : 'text-white/70 hover:text-white'}`}
+                        >
+                            {isViewOnly ? 'View Profile' : 'Edit Profile'}
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('activity')}
+                            className={`px-6 py-2 rounded-xl font-bold transition-all ${activeTab === 'activity' ? 'bg-white text-blue-600 shadow-sm' : 'text-white/70 hover:text-white'}`}
+                        >
+                            {isViewOnly ? "User Activity" : "Success & History"}
+                        </button>
+                    </div>
+                    {!isViewOnly && (
+                        <button
+                            onClick={handleLogoutClick}
+                            className="relative z-20 flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
+                        >
+                            <LogOut className="h-4 w-4" />
+                            Logout
+                        </button>
+                    )}
                 </div>
             </div>
 
@@ -218,29 +244,29 @@ export default function ProfilePage() {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-sm font-semibold text-gray-600 ml-1">Last Name</label>
+                                <label className="text-sm font-semibold text-gray-600 dark:text-gray-300 ml-1">Last Name</label>
                                 <Input
                                     type="text"
                                     name="lastName"
                                     value={formData.lastName}
                                     onChange={handleChange}
                                     disabled={isViewOnly}
-                                    className="w-full bg-gray-50 disabled:bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                                    className="w-full bg-gray-50 dark:bg-gray-700 disabled:bg-gray-50 dark:disabled:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-600/40 focus:border-blue-500 dark:focus:border-blue-600 transition-all"
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-sm font-semibold text-gray-600 ml-1">Father's Name</label>
+                                <label className="text-sm font-semibold text-gray-600 dark:text-gray-300 ml-1">Father's Name</label>
                                 <Input
                                     type="text"
                                     name="fatherName"
                                     value={formData.fatherName}
                                     onChange={handleChange}
                                     disabled={isViewOnly}
-                                    className="w-full bg-gray-50 disabled:bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                                    className="w-full bg-gray-50 dark:bg-gray-700 disabled:bg-gray-50 dark:disabled:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-600/40 focus:border-blue-500 dark:focus:border-blue-600 transition-all"
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-sm font-semibold text-gray-600 ml-1 flex items-center gap-1.5">
+                                <label className="text-sm font-semibold text-gray-600 dark:text-gray-300 ml-1 flex items-center gap-1.5">
                                     <Mail className="h-3.5 w-3.5" /> Email Address
                                 </label>
                                 <Input
@@ -249,7 +275,7 @@ export default function ProfilePage() {
                                     value={formData.email}
                                     onChange={handleChange}
                                     disabled={isViewOnly}
-                                    className="w-full bg-gray-50 disabled:bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                                    className="w-full bg-gray-50 dark:bg-gray-700 disabled:bg-gray-50 dark:disabled:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-600/40 focus:border-blue-500 dark:focus:border-blue-600 transition-all"
                                 />
                             </div>
                         </div>
@@ -264,7 +290,7 @@ export default function ProfilePage() {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <label className="text-sm font-semibold text-gray-600 ml-1 flex items-center gap-1.5">
+                                <label className="text-sm font-semibold text-gray-600 dark:text-gray-300 ml-1 flex items-center gap-1.5">
                                     <BookOpen className="h-3.5 w-3.5" /> Course
                                 </label>
                                 <Input
@@ -273,29 +299,29 @@ export default function ProfilePage() {
                                     value={formData.course}
                                     onChange={handleChange}
                                     disabled={isViewOnly}
-                                    className="w-full bg-gray-50 disabled:bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all"
+                                    className="w-full bg-gray-50 dark:bg-gray-700 disabled:bg-gray-50 dark:disabled:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/20 dark:focus:ring-purple-600/40 focus:border-purple-500 dark:focus:border-purple-600 transition-all"
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-sm font-semibold text-gray-600 ml-1">Branch</label>
+                                <label className="text-sm font-semibold text-gray-600 dark:text-gray-300 ml-1">Branch</label>
                                 <Input
                                     type="text"
                                     name="branch"
                                     value={formData.branch}
                                     onChange={handleChange}
                                     disabled={isViewOnly}
-                                    className="w-full bg-gray-50 disabled:bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all"
+                                    className="w-full bg-gray-50 dark:bg-gray-700 disabled:bg-gray-50 dark:disabled:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/20 dark:focus:ring-purple-600/40 focus:border-purple-500 dark:focus:border-purple-600 transition-all"
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-sm font-semibold text-gray-600 ml-1">Roll Number</label>
+                                <label className="text-sm font-semibold text-gray-600 dark:text-gray-300 ml-1">Roll Number</label>
                                 <Input
                                     type="text"
                                     name="rollNumber"
                                     value={formData.rollNumber}
                                     onChange={handleChange}
                                     disabled={isViewOnly}
-                                    className="w-full bg-gray-50 disabled:bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all"
+                                    className="w-full bg-gray-50 dark:bg-gray-700 disabled:bg-gray-50 dark:disabled:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/20 dark:focus:ring-purple-600/40 focus:border-purple-500 dark:focus:border-purple-600 transition-all"
                                 />
                             </div>
                         </div>
@@ -310,25 +336,25 @@ export default function ProfilePage() {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <label className="text-sm font-semibold text-gray-600 ml-1">Username</label>
+                                <label className="text-sm font-semibold text-gray-600 dark:text-gray-300 ml-1">Username</label>
                                 <Input
                                     type="text"
                                     name="username"
                                     value={formData.username}
                                     onChange={handleChange}
                                     disabled={isViewOnly}
-                                    className="w-full bg-gray-50 disabled:bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all"
+                                    className="w-full bg-gray-50 dark:bg-gray-700 disabled:bg-gray-50 dark:disabled:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-red-500/20 dark:focus:ring-red-600/40 focus:border-red-500 dark:focus:border-red-600 transition-all"
                                 />
                             </div>
                             {!isViewOnly && (
                                 <div className="space-y-2">
-                                    <label className="text-sm font-semibold text-gray-600 ml-1">New Password (leave blank to keep current)</label>
+                                    <label className="text-sm font-semibold text-gray-600 dark:text-gray-300 ml-1">New Password (leave blank to keep current)</label>
                                     <Input
                                         type="password"
                                         name="password"
                                         value={formData.password}
                                         onChange={handleChange}
-                                        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all"
+                                        className="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-red-500/20 dark:focus:ring-red-600/40 focus:border-red-500 dark:focus:border-red-600 transition-all"
                                         placeholder="••••••••"
                                     />
                                 </div>
@@ -343,7 +369,7 @@ export default function ProfilePage() {
                                 type="button"
                                 variant="ghost"
                                 onClick={() => window.location.reload()}
-                                className="px-8 py-3 rounded-xl font-bold text-gray-500 hover:bg-gray-100 transition-all h-auto"
+                                className="px-8 py-3 rounded-xl font-bold text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all h-auto"
                             >
                                 Cancel
                             </Button>
@@ -462,6 +488,35 @@ export default function ProfilePage() {
                                 ))}
                             </div>
                         )}
+                    </div>
+                </div>
+            )}
+
+            {/* Logout Confirmation Dialog */}
+            {showLogoutDialog && (
+                <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 transition-colors">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-sm mx-4 transition-colors">
+                        <div className="flex items-center gap-3 mb-4">
+                            <AlertCircle className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
+                            <h2 className="text-lg font-bold text-gray-900 dark:text-gray-50">Confirm Logout</h2>
+                        </div>
+                        <p className="text-gray-600 dark:text-gray-400 mb-6">
+                            Are you sure you want to logout? You'll need to log in again to access your account.
+                        </p>
+                        <div className="flex gap-3 justify-end">
+                            <button
+                                onClick={handleCancelLogout}
+                                className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-50 font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleConfirmLogout}
+                                className="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white font-medium transition-colors"
+                            >
+                                Logout
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
