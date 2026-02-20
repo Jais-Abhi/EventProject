@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { AdminContestParticipantsPageSkeleton } from '@/components/skeleton';
 
 interface ParticipantData {
     user: User;
@@ -127,12 +128,7 @@ export default function AdminContestParticipantsPage() {
     };
 
     if (isLoading) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
-                <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
-                <p className="text-gray-500 dark:text-gray-300 font-medium">Analyzing participant data...</p>
-            </div>
-        );
+        return <AdminContestParticipantsPageSkeleton />;
     }
 
     return (

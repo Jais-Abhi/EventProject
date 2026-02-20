@@ -38,6 +38,9 @@ import AdminEventAnalyticsPage from '@/features/admin/AdminEventAnalyticsPage';
 import MySubmissionsPage from '@/features/submissions/MySubmissionsPage';
 import ProfilePage from '@/features/profile/ProfilePage';
 
+// About
+import AboutUsPage from '@/features/about/AboutUsPage';
+
 function App() {
   return (
     <AuthProvider>
@@ -69,6 +72,7 @@ function App() {
               {/* User Routes */}
               <Route path="/submissions" element={<MySubmissionsPage />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/about" element={<AboutUsPage />} />
             </Route>
           </Route>
 

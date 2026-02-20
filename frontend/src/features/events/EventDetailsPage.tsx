@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Loader2, Calendar, Clock, AlertCircle, Users } from 'lucide-react';
 import { toast } from 'sonner';
+import { EventDetailsSkeleton } from '@/components/skeleton';
 
 export default function EventDetailsPage() {
     const { eventId } = useParams();
@@ -56,7 +57,7 @@ export default function EventDetailsPage() {
         navigate(`/test/${event?.id}`);
     };
 
-    if (isLoading) return <div className="flex justify-center p-12"><Loader2 className="animate-spin" /></div>;
+    if (isLoading) return <EventDetailsSkeleton />;
     if (!event) return <div>Event not found</div>;
 
     const isLive = event.status === 'LIVE';

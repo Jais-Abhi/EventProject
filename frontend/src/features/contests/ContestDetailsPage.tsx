@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Loader2, ArrowRight, CheckCircle2, Clock, Users } from 'lucide-react';
 import { CountdownTimer } from '@/components/CountdownTimer';
+import { ContestDetailsSkeleton } from '@/components/skeleton';
 
 const IST_TZ = 'Asia/Kolkata';
 
@@ -64,7 +65,7 @@ export default function ContestDetailsPage() {
         fetchSolvedProblems();
     }, [user, contestId]);
 
-    if (isLoading) return <div className="flex justify-center p-12"><Loader2 className="animate-spin text-indigo-600 dark:text-indigo-400" /></div>;
+    if (isLoading) return <ContestDetailsSkeleton />;
     if (!contest) return <div className="text-gray-900 dark:text-gray-100">Contest not found</div>;
 
     const solvedCount = problems.filter(p => solvedProblemIds.has(p.id)).length;

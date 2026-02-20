@@ -3,17 +3,24 @@ import { Link } from 'react-router-dom';
 import { api } from '@/lib/axios';
 import { Card, CardContent } from '@/components/ui/card';
 import { BarChart3, FileDown } from 'lucide-react';
+import { AdminAnalyticsPageSkeleton } from '@/components/skeleton';
 
 export default function AdminAnalyticsPage() {
     const [events, setEvents] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        api.get('/api/events/getAllEvent').then(res => setEvents(res.data));
+        api.get('/api/events/getAllEvent').then(res => {
+            setEvents(res.data);
+            setIsLoading(false);
+        }).catch(() => setIsLoading(false));
     }, []);
 
     const downloadPdf = (eventId: string) => {
         window.open(`${import.meta.env.VITE_API_BASE_URL}/api/mcq/admin/analytics/pdf/${eventId}`, '_blank');
     };
+
+    if (isLoading) return <AdminAnalyticsPageSkeleton />;
 
     return (
         <div className="space-y-6">

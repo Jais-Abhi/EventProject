@@ -3,6 +3,9 @@ import { toast } from 'sonner';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
 
+// Track recently toasted errors to prevent duplicates
+const recentlyToastedErrors = new Set<string>();
+
 export const api = axios.create({
     baseURL,
     headers: {
@@ -53,9 +56,26 @@ api.interceptors.response.use(
             // localStorage.removeItem('auth_user');
             // window.location.href = '/login'; // Force redirect? Use with caution in SPA
         }
+        
+        // Create a unique key for this error to prevent duplicate toasts
         const data = error.response?.data;
-        const message = (typeof data === 'string' ? data : data?.message) || 'Something went wrong';
-        toast.error(`Error: ${message}`);
+        const message = (typeof data === 'string' ? data : data?.message) || error.message || 'Something went wrong';
+        const errorKey = `${message}`;
+        
+        // Only show toast if this error hasn't been shown in the last 5 seconds
+        if (!recentlyToastedErrors.has(errorKey)) {
+            toast.error(`Error: ${message}`);
+            
+            // Add to recent toasts
+            recentlyToastedErrors.add(errorKey);
+            
+            // Remove from set after 5 seconds to allow showing the same error again
+            setTimeout(() => {
+                recentlyToastedErrors.delete(errorKey);
+            }, 5000);
+        }
+        
         return Promise.reject(error);
+    }
 
 );

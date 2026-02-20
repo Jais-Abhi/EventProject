@@ -113,7 +113,7 @@ export default function TestInterface() {
         } catch (error: any) {
             console.error('Submission error:', error);
             const msg = error.response?.data?.message || 'Submission failed. Please try again.';
-            toast.error(msg);
+            toast.error("Submission failed. Please try again.");
             setIsSubmitting(false);
         }
     }, [answers, eventId, navigate, isSubmitting]);

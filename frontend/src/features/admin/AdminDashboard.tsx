@@ -1,11 +1,46 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Code2, Users, FileText, BarChart3, ClipboardList, TrendingUp, Zap, Shield } from 'lucide-react';
+import { api } from '@/lib/axios';
 import { GlassmorphismCard } from './components/GlassmorphismCard';
 import { StatCard } from './components/StatCard';
 
 export default function AdminDashboard() {
+    const [events, setEvents] = useState([]);
+    const [contests, setContests] = useState([]);
+    const [totalUsers, setTotalUsers] = useState(0);
+    const [totalSubmissions, setTotalSubmissions] = useState(0);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // Fetch all events
+                const eventsResponse = await api.get('/api/events/getAllEvent');
+                setEvents(eventsResponse.data);
+
+                // Fetch all contests
+                const contestsResponse = await api.get('/contest/getAll');
+                setContests(contestsResponse.data);
+
+                // Fetch total users (same as AdminUsersPage)
+                const usersResponse = await api.get('/user/getAll');
+                setTotalUsers(usersResponse.data.length || 0);
+
+                // Fetch total submissions (same as AdminSubmissionsPage)
+                const submissionsResponse = await api.get('/submission');
+                setTotalSubmissions(submissionsResponse.data.length || 0);
+            } catch (error) {
+                console.error('Error fetching dashboard data:', error);
+            }
+        };
+
+        fetchData();
+        // Refresh data every 10 seconds for real-time updates
+        const interval = setInterval(fetchData, 10000);
+        return () => clearInterval(interval);
+    }, []);
 
     const links = [
         {
@@ -47,10 +82,10 @@ export default function AdminDashboard() {
     ];
 
     const stats = [
-        { icon: Trophy, label: 'Active Quizzes', value: 24, color: 'text-blue-700 dark:text-blue-400' },
-        { icon: Code2, label: 'Running Contests', value: 8, color: 'text-indigo-700 dark:text-indigo-400' },
-        { icon: Users, label: 'Total Users', value: 1250, color: 'text-emerald-700 dark:text-emerald-400' },
-        { icon: TrendingUp, label: 'Submissions', value: 3542, color: 'text-purple-700 dark:text-purple-400' },
+        { icon: Trophy, label: 'Total Quizzes', value: events.length, color: 'text-blue-700 dark:text-blue-400' },
+        { icon: Code2, label: 'Total Contests', value: contests.length, color: 'text-indigo-700 dark:text-indigo-400' },
+        { icon: Users, label: 'Total Users', value: totalUsers, color: 'text-emerald-700 dark:text-emerald-400' },
+        { icon: TrendingUp, label: 'Submissions', value: totalSubmissions, color: 'text-purple-700 dark:text-purple-400' },
     ];
 
     const containerVariants = {

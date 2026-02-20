@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Plus, Trash, ArrowLeft, Save } from 'lucide-react';
 import { toast } from 'sonner';
+import { AdminQuestionsPageSkeleton } from '@/components/skeleton';
 
 interface Question {
     id?: string;
@@ -177,7 +178,7 @@ export default function AdminQuestionsPage() {
                 </Card>
             ) : (
                 <div className="grid gap-4">
-                    {isLoading ? <div>Loading...</div> : questions.length === 0 ? (
+                    {isLoading ? <AdminQuestionsPageSkeleton /> : questions.length === 0 ? (
                         <p className="text-gray-500 dark:text-gray-400">No questions added yet.</p>
                     ) : (
                         questions.map((q, idx) => (
@@ -190,14 +191,14 @@ export default function AdminQuestionsPage() {
                                         </div>
                                         <div className="grid grid-cols-2 gap-x-8 gap-y-2 mt-2 ml-6">
                                             {q.options.map((opt, i) => (
-                                                <div key={i} className={`text-sm ${i === q.correctOption ? 'text-green-600 font-medium' : 'text-gray-600'}`}>
+                                                <div key={i} className={`text-sm ${i === q.correctOption ? 'text-green-600 dark:text-green-400 font-medium' : 'text-gray-600 dark:text-gray-400'}`}>
                                                     {String.fromCharCode(65 + i)}. {opt}
                                                 </div>
                                             ))}
                                         </div>
                                     </div>
                                     <div className="flex flex-col items-end space-y-2">
-                                        <span className="text-xs bg-gray-100 px-2 py-1 rounded">Avg: {q.marks} / -{q.negativeMarks}</span>
+                                        <span className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded">Avg: {q.marks} / -{q.negativeMarks}</span>
                                         <Button variant="danger" size="sm" onClick={() => handleDelete(q.id || q.questionId!)}>
                                             <Trash className="h-4 w-4" />
                                         </Button>

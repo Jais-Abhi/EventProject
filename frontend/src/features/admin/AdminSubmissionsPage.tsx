@@ -3,6 +3,7 @@ import { api } from '@/lib/axios';
 import { Card, CardContent } from '@/components/ui/card';
 import { Loader2, CheckCircle2, XCircle, Clock, Search } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { AdminSubmissionsPageSkeleton } from '@/components/skeleton';
 
 const IST_TZ = 'Asia/Kolkata';
 
@@ -99,11 +100,7 @@ export default function AdminSubmissionsPage() {
     };
 
     if (isLoading) {
-        return (
-            <div className="flex justify-center p-12">
-                <Loader2 className="animate-spin h-8 w-8 text-gray-400" />
-            </div>
-        );
+        return <AdminSubmissionsPageSkeleton />;
     }
 
     return (

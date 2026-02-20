@@ -9,10 +9,11 @@ import { Plus, Edit, Trash, Check, Users, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Select } from '@/components/ui/select';
 import { CLUBS } from '@/lib/constants';
+import { AdminContestsPageSkeleton } from '@/components/skeleton';
 
 /**
  * A simple tag-input component for entering a list of names.
- * Press Enter or comma to add a tag; click × to remove.
+ * Press Enter to add a tag; click × to remove.
  */
 function TagInput({ label, values, onChange }: { label: string; values: string[]; onChange: (v: string[]) => void }) {
     const [draft, setDraft] = useState('');
@@ -22,26 +23,27 @@ function TagInput({ label, values, onChange }: { label: string; values: string[]
         setDraft('');
     };
     return (
-        <div className="space-y-1">
+        <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>
-            <div className="flex flex-wrap gap-2 p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 min-h-[42px]">
+            <div className="flex flex-wrap gap-2 p-3 border rounded-lg bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 min-h-[50px]">
                 {values.map(v => (
-                    <span key={v} className="flex items-center gap-1 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 text-xs font-semibold px-2 py-1 rounded-full border border-indigo-200 dark:border-indigo-700">
+                    <span key={v} className="flex items-center gap-2 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 text-sm font-semibold px-3 py-1.5 rounded-full border border-indigo-200 dark:border-indigo-700">
                         {v}
-                        <button type="button" onClick={() => onChange(values.filter(x => x !== v))}>
-                            <X className="h-3 w-3" />
+                        <button type="button" onClick={() => onChange(values.filter(x => x !== v))} className="hover:scale-110 transition-transform">
+                            <X className="h-4 w-4" />
                         </button>
                     </span>
                 ))}
                 <input
-                    className="flex-1 min-w-[140px] text-sm outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-                    placeholder={`Type name and press Enter`}
+                    className="flex-1 min-w-[160px] text-sm outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+                    placeholder="Type name and press Enter"
                     value={draft}
                     onChange={e => setDraft(e.target.value)}
-                    onKeyDown={e => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); add(); } }}
+                    onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); add(); } }}
                     onBlur={add}
                 />
             </div>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Press Enter to add multiple coordinators. Click × to remove.</p>
         </div>
     );
 }
@@ -165,7 +167,7 @@ export default function AdminContestsPage() {
         setIsEditing(true);
     };
 
-    if (isLoading && !isEditing) return <div className="text-gray-900 dark:text-gray-100">Loading...</div>;
+    if (isLoading && !isEditing) return <AdminContestsPageSkeleton />;
 
     return (
         <div className="space-y-6">

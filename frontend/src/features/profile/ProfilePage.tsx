@@ -210,15 +210,6 @@ export default function ProfilePage() {
                             {isViewOnly ? "User Activity" : "Success & History"}
                         </button>
                     </div>
-                    {!isViewOnly && (
-                        <button
-                            onClick={handleLogoutClick}
-                            className="relative z-20 flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
-                        >
-                            <LogOut className="h-4 w-4" />
-                            Logout
-                        </button>
-                    )}
                 </div>
             </div>
 
@@ -360,6 +351,19 @@ export default function ProfilePage() {
                                 </div>
                             )}
                         </div>
+
+                        {/* Logout Button */}
+                        {!isViewOnly && (
+                            <div className="flex justify-center pt-6 border-t border-gray-100 dark:border-gray-700">
+                                <button
+                                    onClick={handleLogoutClick}
+                                    className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl font-semibold transition-colors"
+                                >
+                                    <LogOut className="h-4 w-4" />
+                                    Logout
+                                </button>
+                            </div>
+                        )}
                     </div>
 
                     {/* Submit Area - Hide if View Only */}
@@ -449,7 +453,7 @@ export default function ProfilePage() {
                                 <BarChart3 className="h-6 w-6 text-indigo-500 dark:text-indigo-400" />
                                 <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">My Contests</h2>
                             </div>
-                            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{activity?.contestActivities.length || 0} Participated</span>
+                            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{activity?.contestActivities.length || 0} Contests</span>
                         </div>
 
                         {isActivityLoading ? (

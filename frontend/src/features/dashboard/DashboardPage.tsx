@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import { api } from '@/lib/axios';
 import { useAuth } from '@/context/AuthContext';
 import { type Event, type Contest } from '@/types';
-import { Calendar, Clock, Loader2, Search, Layers, Plus } from 'lucide-react';
+import { Calendar, Clock, Loader2, Search, Plus } from 'lucide-react';
 import { CLUBS } from '@/lib/constants';
+import { DashboardSkeleton } from '@/components/skeleton';
 
 const IST_TZ = 'Asia/Kolkata';
 
@@ -139,12 +140,7 @@ export default function DashboardPage() {
 
 
     if (isLoading) {
-        return (
-            <div className="flex flex-col items-center justify-center py-20 animate-pulse">
-                <Loader2 className="h-12 w-12 animate-spin text-blue-600 mb-4" />
-                <p className="text-gray-500 dark:text-gray-400 font-medium tracking-wide">Gathering activities...</p>
-            </div>
-        );
+        return <DashboardSkeleton />;
     }
 
     return (
@@ -154,7 +150,7 @@ export default function DashboardPage() {
                 <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
                     <div>
                         <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-tight">
-                            Namaste, {user?.firstName || 'Innovator'} 👋
+                            Welcome {user?.firstName || 'Innovator'} 👋
                         </h1>
                         <p className="text-blue-100/90 mt-4 text-xl max-w-xl font-medium">
                             Ready to showcase your skills? Pick your club and start competing.
@@ -165,7 +161,7 @@ export default function DashboardPage() {
                             to="/admin"
                             className="inline-flex items-center justify-center bg-white text-blue-700 font-bold px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl hover:bg-gray-50 transition-all group"
                         >
-                            <span>Admin Center</span>
+                            <span>Admin Panel</span>
                             <Plus className="ml-2 h-5 w-5 group-hover:rotate-90 transition-transform" />
                         </Link>
                     )}
@@ -175,8 +171,8 @@ export default function DashboardPage() {
                 <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"></div>
             </div>
 
-            <div className="sticky top-[4.5rem] z-40 bg-gray-100/80 dark:bg-gray-900/80 backdrop-blur-md py-4 -mx-6 px-6 rounded-b-3xl">
-                <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 items-center">
+            <div className="sticky top-[4.5rem] z-40 bg-gray-100/80 dark:bg-gray-900/80 backdrop-blur-md py-4 rounded-b-3xl">
+                <div className="flex flex-col md:flex-row gap-6 items-center">
                     {/* ── Search Bar ──────────────────────────────────────── */}
                     <div className="relative flex-1 group w-full">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
@@ -212,8 +208,16 @@ export default function DashboardPage() {
                 {clubsWithContent.map(club => (
                     <section key={club.id} className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                         <div className="flex items-center gap-3 mb-8">
-                            <div className="h-12 w-12 bg-white dark:bg-gray-800 rounded-2xl shadow-md flex items-center justify-center text-blue-600 border border-blue-50 dark:border-blue-900">
-                                <Layers className="h-6 w-6" />
+                            <div className="h-15 w-15 bg-white dark:bg-gray-800 rounded-2xl shadow-md flex items-center justify-center border border-blue-50 dark:border-blue-900 flex-shrink-0">
+                                <img
+                                    src={`/${club.id}.png`}
+                                    alt={club.name}
+                                    className="h-full w-full object-contain"
+                                    onError={(e) => {
+                                        // Fallback if logo is not found
+                                        e.currentTarget.style.display = 'none';
+                                    }}
+                                />
                             </div>
                             <div>
                                 <h2 className="text-2xl font-black text-gray-800 dark:text-gray-100 tracking-tight">{club.name}</h2>

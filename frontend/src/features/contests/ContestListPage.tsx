@@ -5,10 +5,12 @@ import { type Contest } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Loader2, Calendar, Trophy, Users } from 'lucide-react';
+import { EventCardSkeleton } from '@/components/skeleton';
 
 export default function ContestListPage() {
     const [contests, setContests] = useState<Contest[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [activeFilter, setActiveFilter] = useState<'LIVE' | 'UPCOMING' | 'COMPLETED'>('LIVE');
 
     useEffect(() => {
         const fetchContests = async () => {
@@ -26,8 +28,22 @@ export default function ContestListPage() {
 
     if (isLoading) {
         return (
-            <div className="flex justify-center p-12">
-                <Loader2 className="h-8 w-8 animate-spin text-indigo-600 dark:text-indigo-400" />
+            <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                    <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Contests</h1>
+                </div>
+                {/* Filter Buttons Skeleton */}
+                <div className="flex gap-3 flex-wrap">
+                    {[...Array(3)].map((_, i) => (
+                        <div key={i} className="h-10 w-32 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+                    ))}
+                </div>
+                {/* Loading Cards Grid */}
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {[...Array(6)].map((_, i) => (
+                        <EventCardSkeleton key={i} />
+                    ))}
+                </div>
             </div>
         );
     }
@@ -38,8 +54,22 @@ export default function ContestListPage() {
         const endTime = new Date(end);
         if (now < startTime) return { label: 'UPCOMING', color: 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900' };
         if (now >= startTime && now <= endTime) return { label: 'LIVE', color: 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900' };
-        return { label: 'ENDED', color: 'text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-900' };
+        return { label: 'Completed', color: 'text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-900' };
     };
+
+    // Filter contests based on selected status
+    const getContestStatus = (start: string, end: string): 'LIVE' | 'UPCOMING' | 'COMPLETED' => {
+        const now = new Date();
+        const startTime = new Date(start);
+        const endTime = new Date(end);
+        if (now < startTime) return 'UPCOMING';
+        if (now >= startTime && now <= endTime) return 'LIVE';
+        return 'COMPLETED';
+    };
+
+    const filteredContests = contests.filter(contest => 
+        getContestStatus(contest.startTime, contest.endTime) === activeFilter
+    );
 
     return (
         <div className="space-y-6">
@@ -47,13 +77,38 @@ export default function ContestListPage() {
                 <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Contests</h1>
             </div>
 
-            {contests.length === 0 ? (
+            {/* Filter Buttons */}
+            <div className="flex gap-3 flex-wrap">
+                <Button
+                    variant={activeFilter === 'LIVE' ? 'primary' : 'outline'}
+                    onClick={() => setActiveFilter('LIVE')}
+                    className="px-6"
+                >
+                    Live Contests
+                </Button>
+                <Button
+                    variant={activeFilter === 'UPCOMING' ? 'primary' : 'outline'}
+                    onClick={() => setActiveFilter('UPCOMING')}
+                    className="px-6"
+                >
+                    Upcoming Contests
+                </Button>
+                <Button
+                    variant={activeFilter === 'COMPLETED' ? 'primary' : 'outline'}
+                    onClick={() => setActiveFilter('COMPLETED')}
+                    className="px-6"
+                >
+                    Past Contests
+                </Button>
+            </div>
+
+            {filteredContests.length === 0 ? (
                 <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
                     <h3 className="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">No contests found</h3>
                 </div>
             ) : (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {contests.map((contest) => {
+                    {filteredContests.map((contest) => {
                         const status = getStatus(contest.startTime, contest.endTime);
                         return (
                             <Card key={contest.id} className="flex flex-col bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-lg dark:hover:shadow-gray-900 transition-shadow">
@@ -104,7 +159,7 @@ export default function ContestListPage() {
                                 </CardContent>
                                 <CardFooter>
                                     <Link to={`/contests/${contest.id}`} className="w-full">
-                                        <Button className="w-full bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-600 text-white" variant={status.label === 'ENDED' ? 'outline' : 'primary'}>
+                                        <Button className="w-full bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-600 text-white" variant={status.label === 'Completed' ? 'outline' : 'primary'}>
                                             View Contest
                                         </Button>
                                     </Link>

@@ -11,6 +11,7 @@ import Editor from '@monaco-editor/react';
 import { toast } from 'sonner';
 import { CountdownTimer } from '@/components/CountdownTimer';
 import { type Contest } from '@/types';
+import { ProblemDetailsSkeleton } from '@/components/skeleton';
 
 export default function ProblemDetailsPage() {
     const { contestId, problemId } = useParams();
@@ -100,14 +101,16 @@ export default function ProblemDetailsPage() {
                 setAlreadySolved(true);
                 toast.error('You have already solved this problem!');
             } else {
-                toast.error(msg);
+                // toast.error(msg);
+                toast.error("Submission failed");
+
             }
         } finally {
             setIsSubmitting(false);
         }
     };
 
-    if (!problem) return <div className="p-10 flex justify-center"><Loader2 className="animate-spin text-indigo-600 dark:text-indigo-400" /></div>;
+    if (!problem) return <ProblemDetailsSkeleton />;
 
     return (
         <div className="h-[calc(100vh-6rem)] flex flex-col md:flex-row gap-4 p-4">
@@ -118,12 +121,12 @@ export default function ProblemDetailsPage() {
                         <CardTitle className="flex justify-between items-center text-gray-900 dark:text-gray-100">
                             <span>{problem.title}</span>
                             <div className="flex items-center gap-4">
-                                {contest && (
+                                {/* {contest && contest.endTime && (
                                     <CountdownTimer
                                         targetDate={contest.endTime}
                                         className="text-sm bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-3 py-1 rounded-full border border-gray-200 dark:border-gray-600"
                                     />
-                                )}
+                                )} */}
                                 <span className={`text-sm px-2 py-1 rounded font-semibold ${problem.difficulty === 'EASY' ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300' :
                                     problem.difficulty === 'MEDIUM' ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-300' :
                                         'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-300'
@@ -161,16 +164,24 @@ export default function ProblemDetailsPage() {
             <div className="md:w-1/2 flex flex-col space-y-4">
                 <Card className="flex-1 flex flex-col overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                     <div className="p-2 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 flex items-center justify-between">
-                        <select
-                            className="h-8 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-600 text-gray-900 dark:text-gray-100 text-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            value={language}
-                            onChange={(e) => setLanguage(e.target.value)}
-                        >
-                            <option value="cpp">C++</option>
-                            <option value="java">Java</option>
-                            <option value="python">Python</option>
-                            <option value="c">C</option>
-                        </select>
+                        <div className="flex items-center gap-3">
+                            <select
+                                className="h-8 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-600 text-gray-900 dark:text-gray-100 text-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                value={language}
+                                onChange={(e) => setLanguage(e.target.value)}
+                            >
+                                <option value="cpp">C++</option>
+                                <option value="java">Java</option>
+                                <option value="python">Python</option>
+                                <option value="c">C</option>
+                            </select>
+                            {contest && contest.endTime && (
+                                <CountdownTimer
+                                    targetDate={contest.endTime}
+                                    className="text-xs bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-300 px-2 py-1 rounded border border-gray-200 dark:border-gray-600"
+                                />
+                            )}
+                        </div>
                         <div className="flex space-x-2">
                             {alreadySolved ? (
                                 <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300">

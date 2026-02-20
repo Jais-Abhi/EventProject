@@ -5,11 +5,14 @@ import { type Event } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Loader2, Calendar, Clock, CheckCircle, Users } from 'lucide-react';
+import { toast } from 'sonner';
+import { EventCardSkeleton } from '@/components/skeleton';
 
 
 export default function EventListPage() {
     const [events, setEvents] = useState<Event[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [activeFilter, setActiveFilter] = useState<'LIVE' | 'UPCOMING' | 'COMPLETED'>('LIVE');
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -17,7 +20,7 @@ export default function EventListPage() {
                 const response = await api.get('/api/events/getAllEvent');
                 setEvents(response.data);
             } catch (error) {
-                // toast.error('Failed to load events'); 
+                toast.error('Failed to load events'); 
                 // Error handling in interceptor
             } finally {
                 setIsLoading(false);
@@ -28,8 +31,22 @@ export default function EventListPage() {
 
     if (isLoading) {
         return (
-            <div className="flex justify-center p-12">
-                <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
+            <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                    <h1 className="text-3xl font-bold tracking-tight">Quiz Studio</h1>
+                </div>
+                {/* Filter Buttons Skeleton */}
+                <div className="flex gap-3 flex-wrap">
+                    {[...Array(3)].map((_, i) => (
+                        <div key={i} className="h-10 w-32 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+                    ))}
+                </div>
+                {/* Loading Cards Grid */}
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {[...Array(6)].map((_, i) => (
+                        <EventCardSkeleton key={i} />
+                    ))}
+                </div>
             </div>
         );
     }
@@ -43,6 +60,9 @@ export default function EventListPage() {
         }
     };
 
+    // Filter events based on selected status
+    const filteredEvents = events.filter(event => event.status === activeFilter);
+
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
@@ -50,14 +70,39 @@ export default function EventListPage() {
                 {/* Admin Create Button could go here */}
             </div>
 
-            {events.length === 0 ? (
+            {/* Filter Buttons */}
+            <div className="flex gap-3 flex-wrap">
+                <Button
+                    variant={activeFilter === 'LIVE' ? 'primary' : 'outline'}
+                    onClick={() => setActiveFilter('LIVE')}
+                    className="px-6"
+                >
+                    Live Events
+                </Button>
+                <Button
+                    variant={activeFilter === 'UPCOMING' ? 'primary' : 'outline'}
+                    onClick={() => setActiveFilter('UPCOMING')}
+                    className="px-6"
+                >
+                    Upcoming Events
+                </Button>
+                <Button
+                    variant={activeFilter === 'COMPLETED' ? 'primary' : 'outline'}
+                    onClick={() => setActiveFilter('COMPLETED')}
+                    className="px-6"
+                >
+                    Past Events
+                </Button>
+            </div>
+
+            {filteredEvents.length === 0 ? (
                 <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg shadow-sm border dark:border-gray-700">
                     <h3 className="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">No events found</h3>
                     <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Check back later for upcoming quizzes.</p>
                 </div>
             ) : (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {events.map((event) => (
+                    {filteredEvents.map((event) => (
                         <Card key={event.id} className="flex flex-col">
                             <CardHeader>
                                 <div className="flex justify-between items-start">

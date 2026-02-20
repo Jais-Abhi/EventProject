@@ -4,11 +4,11 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { api } from '@/lib/axios';
-import AuthLayout from '@/layouts/AuthLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from 'sonner';
+import { Zap, Award, Users } from 'lucide-react';
 
 const registerSchema = z.object({
     username: z.string().min(3, 'Username must be at least 3 characters'),
@@ -46,41 +46,190 @@ export default function RegisterPage() {
     };
 
     return (
-        <AuthLayout title="Create an account" subtitle="Join to participate in events">
-            <Card>
-                <CardContent className="pt-6">
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                            <Input label="First Name" id="firstName" {...register('firstName')} error={errors.firstName?.message} />
-                            <Input label="Last Name" id="lastName" {...register('lastName')} error={errors.lastName?.message} />
-                        </div>
-
-                        <Input label="Father's Name" id="fatherName" {...register('fatherName')} error={errors.fatherName?.message} />
-
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                            <Input label="Course" id="course" {...register('course')} error={errors.course?.message} />
-                            <Input label="Branch" id="branch" {...register('branch')} error={errors.branch?.message} />
-                        </div>
-
-                        <Input label="Roll Number" id="rollNumber" {...register('rollNumber')} error={errors.rollNumber?.message} />
-
-                        <Input label="Email" type="email" id="email" {...register('email')} error={errors.email?.message} />
-                        <Input label="Username" id="username" {...register('username')} error={errors.username?.message} />
-                        <Input label="Password" type="password" id="password" {...register('password')} error={errors.password?.message} />
-
-                        <Button type="submit" className="w-full mt-4" isLoading={isLoading}>
-                            Register
-                        </Button>
-                    </form>
-
-                    <div className="mt-4 text-center text-sm">
-                        <span className="text-gray-600">Already have an account? </span>
-                        <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
-                            Sign in
-                        </Link>
+        <div className="min-h-screen flex">
+            {/* Left Side - Website Details & Logo */}
+            <div className="hidden lg:flex lg:w-1/2 p-12 flex-col justify-between text-white" style={{ background: 'linear-gradient(to bottom right, #8ECAE6, #4B7BA7)' }}>
+                <div>
+                    <div className="mb-12 flex items-center gap-4 h-50">
+                        <img src="/main_logo.png" alt="Logo" className="h-full object-contain" />
+                        <img src="/name.png" alt="CampusArena" className="h-full object-contain" />
                     </div>
-                </CardContent>
-            </Card>
-        </AuthLayout>
+                    
+                    <p className="text-lg mb-8" style={{ color: '#E8F4F8' }}>
+                        Compete, Learn, and Excel in Programming Contests
+                    </p>
+                </div>
+
+                <div className="space-y-8">
+                    <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0 rounded-lg p-3" style={{ backgroundColor: '#8ECAE6' }}>
+                            <Zap className="h-6 w-6" />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-semibold mb-1">Fast & Responsive</h3>
+                            <p style={{ color: '#E8F4F8' }}>Experience lightning-fast contests with real-time updates and instant feedback.</p>
+                        </div>
+                    </div>
+
+                    <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0 rounded-lg p-3" style={{ backgroundColor: '#8ECAE6' }}>
+                            <Award className="h-6 w-6" />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-semibold mb-1">Competitive Edge</h3>
+                            <p style={{ color: '#E8F4F8' }}>Climb the leaderboards and prove your programming prowess.</p>
+                        </div>
+                    </div>
+
+                    <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0 rounded-lg p-3" style={{ backgroundColor: '#8ECAE6' }}>
+                            <Users className="h-6 w-6" />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-semibold mb-1">Community Driven</h3>
+                            <p style={{ color: '#E8F4F8' }}>Join thousands of programmers and collaborate with the best.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <p className="text-sm" style={{ color: '#D0E8F2' }}>© 2026 CampusArena. All rights reserved.</p>
+            </div>
+
+            {/* Right Side - Register Form */}
+            <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 sm:px-8 lg:px-16 overflow-y-auto" style={{ backgroundColor: '#1a1a1a' }}>
+                <div className="w-full max-w-md">
+                    <div className="text-center mb-8">
+                        <h2 className="text-3xl font-bold mb-2" style={{ color: '#E8F4F8' }}>Create Account</h2>
+                        <p style={{ color: '#B0BEC5' }}>Join CampusArena and start competing today</p>
+                    </div>
+
+                    <Card className="border-0 shadow-lg" style={{ backgroundColor: '#262626' }}>
+                        <CardContent className="pt-6">
+                            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                    <div>
+                                        <label htmlFor="firstName" style={{ color: '#E8F4F8' }} className="text-sm font-medium block mb-2">First Name</label>
+                                        <Input
+                                            id="firstName"
+                                            placeholder="John"
+                                            style={{ backgroundColor: '#343434', color: '#E8F4F8', borderColor: '#404040' }}
+                                            {...register('firstName')}
+                                            error={errors.firstName?.message}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="lastName" style={{ color: '#E8F4F8' }} className="text-sm font-medium block mb-2">Last Name</label>
+                                        <Input
+                                            id="lastName"
+                                            placeholder="Doe"
+                                            style={{ backgroundColor: '#343434', color: '#E8F4F8', borderColor: '#404040' }}
+                                            {...register('lastName')}
+                                            error={errors.lastName?.message}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label htmlFor="fatherName" style={{ color: '#E8F4F8' }} className="text-sm font-medium block mb-2">Father's Name</label>
+                                    <Input
+                                        id="fatherName"
+                                        placeholder="Jane Doe"
+                                        style={{ backgroundColor: '#343434', color: '#E8F4F8', borderColor: '#404040' }}
+                                        {...register('fatherName')}
+                                        error={errors.fatherName?.message}
+                                    />
+                                </div>
+
+                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                    <div>
+                                        <label htmlFor="course" style={{ color: '#E8F4F8' }} className="text-sm font-medium block mb-2">Course</label>
+                                        <Input
+                                            id="course"
+                                            placeholder="B.Tech"
+                                            style={{ backgroundColor: '#343434', color: '#E8F4F8', borderColor: '#404040' }}
+                                            {...register('course')}
+                                            error={errors.course?.message}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="branch" style={{ color: '#E8F4F8' }} className="text-sm font-medium block mb-2">Branch</label>
+                                        <Input
+                                            id="branch"
+                                            placeholder="CSE"
+                                            style={{ backgroundColor: '#343434', color: '#E8F4F8', borderColor: '#404040' }}
+                                            {...register('branch')}
+                                            error={errors.branch?.message}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label htmlFor="rollNumber" style={{ color: '#E8F4F8' }} className="text-sm font-medium block mb-2">Roll Number</label>
+                                    <Input
+                                        id="rollNumber"
+                                        placeholder="2021001"
+                                        style={{ backgroundColor: '#343434', color: '#E8F4F8', borderColor: '#404040' }}
+                                        {...register('rollNumber')}
+                                        error={errors.rollNumber?.message}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="email" style={{ color: '#E8F4F8' }} className="text-sm font-medium block mb-2">Email</label>
+                                    <Input
+                                        id="email"
+                                        type="email"
+                                        placeholder="john@example.com"
+                                        style={{ backgroundColor: '#343434', color: '#E8F4F8', borderColor: '#404040' }}
+                                        {...register('email')}
+                                        error={errors.email?.message}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="username" style={{ color: '#E8F4F8' }} className="text-sm font-medium block mb-2">Username</label>
+                                    <Input
+                                        id="username"
+                                        placeholder="johndoe"
+                                        style={{ backgroundColor: '#343434', color: '#E8F4F8', borderColor: '#404040' }}
+                                        {...register('username')}
+                                        error={errors.username?.message}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="password" style={{ color: '#E8F4F8' }} className="text-sm font-medium block mb-2">Password</label>
+                                    <Input
+                                        id="password"
+                                        type="password"
+                                        placeholder="Enter a strong password"
+                                        style={{ backgroundColor: '#343434', color: '#E8F4F8', borderColor: '#404040' }}
+                                        {...register('password')}
+                                        error={errors.password?.message}
+                                    />
+                                </div>
+
+                                <Button type="submit" className="w-full mt-4" style={{ backgroundColor: '#8ECAE6', color: '#000' }} isLoading={isLoading}>
+                                    Create Account
+                                </Button>
+                            </form>
+
+                            <div className="mt-6 pt-6" style={{ borderTop: '1px solid #404040' }}>
+                                <p className="text-center text-sm" style={{ color: '#B0BEC5' }}>
+                                    Already have an account?{' '}
+                                    <Link to="/login" className="font-semibold hover:opacity-80" style={{ color: '#8ECAE6' }}>
+                                        Sign in
+                                    </Link>
+                                </p>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <p className="text-center text-xs mt-6" style={{ color: '#707070' }}>
+                        By creating an account, you agree to our Terms of Service and Privacy Policy
+                    </p>
+                </div>
+            </div>
+        </div>
     );
 }

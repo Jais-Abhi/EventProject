@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Plus, Edit, Trash, Upload } from 'lucide-react';
 import { toast } from 'sonner';
+import { AdminProblemsPageSkeleton } from '@/components/skeleton';
 
 export default function AdminProblemsPage() {
     const [problems, setProblems] = useState<Problem[]>([]);
@@ -83,7 +84,7 @@ export default function AdminProblemsPage() {
         reader.readAsText(file);
     };
 
-    if (isLoading && !isEditing) return <div>Loading...</div>;
+    if (isLoading && !isEditing) return <AdminProblemsPageSkeleton />;
 
     return (
         <div className="space-y-6">

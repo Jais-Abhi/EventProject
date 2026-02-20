@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Trash, Search, User as UserIcon, Mail, Hash, BookOpen, GraduationCap, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
+import { AdminUsersPageSkeleton } from '@/components/skeleton';
 
 export default function AdminUsersPage() {
     const [users, setUsers] = useState<User[]>([]);
@@ -85,10 +86,7 @@ export default function AdminUsersPage() {
             </div>
 
             {isLoading && users.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-20 bg-gray-50 dark:bg-gray-900 rounded-3xl border-2 border-dashed border-gray-200 dark:border-gray-700">
-                    <div className="h-12 w-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4" />
-                    <p className="text-gray-600 dark:text-gray-300 font-medium">Fetching users...</p>
-                </div>
+                <AdminUsersPageSkeleton />
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {users.map(user => (
