@@ -21,6 +21,14 @@ public class EventController {
     @PostMapping("/createEvent")
     public ResponseEntity<?> createEvent(@RequestBody Event event) {
 
+        if (event.getTitle() == null || event.getTitle().isBlank()) {
+            return ResponseEntity.badRequest().body("Title is required");
+        }
+
+        if (event.getClubId() == null) {
+            return ResponseEntity.badRequest().body("Club is required");
+        }
+
         if (event.getStartTime() == null || event.getEndTime() == null) {
             return ResponseEntity.badRequest()
                     .body("Start time and end time required");
@@ -31,9 +39,11 @@ public class EventController {
                     .body("Start time must be before end time");
         }
 
-        if (event.getStartTime().isBefore(Instant.now())) {
+        // Allow start time to be slightly in the past (clock skew / latency)
+        Instant fiveMinutesAgo = Instant.now().minus(Duration.ofMinutes(5));
+        if (event.getStartTime().isBefore(fiveMinutesAgo)) {
             return ResponseEntity.badRequest()
-                    .body("Start time must be in the future");
+                    .body("Start time cannot be in the past");
         }
 
         event.setAttendanceProcessed(false);
