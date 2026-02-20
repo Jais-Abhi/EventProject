@@ -49,10 +49,11 @@ public class SecurityConfig {
                         .requestMatchers("/problem/delete/**").hasRole("ADMIN")
                         .requestMatchers("/problem/update/**").hasRole("ADMIN")
                         .requestMatchers("/problem/insert/**").hasRole("ADMIN")
-                        .requestMatchers("/api/events/createEvent/**").hasRole("ADMIN")
-                        .requestMatchers("/api/events/getEventById/**").permitAll() // Fixed missing /**
+                        .requestMatchers("/api/events/createEvent").hasRole("ADMIN")
+                        .requestMatchers("/api/events/getEventById/**").permitAll()
                         .requestMatchers("/api/events/getAllEvent").permitAll()
-                        .requestMatchers("/api/events/updateEvent/**").hasRole("ADMIN") // Added update event
+                        .requestMatchers("/api/events/updateEvent/**").hasRole("ADMIN")
+                        .requestMatchers("/api/events/deleteEvent/**").hasRole("ADMIN")
                         .requestMatchers("/api/registrations/**").permitAll()
                         .requestMatchers("/api/mcq/admin/analytics/**").hasRole("ADMIN")
                         .requestMatchers("/api/mcq/admin/analytics/pdf/**").hasRole("ADMIN")

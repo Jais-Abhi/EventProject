@@ -53,8 +53,9 @@ api.interceptors.response.use(
             // localStorage.removeItem('auth_user');
             // window.location.href = '/login'; // Force redirect? Use with caution in SPA
         }
-        const message = error.response?.data?.message || 'Something went wrong';
+        const data = error.response?.data;
+        const message = (typeof data === 'string' ? data : data?.message) || 'Something went wrong';
         toast.error(`Error: ${message}`);
         return Promise.reject(error);
-    }
+
 );
